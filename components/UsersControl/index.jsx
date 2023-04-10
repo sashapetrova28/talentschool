@@ -60,9 +60,20 @@ export const UsersControl = () => {
       <Space h="xl" />
       <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>Управление пользователями</div>
       <Space h="xl" />
-      <Button leftIcon={<Plus />} variant="light" color="green" onClick={() => setAddUserModalOpened(true)}>
+      <button 
+
+      style={{
+        fontSize: "16px",
+        color: "white",
+        fontWeight: "600",
+        padding: "10px",
+        borderRadius: "5px",
+        border: "none",
+        backgroundColor: "#1FBEAC",
+      }}
+      onClick={() => setAddUserModalOpened(true)}>
         Добавить пользователя
-      </Button>
+      </button>
       <Space h="xl" />
       <Title order={3} style={{ fontWeight: 400 }}>
         Существующие пользователи
@@ -94,7 +105,7 @@ export const UsersControl = () => {
                     <Stack>
                       <Button
                         variant="outline"
-                        color="blue"
+                        color="dark"
                         leftIcon={<Edit />}
                         onClick={() => {
                           setEditUserId(user.id);
@@ -105,7 +116,7 @@ export const UsersControl = () => {
                       </Button>
                       <Button
                         variant="outline"
-                        color="red"
+                        color="dark"
                         leftIcon={<TrashX />}
                         onClick={() => {
                           setDeleteUserId(user.id);

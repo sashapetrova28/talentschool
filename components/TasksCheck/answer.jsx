@@ -101,14 +101,14 @@ export const Answer = ({ opened, setOpened, task }) => {
     >
       {!chatLoading && (
         <>
-          <Text>{task.day && task.day.name}</Text>
-          <Text color="blue">
+          <div>{task.day && task.day.name}</div>
+          <div color="blue">
             Статус задания:{" "}
             {taskStatus === "check" ? "Ожидает проверки" : taskStatus === "waiting" ? "На доработке" : "Готово"}
-          </Text>
-          <Text color="orange" weight={500} size="lg">
+          </div>
+          <div color="orange" weight={500} size="lg">
             {task.user && `${task.user.name} ${task.user.surname}`}
-          </Text>
+          </div>
           <Space h="md" />
         </>
       )}

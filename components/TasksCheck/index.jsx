@@ -106,8 +106,8 @@ export const TasksCheck = () => {
                     <td>{`${task.user.name} ${task.user.surname}`}</td>
                     <td>{task.user.email}</td>
                     <td>
-                      <Center>
-                        <Button
+                      <center>
+                        {/* <Button
                           variant="outline"
                           color="orange"
                           leftIcon={<MessageCircle />}
@@ -117,8 +117,26 @@ export const TasksCheck = () => {
                           }}
                         >
                           Просмотреть
-                        </Button>
-                      </Center>
+                        </Button> */}
+                        <button
+                          style={{
+                            fontSize: "16px",
+                            color: "#1FBEAC",
+                            fontWeight: "600",
+                            marginRight: "35px",
+                            border: "none",
+                            backgroundColor: "white",
+                          }}
+                          onClick={() => {
+                            setTask(task);
+                            setAnswerModalOpened(true);
+                          }}
+                          // color="green"
+                          type="submit"
+                        >
+                          Проверить
+                        </button>
+                      </center>
                     </td>
                   </tr>
                 );

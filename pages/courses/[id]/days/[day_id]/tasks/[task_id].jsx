@@ -221,9 +221,20 @@ export default function Task({ task, day, course, task_status, messages }) {
               )}
             </>
           ) : (
-            <Button loading={acceptLoading} color="green" onClick={() => setAccepted(true)}>
-              Приступить к выполнению
-            </Button>
+            <button
+            style={{
+              fontSize: "16px",
+              color: "white",
+              fontWeight: "600",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: "#1FBEAC",
+            }}
+            onClick={() => setAccepted(true)}
+          >
+            Приступить к выполнению
+          </button>
           )}
         </Card>
       </Container>

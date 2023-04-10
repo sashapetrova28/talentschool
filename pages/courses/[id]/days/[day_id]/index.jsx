@@ -130,7 +130,7 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
                             <div className="d-flex align-items-center">
                               {/* <div style={{ paddingRight: "45px" }}>Img</div> */}
                               <div>
-                                <div style={{ color: "#036459", fontWeight: "600" }}>{task.name}</div>
+                                <div style={{ color: "#1FBEAC", fontWeight: "600" }}>{task.name}</div>
                                 {/* <div style={{ color: "#1FBEAC" }}>Статус</div> */}
                               </div>
                             </div>

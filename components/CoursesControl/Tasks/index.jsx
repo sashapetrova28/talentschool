@@ -97,7 +97,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
 							<td>{task.files.length}</td>
 							<td>
 								<Stack>
-									<Button
+									<button
 										variant="outline"
 										color="blue"
 										leftIcon={<Edit />}
@@ -107,8 +107,8 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
 										}}
 									>
 										Редактировать
-									</Button>
-									<Button
+									</button>
+									<button
 										variant="outline"
 										color="red"
 										leftIcon={<TrashX />}
@@ -118,7 +118,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
 										}}
 									>
 										Удалить
-									</Button>
+									</button>
 								</Stack>
 							</td>
 						</tr>
