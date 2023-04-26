@@ -136,12 +136,31 @@ export const Answer = ({ opened, setOpened, task }) => {
             })}
           </div>
           <Center className="mt-2">
-            <Button compact className="me-2" onClick={() => sendMessage(true)} id="send-message">
+            <button style={{
+              fontSize: "16px",
+              color: "white",
+              fontWeight: "600",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: "#1FBEAC",
+            }} 
+            onClick={() => sendMessage(true)} id="send-message">
               Принять
-            </Button>
-            <Button color="red" compact onClick={() => sendMessage(false)} id="send-message">
+            </button>
+            <div style={{margin:"10px"}}></div>
+            <button style={{
+              fontSize: "16px",
+              color: "white",
+              fontWeight: "600",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: "#1FBEAC",
+            }} 
+            onClick={() => sendMessage(true)} id="send-message">
               Не принять
-            </Button>
+            </button>
           </Center>
         </>
       )}

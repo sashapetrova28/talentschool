@@ -100,7 +100,7 @@ export const UsersControl = () => {
                   </td>
                   <td>{user.age}</td>
                   <td>{user.password}</td>
-                  <td>{user.status === "user" ? "Ученик" : "Администратор"}</td>
+                  <td>{user.status === "user" ? "Ученик" : user.status === "curator" ? "Куратор" : "Администратор"}</td>
                   <td>
                     <Stack>
                       <Button

@@ -20,7 +20,7 @@ const Account = () => {
       </Head>
 
       <Container >
-        {user && user.status === "admin" && <CoursesControl />}
+        {user && (user.status === "admin" || user.status === "curator") && <CoursesControl />}
       </Container>
     </div>
   );

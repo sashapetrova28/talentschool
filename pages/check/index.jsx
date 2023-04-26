@@ -18,7 +18,7 @@ const Account = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>{user && user.status === "admin" && <TasksCheck />}</Container>
+      <Container>{user && (user.status === "admin" || user.status === "curator") && <TasksCheck />}</Container>
     </div>
   );
 };

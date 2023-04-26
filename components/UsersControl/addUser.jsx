@@ -63,7 +63,7 @@ export const AddUser = ({ opened, setOpened, pushUser }) => {
 			surname: e.target.surname.value,
 			password: e.target.password.value,
 			age: e.target.age.value,
-			status: e.target.status.value === 'Ученик' ? 'user' : 'admin'
+			status: e.target.status.value === 'Ученик' ? 'user' : e.target.status.value === 'Куратор' ? 'curator' : 'admin'
 		})
 			.then(res => {
 				if (res.status === 200) {
@@ -123,10 +123,12 @@ export const AddUser = ({ opened, setOpened, pushUser }) => {
 					<Input placeholder="*****" type="text" name="password_r" />
 				</InputWrapper>
 				<NativeSelect
-					data={['Ученик', 'Администратор']}
+					data={['Ученик', 'Администратор', 'Куратор']}
 					placeholder="Выберите вариант"
 					label="Выберите типа пользователя"
-					description="Ученик может проходить курсы. Администратор отвечает за проверку заданий и создание курсов, дней, заданий"
+					description="Ученик может проходить курсы. 
+					Администратор отвечает за проверку заданий и создание курсов, дней, заданий. 
+					Куратор отвечает за проверку заданий"
 					required
 					name="status"
 				/>

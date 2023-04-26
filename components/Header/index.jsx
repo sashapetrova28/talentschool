@@ -19,7 +19,7 @@ export const Header = ({ user }) => {
             </Link>
           </div>
           <div className={styles.menu}>
-            {user?.status === "admin" && (
+            {!(user?.status === "user") && (
               <>
                 <Link href="/">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
@@ -35,7 +35,8 @@ export const Header = ({ user }) => {
                 <div>Курсы</div>
               </div>
             </Link>
-            {user?.status === "admin" && (
+
+            {!(user?.status === "user") && (
               <>
                 <Link href="/check">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
@@ -43,6 +44,11 @@ export const Header = ({ user }) => {
                     <div>Проверка</div>
                   </div>
                 </Link>
+              </>
+            )}
+
+            {user?.status === "admin" && (
+              <>
                 <Link href="/users">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
                     <UserCircle size={24} />

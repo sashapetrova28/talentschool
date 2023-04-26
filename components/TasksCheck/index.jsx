@@ -106,7 +106,6 @@ export const TasksCheck = () => {
                     <td>{`${task.user.name} ${task.user.surname}`}</td>
                     <td>{task.user.email}</td>
                     <td>
-                      <center>
                         {/* <Button
                           variant="outline"
                           color="orange"
@@ -136,7 +135,6 @@ export const TasksCheck = () => {
                         >
                           Проверить
                         </button>
-                      </center>
                     </td>
                   </tr>
                 );
