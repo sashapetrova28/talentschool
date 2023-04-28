@@ -3,7 +3,8 @@ import Image from "next/image";
 import styles from "./header.module.scss";
 
 import Logo from "/public/logo.png";
-import { CalendarEvent, SmartHome, ListDetails, UserCircle, CameraSelfie, Checks } from "tabler-icons-react";
+import {RiHomeLine} from 'react-icons/ri'
+import { SmartHome, ListDetails, UserCircle, CameraSelfie, Checks } from "tabler-icons-react";
 import { Button, Card, Grid } from "@mantine/core";
 import Container from "react-bootstrap/Container";
 
@@ -22,8 +23,12 @@ export const Header = ({ user }) => {
             {!(user?.status === "user") && (
               <>
                 <Link href="/">
-                  <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                    <SmartHome size={24} />
+                  <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer"}}>
+                    <div style={{border: '2px solid rgb(51, 207, 189)', borderRadius: '5px'}}>
+                      <RiHomeLine
+                        size={24}
+                        color='#33CFBD' />
+                      </div>
                     <div>Главная</div>
                   </div>
                 </Link>
@@ -31,7 +36,9 @@ export const Header = ({ user }) => {
             )}
             <Link href={user?.status === "admin" ? "/account" : "/"}>
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                <ListDetails size={24} />
+                <ListDetails 
+                  size={24}
+                  color='#33CFBD' />
                 <div>Курсы</div>
               </div>
             </Link>
@@ -40,7 +47,10 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/check">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                    <Checks size={24} />
+                    <Checks 
+                      size={24}
+                      borderRadius={5}
+                      color='#33CFBD' />
                     <div>Проверка</div>
                   </div>
                 </Link>
@@ -51,7 +61,9 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/users">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                    <UserCircle size={24} />
+                    <UserCircle 
+                      size={24}
+                      color='#33CFBD' />
                     <div>Управление</div>
                   </div>
                 </Link>
@@ -60,7 +72,9 @@ export const Header = ({ user }) => {
 
             <Link href="/profile">
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                <CameraSelfie size={24} />
+                <CameraSelfie 
+                  size={24}
+                  color='#33CFBD' />
                 <div>Профиль</div>
               </div>
             </Link>

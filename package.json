@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "@svgr/webpack": "^6.2.1",
+    "@tabler/icons-react": "^2.17.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.3",
     "nanoid": "^4.0.0",
@@ -17,6 +19,7 @@
     "react": "18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
     "tabler-icons-react": "^1.51.0"
   },
   "devDependencies": {
