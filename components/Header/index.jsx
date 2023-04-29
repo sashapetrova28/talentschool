@@ -3,7 +3,8 @@ import Image from "next/image";
 import styles from "./header.module.scss";
 
 import Logo from "/public/logo.png";
-import {RiHomeLine} from 'react-icons/ri'
+import {RiHomeLine, RiCheckDoubleFill, RiCameraLine} from 'react-icons/ri';
+import {IoIosNotificationsOutline} from 'react-icons/io';
 import { SmartHome, ListDetails, UserCircle, CameraSelfie, Checks } from "tabler-icons-react";
 import { Button, Card, Grid } from "@mantine/core";
 import Container from "react-bootstrap/Container";
@@ -24,22 +25,36 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer"}}>
-                    <div style={{border: '2px solid rgb(51, 207, 189)', borderRadius: '5px'}}>
+                    <div style={{
+                      border: '2px solid rgb(51, 207, 189)', 
+                      borderRadius: '8px', 
+                      maxWidth: '40px', 
+                      maxHeight: '40px',
+                      minHeight: '40px',
+                      minWidth: '40px',
+                      padding: '5px'}}>
                       <RiHomeLine
                         size={24}
-                        color='#33CFBD' />
+                        color='#33CFBD'/>
                       </div>
-                    <div>Главная</div>
                   </div>
                 </Link>
               </>
             )}
             <Link href={user?.status === "admin" ? "/account" : "/"}>
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
+              <div style={{
+                      border: '2px solid rgb(51, 207, 189)', 
+                      borderRadius: '8px', 
+                      maxWidth: '40px', 
+                      maxHeight: '40px',
+                      minHeight: '40px',
+                      minWidth: '40px',
+                      padding: '5px'}}>
                 <ListDetails 
                   size={24}
                   color='#33CFBD' />
-                <div>Курсы</div>
+                </div>
               </div>
             </Link>
 
@@ -47,11 +62,19 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/check">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                    <Checks 
+                  <div style={{
+                      border: '2px solid rgb(51, 207, 189)', 
+                      borderRadius: '8px', 
+                      maxWidth: '40px', 
+                      maxHeight: '40px',
+                      minHeight: '40px',
+                      minWidth: '40px',
+                      padding: '5px'}}>
+                    <RiCheckDoubleFill 
                       size={24}
                       borderRadius={5}
                       color='#33CFBD' />
-                    <div>Проверка</div>
+                      </div>
                   </div>
                 </Link>
               </>
@@ -61,21 +84,45 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/users">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
+                  <div style={{
+                      border: '2px solid rgb(51, 207, 189)', 
+                      borderRadius: '8px', 
+                      maxWidth: '40px', 
+                      maxHeight: '40px',
+                      minHeight: '40px',
+                      minWidth: '40px',
+                      padding: '5px'}}>
                     <UserCircle 
                       size={24}
                       color='#33CFBD' />
-                    <div>Управление</div>
+                      </div>
                   </div>
                 </Link>
               </>
             )}
 
+            <Link href='/'>
+              <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
+                <IoIosNotificationsOutline
+                      size={24}
+                      color='#33CFBD' />
+              </div>
+            </Link>
+
             <Link href="/profile">
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                <CameraSelfie 
+              <div style={{
+                      border: '2px solid grey', 
+                      borderRadius: '50%', 
+                      maxWidth: '40px', 
+                      maxHeight: '40px',
+                      minHeight: '40px',
+                      minWidth: '40px',
+                      padding: '5px'}}>
+                <RiCameraLine 
                   size={24}
-                  color='#33CFBD' />
-                <div>Профиль</div>
+                  color='grey' />
+                  </div>
               </div>
             </Link>
             {user && user?.email ? null : (
