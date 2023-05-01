@@ -50,7 +50,7 @@ export const Main = ({
                 <div className="d-flex align-items-center">
                   <div style={{ paddingRight: "20px" }}>
                     {course.image && (
-                      <Image radius={100} src={"/" + course.image} width={100} height={100} alt="Инкубатор талантов" />
+                      <Image radius={100} src={"/" + course.image} width={100} height={100} alt="Школа талантов" />
                     )}
                   </div>
                   <table style={{ width: "50%" }}>

@@ -52,7 +52,7 @@ export default function Days({ course, days, tasks, tasks_ready }) {
             >
               <div style={{ margin: "0 auto", width: "145px", marginBottom: "20px" }}>
                 {course.image && (
-                  <Image radius={100} src={"/" + course.image} width={145} height={145} alt="Инкубатор талантов" />
+                  <Image radius={100} src={"/" + course.image} width={145} height={145} alt="Школа талантов" />
                 )}
               </div>
               <div style={{ fontSize: "20px", fontWeight: "400", color: "#036459" }}>{course.name}</div>

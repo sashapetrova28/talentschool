@@ -36,7 +36,7 @@ export const EditUser = ({ opened, setOpened, updateUserList, editUserId }) => {
 						setSurnameDefaultValue(res.data.surname);
 						setAgeDefaultValue(res.data.age);
 						setPasswordDefaultValue(res.data.password);
-						res.data.status === 'user' ? setStatusDefaultValue('Ученик') : setStatusDefaultValue('Администратор');
+						res.data.status === 'user' ? setStatusDefaultValue('Ученик') : 'curator' ? setStatusDefaultValue('Куратор') : setStatusDefaultValue('Администратор');
 						setLoading(false);
 					}
 				})
@@ -110,7 +110,7 @@ export const EditUser = ({ opened, setOpened, updateUserList, editUserId }) => {
 			surname: e.target.surname.value,
 			password: e.target.password.value,
 			age: e.target.age.value,
-			status: e.target.status.value === 'Ученик' ? 'user' : 'admin'
+			status: e.target.status.value === 'Ученик' ? 'user' : e.target.status.value === 'Куратор' ? 'curator' : 'admin'
 		})
 			.then(res => {
 				if (res.status === 200) {
@@ -171,10 +171,12 @@ export const EditUser = ({ opened, setOpened, updateUserList, editUserId }) => {
 				<NativeSelect
 					value={statusDefaultValue}
 					onChange={event => setStatusDefaultValue(event.currentTarget.value)}
-					data={['Ученик', 'Администратор']}
+					data={['Ученик', 'Администратор', 'Куратор']}
 					placeholder="Выберите вариант"
 					label="Выберите типа пользователя"
-					description="Ученик может проходить курсы. Администратор отвечает за проверку заданий и создание курсов, дней, заданий"
+					description="Ученик может проходить курсы. 
+					Администратор отвечает за проверку заданий и создание курсов, дней, заданий. 
+					Куратор отвечает за проверку заданий"
 					required
 					name="status"
 				/>
