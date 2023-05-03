@@ -25,3 +25,15 @@
     }
   }
 }
+
+.item {
+  border: 2px solid rgb(51, 207, 189);
+  padding: 5px;
+  border-radius: 8px;
+  color: rgb(51, 207, 189);
+
+  &:hover, &:active {
+    color: rgb(255, 255, 255);
+    background-color: rgb(51, 207, 189);
+  }
+}

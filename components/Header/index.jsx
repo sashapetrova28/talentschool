@@ -3,9 +3,10 @@ import Image from "next/image";
 import styles from "./header.module.scss";
 
 import Logo from "/public/logo.png";
-import {RiHomeLine, RiCheckDoubleFill, RiCameraLine} from 'react-icons/ri';
-import {IoIosNotificationsOutline} from 'react-icons/io';
-import { SmartHome, ListDetails, UserCircle, CameraSelfie, Checks } from "tabler-icons-react";
+import { RiHomeLine, RiCheckDoubleFill, RiCameraLine } from 'react-icons/ri';
+import { IoIosNotificationsOutline } from 'react-icons/io';
+import { HiOutlineUserCircle } from 'react-icons/hi';
+import { TbListDetails } from 'react-icons/tb';
 import { Button, Card, Grid } from "@mantine/core";
 import Container from "react-bootstrap/Container";
 
@@ -17,7 +18,7 @@ export const Header = ({ user }) => {
         <Grid className={styles.header}>
           <div style={{ cursor: "pointer" }}>
             <Link href="/" passHref>
-              <Image src={Logo} alt="Инкубатор талантов" width={200} height={77} />
+              <Image src={Logo} alt="Школа талантов" width={200} height={77} />
             </Link>
           </div>
           <div className={styles.menu}>
@@ -25,36 +26,14 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer"}}>
-                    <div style={{
-                      border: '2px solid rgb(51, 207, 189)', 
-                      borderRadius: '8px', 
-                      maxWidth: '40px', 
-                      maxHeight: '40px',
-                      minHeight: '40px',
-                      minWidth: '40px',
-                      padding: '5px'}}>
-                      <RiHomeLine
-                        size={24}
-                        color='#33CFBD'/>
-                      </div>
+                    <RiHomeLine size={38} className={styles.item} />
                   </div>
                 </Link>
               </>
             )}
             <Link href={user?.status === "admin" ? "/account" : "/"}>
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-              <div style={{
-                      border: '2px solid rgb(51, 207, 189)', 
-                      borderRadius: '8px', 
-                      maxWidth: '40px', 
-                      maxHeight: '40px',
-                      minHeight: '40px',
-                      minWidth: '40px',
-                      padding: '5px'}}>
-                <ListDetails 
-                  size={24}
-                  color='#33CFBD' />
-                </div>
+                <TbListDetails size={38} className={styles.item} />
               </div>
             </Link>
 
@@ -62,19 +41,7 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/check">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                  <div style={{
-                      border: '2px solid rgb(51, 207, 189)', 
-                      borderRadius: '8px', 
-                      maxWidth: '40px', 
-                      maxHeight: '40px',
-                      minHeight: '40px',
-                      minWidth: '40px',
-                      padding: '5px'}}>
-                    <RiCheckDoubleFill 
-                      size={24}
-                      borderRadius={5}
-                      color='#33CFBD' />
-                      </div>
+                    <RiCheckDoubleFill size={38} className={styles.item} />
                   </div>
                 </Link>
               </>
@@ -84,18 +51,7 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/users">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                  <div style={{
-                      border: '2px solid rgb(51, 207, 189)', 
-                      borderRadius: '8px', 
-                      maxWidth: '40px', 
-                      maxHeight: '40px',
-                      minHeight: '40px',
-                      minWidth: '40px',
-                      padding: '5px'}}>
-                    <UserCircle 
-                      size={24}
-                      color='#33CFBD' />
-                      </div>
+                    <HiOutlineUserCircle size={38} className={styles.item} />
                   </div>
                 </Link>
               </>
@@ -103,9 +59,9 @@ export const Header = ({ user }) => {
 
             <Link href='/'>
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                <IoIosNotificationsOutline
-                      size={24}
-                      color='#33CFBD' />
+                <IoIosNotificationsOutline 
+                  size={28}
+                  color='rgb(51, 207, 189)' />
               </div>
             </Link>
 
