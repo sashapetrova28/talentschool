@@ -128,34 +128,21 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
     <div className="mb-5">
       <div style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>Материалы &gt; Добавление дня</div>{" "}
       <Space h="sm" />
-      <div style={{ textAlign: "end" }}>
-        <button
-          type="submit"
-          style={{
-            fontSize: "16px",
-            color: "#1FBEAC",
-            fontWeight: "600",
-            marginRight: "35px",
-            border: "none",
-            backgroundColor: "white",
-          }}
-        >
-          Добавить
-        </button>
-        <button
-          style={{
-            fontSize: "16px",
-            color: "#1FBEAC",
-            fontWeight: "600",
-            border: "none",
-            backgroundColor: "white",
-          }}
-          onClick={() => setOpened(false)}
-        >
-          Отменить
-        </button>
-      </div>
       <form onSubmit={saveDay}>
+        <div style={{ textAlign: "end" }}>
+          <button
+            style={{
+              marginRight: "9px",
+            }}
+            className="greenButton"
+            type="submit"
+          >
+            Добавить
+          </button>
+          <button className="redButton" onClick={() => setOpened(false)}>
+            Отменить
+          </button>
+        </div>
         <Row>
           <Col md={4}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>

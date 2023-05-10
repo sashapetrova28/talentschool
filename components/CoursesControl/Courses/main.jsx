@@ -19,15 +19,6 @@ export const Main = ({
   return (
     <div>
       <Space h="xl" />
-      {/* <thead>
-          <tr>
-            <th>Название</th>
-            <th>Количество дней</th>
-            <th>Количество участников</th>
-            <th>Действия</th>
-          </tr>
-        </thead> */}
-      {/* <tbody> */}
       <SimpleGrid cols={3}>
         {!coursesLoading &&
           coursesList.map((course) => {
@@ -55,15 +46,15 @@ export const Main = ({
                   </div>
                   <table style={{ width: "50%" }}>
                     <tr>
-                      <td style={{ fontSize: "16px", color: "#036459", fontWeight: "600" }}>участников</td>
+                      <td style={{ fontSize: "16px", color: "#036459", fontWeight: "600" }}>Участников</td>
                       <td style={{ textAlign: "left" }}>
-                        <span style={{ color: "#1FBEAC", fontSize: "18px" }}>{course.selected_users}</span>
+                        <span style={{ color: "#1FBEAC", fontSize: "20px", fontWeight: "600" }}>{course.selected_users}</span>
                       </td>
                     </tr>
                     <tr>
-                      <td style={{ fontSize: "16px", color: "#036459", fontWeight: "600" }}>дней</td>
+                      <td style={{ fontSize: "16px", color: "#036459", fontWeight: "600" }}>Дней</td>
                       <td style={{ textAlign: "left" }}>
-                        <span style={{ color: "#1FBEAC", fontSize: "18px" }}>{course.days}</span>
+                        <span style={{ color: "#1FBEAC", fontSize: "20px", fontWeight: "600" }}>{course.selected_users}</span>
                       </td>
                     </tr>
                   </table>

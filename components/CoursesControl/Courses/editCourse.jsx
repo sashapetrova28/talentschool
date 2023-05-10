@@ -146,11 +146,6 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
       ) : (
         <ImageUploadIcon status={status} style={{ color: getIconColor(status, theme) }} size={80} />
       )}
-      <div>
-        <Text size="xl" inline>
-          Переместите фото сюда
-        </Text>
-      </div>
     </Group>
   );
 
@@ -173,6 +168,7 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
     const body = new FormData();
     body.append("name", e.target.name.value);
     body.append("description", description);
+    console.log(selectedUsers)
     if (image && image.path) {
       body.append("image", image, `course_${nanoid()}`);
     }
@@ -212,12 +208,14 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
           <div style={{ textAlign: "end" }}>
             <button
               style={{
-                fontSize: "16px",
-                color: "#1FBEAC",
+                fontSize: "12px",
+                color: "#036459",
                 fontWeight: "600",
-                marginRight: "35px",
-                border: "none",
+                marginRight: "9px",
                 backgroundColor: "white",
+                border:"2px solid #33CFBD",
+                borderRadius:"20px",
+                padding:"10px 14px"
               }}
               type="submit"
             >
@@ -225,11 +223,13 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
             </button>
             <button
               style={{
-                fontSize: "16px",
-                color: "#1FBEAC",
+                fontSize: "12px",
+                color: "#036459",
                 fontWeight: "600",
-                border: "none",
                 backgroundColor: "white",
+                border:"2px solid #FD938E",
+                borderRadius:"20px",
+                padding:"10px 14px"
               }}
               onClick={() => setOpened(false)}
             >
@@ -239,6 +239,14 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
           <Row>
             <Col md={4}>
               <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <InputWrapper required label="Название курса" error={nameError}>
+                  <Input
+                    type="text"
+                    name="name"
+                    value={nameDefaultValue}
+                    onChange={(e) => setNameDefaultValue(e.currentTarget.value)}
+                  />
+                </InputWrapper>
                 <Dropzone
                   onDrop={(files) => {
                     setImage(files[0]);
@@ -258,24 +266,22 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
                 >
                   {(status) => dropzoneChildren(status, theme)}
                 </Dropzone>
-                <InputWrapper required label="Название курса" error={nameError}>
-                  <Input
-                    type="text"
-                    name="name"
-                    value={nameDefaultValue}
-                    onChange={(e) => setNameDefaultValue(e.currentTarget.value)}
-                  />
-                </InputWrapper>
               </Card>
             </Col>
             <Col md={8}>
               <Tabs unstyled color="#036459">
                 <Tabs.Tab label="Участники">
                   <MultiSelect
+                    style={{
+                      border: "2px solid #33CFBD", 
+                      padding:"25px", 
+                      borderRadius:"8px", 
+                      boxShadow:"0px 2px 20px #BBBBBB", 
+                    }}
                     value={selectedUsers}
                     onChange={(selected) => setSelectedUsers(selected)}
                     data={users.map((el) => el.email)}
-                    label="Выберите пользователей, которые должны попасть на курс"
+                    label="Добавьте пользователя"
                     placeholder="Пользователей не выбрано"
                     searchable
                     nothingFound="Пользователей не найдено"

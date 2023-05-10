@@ -58,88 +58,83 @@ export const UsersControl = () => {
   return (
     <Container>
       <Space h="xl" />
-      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>Управление пользователями</div>
-      <Space h="xl" />
-      <button 
-
-      style={{
-        fontSize: "16px",
-        color: "white",
-        fontWeight: "600",
-        padding: "10px",
-        borderRadius: "5px",
-        border: "none",
-        backgroundColor: "#1FBEAC",
-      }}
-      onClick={() => setAddUserModalOpened(true)}>
-        Добавить пользователя
-      </button>
-      <Space h="xl" />
-      <Title order={3} style={{ fontWeight: 400 }}>
-        Существующие пользователи
-      </Title>
-      <Table verticalSpacing="sm" striped highlightOnHover>
-        <thead>
-          <tr>
-            <th>Электронная почта</th>
-            <th>ФИ</th>
-            <th>Возраст</th>
-            <th>Пароль</th>
-            <th>Статус</th>
-            <th>Управление</th>
-          </tr>
-        </thead>
-        <tbody>
-          {!usersLoading &&
-            usersList.map((user) => {
-              return (
-                <tr key={user.id}>
-                  <td>{user.email}</td>
-                  <td>
-                    {user.surname} {user.name}
-                  </td>
-                  <td>{user.age}</td>
-                  <td>{user.password}</td>
-                  <td>{user.status === "user" ? "Ученик" : user.status === "curator" ? "Куратор" : "Администратор"}</td>
-                  <td>
-                    <Stack>
-                      <Button
-                        variant="outline"
-                        color="dark"
-                        leftIcon={<Edit />}
-                        onClick={() => {
-                          setEditUserId(user.id);
-                          setEditUserModalOpened(true);
-                        }}
-                      >
-                        Редактировать
-                      </Button>
-                      <Button
-                        variant="outline"
-                        color="dark"
-                        leftIcon={<TrashX />}
-                        onClick={() => {
-                          setDeleteUserId(user.id);
-                          setDeleteUserModalOpened(true);
-                        }}
-                      >
-                        Удалить
-                      </Button>
-                    </Stack>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
-      {usersLoading && (
-        <Center>
-          <Loader color="orange" variant="bars" />
-        </Center>
+      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>Пользователи</div>
+      {!addUserModalOpened && (
+        <>
+          {" "}
+          <button
+            style={{
+              fontSize: "16px",
+              color: "white",
+              fontWeight: "600",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              backgroundColor: "#1FBEAC",
+            }}
+            onClick={() => setAddUserModalOpened(true)}
+          >
+            Добавить пользователя
+          </button>
+          <Space h="xl" />
+          <Table verticalSpacing="sm" striped highlightOnHover style={{ color: "#036459", fontWeight: "600" }}>
+            <thead>
+              <tr>
+                <th>Роль</th>
+                <th>Фамилия, имя</th>
+                <th>Электронная почта</th>
+                <th>Пароль</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody style={{ color: "#036459", fontWeight: "500" }}>
+              {!usersLoading &&
+                usersList.map((user) => {
+                  return (
+                    <tr key={user.id}>
+                      <td>
+                        {user.status === "user" ? "Ученик" : user.status === "curator" ? "Куратор" : "Администратор"}
+                      </td>
+                      <td>
+                        {user.surname} {user.name}
+                      </td>
+                      <td>{user.email}</td>
+                      <td>{user.password}</td>
+                      <td>
+                        <Button
+                          variant="subtle"
+                          color="dark"
+                          leftIcon={<Edit style={{ color: "#33CFBD" }} />}
+                          onClick={() => {
+                            setEditUserId(user.id);
+                            setEditUserModalOpened(true);
+                          }}
+                        ></Button>
+                        <Button
+                          variant="subtle"
+                          color="dark"
+                          leftIcon={<TrashX style={{ color: "#E74750" }} />}
+                          onClick={() => {
+                            setDeleteUserId(user.id);
+                            setDeleteUserModalOpened(true);
+                          }}
+                        ></Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </Table>
+          {usersLoading && (
+            <Center>
+              <Loader color="orange" variant="bars" />
+            </Center>
+          )}
+          {!usersLoading && usersList.length === 0 && <Center>Список пользователей пуст</Center>}
+          <Center>{usersListError}</Center>
+        </>
       )}
-      {!usersLoading && usersList.length === 0 && <Center>Список пользователей пуст</Center>}
-      <Center>{usersListError}</Center>
-      <AddUser opened={addUserModalOpened} setOpened={setAddUserModalOpened} pushUser={pushUser} />
+      {addUserModalOpened && <AddUser setOpened={setAddUserModalOpened} pushUser={pushUser} />}
       <DeleteUser
         opened={deleteUserModalOpened}
         setOpened={setDeleteUserModalOpened}

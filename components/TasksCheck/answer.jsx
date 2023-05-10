@@ -158,7 +158,7 @@ export const Answer = ({ opened, setOpened, task }) => {
               border: "none",
               backgroundColor: "#1FBEAC",
             }} 
-            onClick={() => sendMessage(true)} id="send-message">
+            onClick={() => sendMessage(false)} id="send-message">
               Не принять
             </button>
           </Center>

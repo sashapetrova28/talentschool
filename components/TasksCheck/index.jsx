@@ -48,7 +48,7 @@ export const TasksCheck = () => {
   return (
     <Container>
       <Space h="xl" />
-      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>Проверка заданий</div>
+      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>Задания</div>
       <Space h="xl" />
       <Row>
         <Col md={4}>
@@ -65,7 +65,7 @@ export const TasksCheck = () => {
           <NativeSelect
             data={["Не выбрано"].concat(Array.from(new Set(tasksList?.map((e) => `${e.user.name} ${e.user.surname}`))))}
             onChange={(event) => handleFilter("user", event.currentTarget.value)}
-            description="Выберите таланта"
+            description="Выберите ученика"
             variant="filled"
           />
         </Col>
@@ -83,8 +83,9 @@ export const TasksCheck = () => {
           <tr>
             <th>День</th>
             <th>Задание</th>
-            <th>Талант</th>
-            <th>Email таланта</th>
+            {/* <th>Талант</th>
+            <th>Email таланта</th> */}
+            <th>Фамилия, Имя</th>
             <th>Действия</th>
           </tr>
         </thead>
@@ -100,11 +101,14 @@ export const TasksCheck = () => {
               .filter((e) => e.day.name == filter.day || filter.day == "Не выбрано" || !filter.day)
               .map((task, i) => {
                 return (
-                  <tr key={task.task.id}>
+                  <tr
+                    key={task.task.id}
+                    style={{ border: "2px solid #33CFBD", borderRadius: "8px", background: "white" }}
+                  >
                     <td>{task.day.name}</td>
                     <td>{task.task.name}</td>
                     <td>{`${task.user.name} ${task.user.surname}`}</td>
-                    <td>{task.user.email}</td>
+                    {/* <td>{task.user.email}</td> */}
                     <td>
                         {/* <Button
                           variant="outline"
@@ -130,11 +134,10 @@ export const TasksCheck = () => {
                             setTask(task);
                             setAnswerModalOpened(true);
                           }}
-                          // color="green"
                           type="submit"
                         >
                           Проверить
-                        </button>
+                      </button>
                     </td>
                   </tr>
                 );

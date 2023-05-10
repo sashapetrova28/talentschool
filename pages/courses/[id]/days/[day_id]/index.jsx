@@ -47,7 +47,14 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
         <Space h="xl" />
         <Row>
           <Col md={4}>
-            <Card shadow="sm" padding="lg" radius="md" withBorder className="mb-4 p-5" style={{ height: "300px" }}>
+            <Card
+                shadow="sm"
+                padding="lg"
+                radius="md"
+                withBorder
+                className="mb-4 p-5"
+                style={{ height: "300px", border: "2px solid #F9B312", boxShadow: "0px 2px 20px #BBBBBB" }}
+              >
               <div
                 style={{
                   color: "#036459",
@@ -57,17 +64,14 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
               >
                 {day.name}
               </div>
-              {/* <div>
-                {day.image ? (
-                  <Image src={"/" + day.image} width={"100%"} height={"100%"} alt="Инкубатор талантов" />
-                ) : course.image ? (
-                  <Image src={"/" + course.image} width={"100%"} height={"100%"} alt="Инкубатор талантов" />
-                ) : (
-                  <></>
-                )}
-              </div> */}
             </Card>
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Card
+              shadow="sm"
+              padding="lg"
+              radius="md"
+              withBorder
+              style={{ border: "2px solid #33CFBD", boxShadow: "0px 2px 20px #BBBBBB" }}
+            >
               <div className="d-flex justify-content-center">
                 <RingProgress
                   label={<Text align="center">{Math.round((tasks_ready / tasks.length) * 100)}%</Text>}
@@ -77,74 +81,62 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
             </Card>
           </Col>
           <Col md={8}>
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
-              <Tabs unstyled color="#036459">
-                <Tabs.Tab label="Видео">
+          <Tabs unstyled color="#036459">
+              <Tabs.Tab label="Видео">
+                <Card
+                  shadow="sm"
+                  padding="lg"
+                  radius="md"
+                  withBorder
+                  style={{ border: "2px solid #33CFBD", boxShadow: "0px 2px 20px #BBBBBB" }}
+                >
                   <div style={{ fontWeight: "600", fontSize: "20px", color: "#036459", margin: "30px 0" }}>
                     Посмотрите видео и выполните задания
                   </div>
-                  <Card shadow="sm" padding="lg" radius="md" withBorder>
-                    <Center>
-                      <iframe
-                        width={700}
-                        height={400}
-                        src={day.video}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </Center>
-                  </Card>
-                </Tabs.Tab>
-                <Tabs.Tab label="Задания">
-                  {tasks.map((task) => {
-                    return (
-                      <Card
-                        shadow="sm"
-                        padding="lg"
-                        radius="md"
-                        withBorder
-                        key={task.id}
-                        style={{ marginBottom: "16px" }}
-                      >
-                        {/* <Card.Section>
-                          {task.image && (
-                            <Image src={"/" + task.image} width={300} height={120} alt="Инкубатор талантов" />
-                          )}
-                        </Card.Section> */}
-                        {/* <Group position="apart" style={{ marginBottom: 5, marginTop: theme.spacing.sm }}>
-                          <Text size="lg" weight={700} color="#036459">
-                            {task.name}
-                          </Text>
-                        </Group>
-                        <Link passHref href={`/courses/${course.id}/days/${day.id}/tasks/${task.id}`}>
-                          <Button color="green" fullWidth style={{ marginTop: 14 }}>
-                            Открыть задание
-                          </Button>
-                        </Link> */}
-                        <Link passHref href={`/courses/${course.id}/days/${day.id}/tasks/${task.id}`}>
-                          <div
-                            className="d-flex align-items-center justify-content-between"
-                            style={{ cursor: "pointer" }}
-                          >
-                            <div className="d-flex align-items-center">
-                              {/* <div style={{ paddingRight: "45px" }}>Img</div> */}
-                              <div>
-                                <div style={{ color: "#1FBEAC", fontWeight: "600" }}>{task.name}</div>
-                                {/* <div style={{ color: "#1FBEAC" }}>Статус</div> */}
-                              </div>
-                            </div>
+
+                  <Center>
+                    <iframe
+                      width={700}
+                      height={400}
+                      src={day.video}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </Center>
+                </Card>
+              </Tabs.Tab>
+              <Tabs.Tab label="Задания">
+                {tasks.map((task) => {
+                  return (
+                    <Card
+                      shadow="sm"
+                      padding="lg"
+                      radius="md"
+                      withBorder
+                      key={task.id}
+                      style={{ marginBottom: "16px" }}
+                    >
+                      <Link passHref href={`/courses/${course.id}/days/${day.id}/tasks/${task.id}`}>
+                        <div
+                          className="d-flex align-items-center justify-content-between"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <div className="d-flex align-items-center">
                             <div>
-                              <ArrowBigRightLine size={48} strokeWidth={2} color={"#036459"} />
+                              <div style={{ color: "#1FBEAC", fontWeight: "600" }}>{task.name}</div>
                             </div>
                           </div>
-                        </Link>
-                      </Card>
-                    );
-                  })}
-                </Tabs.Tab>
-              </Tabs>
-            </Card>
+                          <div>
+                            <ArrowBigRightLine size={48} strokeWidth={2} color={"#036459"} />
+                          </div>
+                        </div>
+                      </Link>
+                    </Card>
+                  );
+                })}
+              </Tabs.Tab>
+            </Tabs>
           </Col>
         </Row>
         {/* <Card p="lg">

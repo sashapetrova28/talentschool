@@ -57,14 +57,6 @@ export const Header = ({ user }) => {
               </>
             )}
 
-            <Link href='/'>
-              <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                <IoIosNotificationsOutline 
-                  size={28}
-                  color='rgb(51, 207, 189)' />
-              </div>
-            </Link>
-
             <Link href="/profile">
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
               <div style={{

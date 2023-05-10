@@ -73,7 +73,7 @@ export const Days = ({ opened, setOpened, courseId }) => {
         <>
           <SimpleGrid cols={5}>
             <Card
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", boxShadow:"0px 2px 20px #BBBBBB" }}
               shadow="sm"
               padding="lg"
               radius="md"
@@ -92,7 +92,7 @@ export const Days = ({ opened, setOpened, courseId }) => {
               daysList.map((day) => {
                 return (
                   <Card
-                    style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", border:"2px solid #F9B312", boxShadow:"0px 2px 20px #BBBBBB" }}
                     shadow="sm"
                     padding="lg"
                     radius="md"
