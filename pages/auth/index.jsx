@@ -61,14 +61,14 @@ const Auth = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Войти - Инкубатор талантов</title>
-        <meta name="description" content="Инкубатор талантов" />
+        <title>Войти - Школа талантов</title>
+        <meta name="description" content="Школа талантов" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className={styles.authContainer}>
         <div style={{ textAlign: "center" }}>
-          <Image src={Logo} height={150} width={350} alt="Инкубатор талантов" />
+          <Image src={Logo} height={150} width={350} alt="Школа талантов" />
         </div>
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <form onSubmit={auth}>

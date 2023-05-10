@@ -115,7 +115,7 @@ export default function Days({ course, days, tasks, tasks_ready }) {
                             <div style={{ height: "165px" }}>
                               <Card.Section>
                                 {day.image && (
-                                  <Image src={"/" + day.image} width={36} height={36} alt="Инкубатор талантов" />
+                                  <Image src={"/" + day.image} width={36} height={36} alt="Школа талантов" />
                                 )}
                               </Card.Section>
                               <Group position="apart" style={{ marginBottom: 5, marginTop: theme.spacing.sm }}>

@@ -14,7 +14,7 @@ const Account = () => {
     <div className={styles.container}>
       <Head>
         <title>Проверка заданий</title>
-        <meta name="description" content="Инкубатор талантов" />
+        <meta name="description" content="Школа талантов" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

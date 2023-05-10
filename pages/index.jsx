@@ -53,7 +53,7 @@ export default function Home({ courses }) {
                 >
                   <div style={{ fontSize: "15px", fontWeight: "600", color: "#036459" }}>{course.name}</div>
                   <div className="d-flex align-items-center p-2">
-                    <Image radius={100} src={"/" + course.image} height={130} width={130} alt="Инкубатор талантов" />
+                    <Image radius={100} src={"/" + course.image} height={130} width={130} alt="Школа талантов" />
                     <div style={{ paddingLeft: "20px" }}>
                       <RingProgress
                         size={70}

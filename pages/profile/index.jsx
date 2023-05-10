@@ -13,8 +13,8 @@ const Account = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Личный кабинет - Инкубатор талантов</title>
-        <meta name="description" content="Инкубатор талантов" />
+        <title>Личный кабинет - Школа талантов</title>
+        <meta name="description" content="Школа талантов" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
