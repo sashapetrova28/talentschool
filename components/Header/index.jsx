@@ -4,7 +4,7 @@ import styles from "./header.module.scss";
 
 import Logo from "/public/logo.png";
 import { RiHomeLine, RiCheckDoubleFill, RiCameraLine } from 'react-icons/ri';
-import { IoIosNotificationsOutline } from 'react-icons/io';
+import { MdOutlineManageAccounts } from 'react-icons/md';
 import { HiOutlineUserCircle } from 'react-icons/hi';
 import { TbListDetails } from 'react-icons/tb';
 import { Button, Card, Grid } from "@mantine/core";
@@ -51,7 +51,7 @@ export const Header = ({ user }) => {
               <>
                 <Link href="/users">
                   <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-                    <HiOutlineUserCircle size={38} className={styles.item} />
+                    <MdOutlineManageAccounts size={38} className={styles.item} />
                   </div>
                 </Link>
               </>
@@ -59,18 +59,7 @@ export const Header = ({ user }) => {
 
             <Link href="/profile">
               <div style={{ textAlign: "center", padding: "0 25px", cursor: "pointer" }}>
-              <div style={{
-                      border: '2px solid grey', 
-                      borderRadius: '50%', 
-                      maxWidth: '40px', 
-                      maxHeight: '40px',
-                      minHeight: '40px',
-                      minWidth: '40px',
-                      padding: '5px'}}>
-                <RiCameraLine 
-                  size={24}
-                  color='grey' />
-                  </div>
+                <HiOutlineUserCircle size={38} className={styles.item} />
               </div>
             </Link>
             {user && user?.email ? null : (

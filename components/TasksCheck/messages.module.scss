@@ -76,3 +76,18 @@
 		}
 	}
 }
+
+.button {
+	font-size: 16px;
+    color: white;
+    font-weight: 600;
+	width: 120px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1FBEAC;
+
+	&:hover {
+		background-color: #24d8c3;
+	}
+}
