@@ -3,6 +3,7 @@ import styles from "./myAccount.module.scss";
 import { Space, Text, Title } from "@mantine/core";
 
 export const MyAccount = ({ user }) => {
+
   return (
     <>
       <Space h="xl" />
