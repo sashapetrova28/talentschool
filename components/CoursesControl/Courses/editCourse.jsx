@@ -1,6 +1,3 @@
-import Image from "next/image"
-import { useEffect, useState } from "react"
-
 import {
 	Card,
 	Center,
@@ -16,11 +13,12 @@ import {
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
 import { nanoid } from "nanoid"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import { Check, Error404, Photo, Upload, X } from "tabler-icons-react"
 import { Days } from "../Days"
-import RichTextEditor from "/components/RichText"
 import axios from "/utils/rest"
 
 export const EditCourse = ({
@@ -51,7 +49,6 @@ export const EditCourse = ({
 				.get("/users")
 				.then((res) => {
 					setUsers(res.data)
-          //новый массив юзеров
 				})
 				.catch((error) => {
 					console.log(error)
@@ -120,9 +117,7 @@ export const EditCourse = ({
 	}, [editCourseId, setOpened, setSelectedUsers])
 
 	const onSelect = async (selected) => {
-		const user = users.find(
-			(user) => user.email === selected[selected.length - 1]
-		)
+		const user = users.find((user) => user.id === selected[selected.length - 1])
 		await axios
 			.post(`/courses/${editCourseId}/users`, user)
 			.then((result) => {
@@ -225,6 +220,15 @@ export const EditCourse = ({
 			})
 	}
 
+	const onRemove = async (id) => {
+    //тут получаем id
+    //потом id даем как у user_id так как еще и в параметрах будет другой id. 
+    //id курса тоже по имени id и поэтому получаем ошибку два id по одному и тому же ключу
+
+		await axios.	
+			delete(`/courses/${editCourseId}/users`, { params: { user_id:id } })
+			.then((res) => setSelectedUsers(res.data))
+	}
 	return (
 		<div>
 			{description.length > 0 && (
@@ -302,17 +306,33 @@ export const EditCourse = ({
 											borderRadius: "8px",
 											boxShadow: "0px 2px 20px #BBBBBB",
 										}}
-										value={selectedUsers}
+										value={selectedUsers.map((user) => {
+											return user.id
+										})}
 										onChange={onSelect}
-										data={users.map((el) => el.email)}
+										data={users.map((user) => ({
+											value: user.id,
+											label: user.email,
+										}))}
+										valueComponent={({ className, label, value }) => {
+											return (
+												<div
+													className={className}
+													style={{ display: "flex", gap: "5px" }}
+												>
+													<span>{label}</span>
+													<X size={18} onClick={() => onRemove(value)} />
+												</div>
+											)
+										}}
 										label='Добавьте пользователя'
-										placeholder='Пользователей не выбрано'
+										placeholder='Пользователи не выбраны'
 										searchable
-										nothingFound='Пользователей не найдено'
+										nothingFound='Пользователи не найдены'
 									/>
 								</Tabs.Tab>
 								<Tabs.Tab label='О курсе'>
-									<RichTextEditor
+									{/* <RichTextEditor
 										name='description'
 										value={description}
 										onChange={(value) => {
@@ -326,7 +346,7 @@ export const EditCourse = ({
 											["alignLeft", "alignCenter", "alignRight"],
 										]}
 										style={{ height: "400px", overflow: "auto" }}
-									/>
+									/> */}
 								</Tabs.Tab>
 							</Tabs>
 						</Col>

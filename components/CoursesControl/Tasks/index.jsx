@@ -24,6 +24,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
 	const theme = useMantineTheme();
 
 	useEffect(() => {
+		console.table(courseId,dayId)
 		if (dayId !== -1 && courseId !== -1) {
 			setTasksList([]);
 			setTasksLoading(true);
