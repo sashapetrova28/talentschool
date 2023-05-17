@@ -1,32 +1,34 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import {
-  Modal,
-  InputWrapper,
-  Input,
-  Group,
-  Text,
-  Tabs,
   Card,
-  Space,
-  Button,
-  useMantineTheme,
   Center,
+  Group,
+  Input,
+  InputWrapper,
   LoadingOverlay,
   MultiSelect,
+  Tabs,
+  Text,
+  useMantineTheme,
 } from "@mantine/core";
-import RichTextEditor from "/components/RichText";
-import { Days } from "../Days";
-import { nanoid } from "nanoid";
-import { showNotification } from "@mantine/notifications";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { Upload, X, Photo, Check, Error404 } from "tabler-icons-react";
-import axios from "/utils/rest";
-import Row from "react-bootstrap/Row";
+import { showNotification } from "@mantine/notifications";
+import { nanoid } from "nanoid";
 import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import { Check, Error404, Photo, Upload, X } from "tabler-icons-react";
+import { Days } from "../Days";
+import RichTextEditor from "/components/RichText";
+import axios from "/utils/rest";
 
-export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId }) => {
+export const EditCourse = ({
+  opened,
+  setOpened,
+  updateCoursesList,
+  editCourseId,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const [editError, setEditError] = useState("");
@@ -67,7 +69,6 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
         .then((res) => {
           if (res.status === 200) {
             setNameDefaultValue(res.data.name);
-            console.log("description set");
             setDescription(res.data.description);
             setImage(res.data.image);
             axios
@@ -117,6 +118,18 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
     }
   }, [editCourseId, setOpened, setSelectedUsers]);
 
+  const onSelect = async (selected) => {
+    const user = users.find(
+      (user) => user.email === selected[selected.length - 1]
+    );
+    await axios
+      .post(`/courses/${editCourseId}/users`, user)
+      .then((result) => {
+        setSelectedUsers((prev) => [...prev, result.data.body]);
+        console.log("result", result);
+      })
+      .catch(console.log);
+  };
   const getIconColor = (status, theme) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
@@ -140,11 +153,24 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
   };
 
   const dropzoneChildren = (status, theme) => (
-    <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: "none" }}>
+    <Group
+      position="center"
+      spacing="xl"
+      style={{ minHeight: 220, pointerEvents: "none" }}
+    >
       {image ? (
-        <Image src={createObjectURL ? createObjectURL : "/" + image} width={125} height={125} alt="Изображение курса" />
+        <Image
+          src={createObjectURL ? createObjectURL : "/" + image}
+          width={125}
+          height={125}
+          alt="Изображение курса"
+        />
       ) : (
-        <ImageUploadIcon status={status} style={{ color: getIconColor(status, theme) }} size={80} />
+        <ImageUploadIcon
+          status={status}
+          style={{ color: getIconColor(status, theme) }}
+          size={80}
+        />
       )}
     </Group>
   );
@@ -168,7 +194,6 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
     const body = new FormData();
     body.append("name", e.target.name.value);
     body.append("description", description);
-    console.log(selectedUsers)
     if (image && image.path) {
       body.append("image", image, `course_${nanoid()}`);
     }
@@ -176,7 +201,6 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
       .put(`/courses/${editCourseId}`, body)
       .then((res) => {
         if (res.status === 200) {
-          console.log(updateCoursesList);
           updateCoursesList(res.data.course);
           showNotification({
             title: "Курс изменен",
@@ -190,7 +214,7 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
       })
       .catch((error) => {
         console.log(error);
-        if (error.response.status === 409) {
+        if (error.status === 409) {
           setEditError("Такое название курса уже занято");
         } else {
           setEditError("Ошибка изменения курса, попробуйте позже");
@@ -213,9 +237,9 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
                 fontWeight: "600",
                 marginRight: "9px",
                 backgroundColor: "white",
-                border:"2px solid #33CFBD",
-                borderRadius:"20px",
-                padding:"10px 14px"
+                border: "2px solid #33CFBD",
+                borderRadius: "20px",
+                padding: "10px 14px",
               }}
               type="submit"
             >
@@ -227,9 +251,9 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
                 color: "#036459",
                 fontWeight: "600",
                 backgroundColor: "white",
-                border:"2px solid #FD938E",
-                borderRadius:"20px",
-                padding:"10px 14px"
+                border: "2px solid #FD938E",
+                borderRadius: "20px",
+                padding: "10px 14px",
               }}
               onClick={() => setOpened(false)}
             >
@@ -239,7 +263,7 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
           <Row>
             <Col md={4}>
               <Card shadow="sm" padding="lg" radius="md" withBorder>
-              <InputWrapper required label="Название курса" error={nameError}>
+                <InputWrapper required label="Название курса" error={nameError}>
                   <Input
                     type="text"
                     name="name"
@@ -273,13 +297,13 @@ export const EditCourse = ({ opened, setOpened, updateCoursesList, editCourseId 
                 <Tabs.Tab label="Участники">
                   <MultiSelect
                     style={{
-                      border: "2px solid #33CFBD", 
-                      padding:"25px", 
-                      borderRadius:"8px", 
-                      boxShadow:"0px 2px 20px #BBBBBB", 
+                      border: "2px solid #33CFBD",
+                      padding: "25px",
+                      borderRadius: "8px",
+                      boxShadow: "0px 2px 20px #BBBBBB",
                     }}
                     value={selectedUsers}
-                    onChange={(selected) => setSelectedUsers(selected)}
+                    onChange={onSelect}
                     data={users.map((el) => el.email)}
                     label="Добавьте пользователя"
                     placeholder="Пользователей не выбрано"

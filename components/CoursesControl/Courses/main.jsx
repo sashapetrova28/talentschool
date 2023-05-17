@@ -21,7 +21,7 @@ export const Main = ({
       <Space h="xl" />
       <SimpleGrid cols={3}>
         {!coursesLoading &&
-          coursesList.map((course) => {
+          coursesList?.map((course) => {
             return (
               <Card
                 onClick={() => {
