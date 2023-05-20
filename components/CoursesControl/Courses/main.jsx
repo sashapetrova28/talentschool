@@ -3,6 +3,7 @@ import axios from "/utils/rest";
 
 import { Space, Loader, Card, SimpleGrid, Button, Center, Image, Table, Stack } from "@mantine/core";
 import { Plus, TrashX, Edit, ListNumbers, List, Car } from "tabler-icons-react";
+import { Days } from "../Days";
 
 export const Main = ({
   setAddCourseModalOpened,

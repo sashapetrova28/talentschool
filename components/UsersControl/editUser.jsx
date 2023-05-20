@@ -50,7 +50,7 @@ export const EditUser = ({ opened, setOpened, updateUserList, editUserId }) => {
 						});
 					} else {
 						showNotification({
-							title: 'Ошибка поулчения пользователя',
+							title: 'Ошибка получения пользователя',
 							autoClose: 3500,
 							color: 'red',
 							icon: <Error404 size={18} />,

@@ -5,7 +5,9 @@
 	font-weight: 500;
 	border: none;
 	height: 30px;
-  
+    padding: 5px;
+    width: 170px;
+
     &:hover, &:active {
       background-color: #3cebd6;
     }
@@ -18,7 +20,9 @@
 	font-weight: 500;
 	border: 2px #33CFBD solid;
 	height: 30px;
-  
+    padding: 5px;
+    width: 170px;
+
     &:hover, &:active {
         font-weight: 500;
         color: #ffffff;

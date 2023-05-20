@@ -4,7 +4,7 @@ import database from '/utils/database';
 
 const userHandler = async (req, res) => {
 	if (req.session.user) {
-		const exists_user = await database.select('*').from('users').where({ email: req.session.user.email }).limit(1);
+		const exists_user = await database.select('*').from('users').where({email: req.session.user.email}).limit(1);
 		if (exists_user.length === 1) {
 			res.json({
 				...exists_user[0],

@@ -10,6 +10,7 @@ import {
 	Text,
 	useMantineTheme,
 } from "@mantine/core"
+import RichTextEditor from '/components/RichText'
 import styles from './coursesControl.module.scss'
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
@@ -222,10 +223,6 @@ export const EditCourse = ({
 	}
 
 	const onRemove = async (id) => {
-    //тут получаем id
-    //потом id даем как у user_id так как еще и в параметрах будет другой id. 
-    //id курса тоже по имени id и поэтому получаем ошибку два id по одному и тому же ключу
-
 		await axios.	
 			delete(`/courses/${editCourseId}/users`, { params: { user_id:id } })
 			.then((res) => setSelectedUsers(res.data))
@@ -305,7 +302,7 @@ export const EditCourse = ({
 											border: "2px solid #33CFBD",
 											padding: "25px",
 											borderRadius: "8px",
-											boxShadow: "0px 2px 20px #BBBBBB"
+											boxShadow: "0px 2px 20px #BBBBBB",
 										}}
 										value={selectedUsers.map((user) => {
 											return user.id
@@ -318,7 +315,6 @@ export const EditCourse = ({
 										valueComponent={({ className, label, value }) => {
 											return (
 												<div
-													//className={className}
 													className={`${className} ${styles.userList}`}
 													style={{ display: "flex", gap: "5px" }}
 												>
@@ -328,13 +324,13 @@ export const EditCourse = ({
 											)
 										}}
 										label='Добавьте пользователя'
-										placeholder='Пользователи не выбраны'
+										placeholder='Пользователей не выбрано'
 										searchable
-										nothingFound='Пользователи не найдены'
+										nothingFound='Пользователей не найдено'
 									/>
 								</Tabs.Tab>
 								<Tabs.Tab label='О курсе'>
-									{/* <RichTextEditor
+									<RichTextEditor
 										name='description'
 										value={description}
 										onChange={(value) => {
@@ -348,7 +344,7 @@ export const EditCourse = ({
 											["alignLeft", "alignCenter", "alignRight"],
 										]}
 										style={{ height: "400px", overflow: "auto" }}
-									/> */}
+									/>
 								</Tabs.Tab>
 							</Tabs>
 						</Col>

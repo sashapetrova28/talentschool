@@ -62,7 +62,7 @@ const courseUsersHandler = async (req, res) => {
 			await database("connected_courses")
 			.where({
 				course_id: Number(exists_course[0].id),
-				user_id: Number(req.query.body),
+				user_id: Number(req.query.user_id),
 			})
 			.del()
 			const refetched_connected_courses_after_delete =
