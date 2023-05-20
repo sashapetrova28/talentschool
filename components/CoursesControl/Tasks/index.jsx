@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import styles from './tasks.module.scss';
 
 import { Modal, InputWrapper, Input, Stack, Space, Button, useMantineTheme, Center, Title, Table } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
@@ -99,7 +100,8 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
 							<td>
 								<Stack>
 									<button
-										variant="outline"
+										className={styles.editButton}
+										variant="filed"
 										color="blue"
 										leftIcon={<Edit />}
 										onClick={() => {
@@ -110,7 +112,8 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
 										Редактировать
 									</button>
 									<button
-										variant="outline"
+										className={styles.deleteButton}
+										variant="filed"
 										color="red"
 										leftIcon={<TrashX />}
 										onClick={() => {

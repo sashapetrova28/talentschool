@@ -1,0 +1,27 @@
+.editButton {
+    background-color: #33CFBD;
+	border-radius: 15px;
+	color: #ffffff;
+	font-weight: 500;
+	border: none;
+	height: 30px;
+  
+    &:hover, &:active {
+      background-color: #3cebd6;
+    }
+}
+
+.deleteButton {
+    background-color: #ffffff;
+	border-radius: 15px;
+	color: #33CFBD;
+	font-weight: 500;
+	border: 2px #33CFBD solid;
+	height: 30px;
+  
+    &:hover, &:active {
+        font-weight: 500;
+        color: #ffffff;
+        background-color: #33CFBD;
+    }
+}

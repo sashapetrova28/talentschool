@@ -1,0 +1,11 @@
+.userList {
+    background-color: #DFDFDF;
+    border-radius: 15px;
+    color: #036459;
+    font-weight: 400;
+    padding: 6px;
+    
+    &:hover, &:active {
+        background-color: #cacaca;
+    }
+}

@@ -10,6 +10,7 @@ import {
 	Text,
 	useMantineTheme,
 } from "@mantine/core"
+import styles from './coursesControl.module.scss'
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
 import { nanoid } from "nanoid"
@@ -304,7 +305,7 @@ export const EditCourse = ({
 											border: "2px solid #33CFBD",
 											padding: "25px",
 											borderRadius: "8px",
-											boxShadow: "0px 2px 20px #BBBBBB",
+											boxShadow: "0px 2px 20px #BBBBBB"
 										}}
 										value={selectedUsers.map((user) => {
 											return user.id
@@ -317,7 +318,8 @@ export const EditCourse = ({
 										valueComponent={({ className, label, value }) => {
 											return (
 												<div
-													className={className}
+													//className={className}
+													className={`${className} ${styles.userList}`}
 													style={{ display: "flex", gap: "5px" }}
 												>
 													<span>{label}</span>
