@@ -1,19 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { 
-  Modal, 
-  InputWrapper, 
-  Input, 
-  Group, 
-  Text, 
-  Space, 
-  Button, 
-  useMantineTheme, 
-  Center, 
-  NativeSelect, 
-  Grid 
-} from '@mantine/core';
+import { Modal, InputWrapper, Input, Group, Text, Space, Button, useMantineTheme, Center, NativeSelect, Grid, Select} from '@mantine/core';
 import { nanoid } from 'nanoid';
+import { RadioGroup, Radio } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { Upload, X, File, Check, Send } from 'tabler-icons-react';
@@ -82,8 +71,8 @@ export const Answer = ({ opened, setOpened, task }) => {
 		const body = new FormData();
 		body.append('message', e.target.message.value);
 		body.append('user_id', task.user.id.toString());
-		body.append('status', e.target.status.value === 'Доработать' ? 'waiting' : 'ready');
-		setTaskStatus('Доработать' ? 'waiting' : 'ready');
+		body.append('status', e.target.status.value === 'Принято' ? 'ready' : 'waiting');
+		setTaskStatus('Принято' ? 'ready' : 'waiting');
 		if (files) {
 			for (let index in files) {
 				console.log(files[index].path);
@@ -95,7 +84,7 @@ export const Answer = ({ opened, setOpened, task }) => {
 				e.target.reset();
 				showNotification({
 					title: 'Сообщение отправлено',
-					message: 'Скоро эксперты проверят выполнение задания и дадут вам ответ',
+					// message: 'Скоро эксперты проверят выполнение задания и дадут вам ответ',
 					autoClose: 3500,
 					color: 'green',
 					icon: <Check size={18} />,
@@ -114,7 +103,7 @@ export const Answer = ({ opened, setOpened, task }) => {
 		<Modal
 			opened={opened}
 			onClose={() => setOpened(false)}
-			title={`Ответ на задание ${task.task && task.task.name}`}
+			title={task.day && task.day.name}
 			size="xl"
 			transition="fade"
 			transitionDuration={300}
@@ -122,13 +111,13 @@ export const Answer = ({ opened, setOpened, task }) => {
 		>
 			{!chatLoading && <>
 				<Text>
-					{task.day && task.day.name}
+					{`Ответ на задание: ${task.task && task.task.name}`}
 				</Text>
-				<Text color="blue">
+				{/* <Text color="blue">
 					Статус задания: {taskStatus === 'check' ? 'Ожидает проверки' : taskStatus === 'waiting' ? 'На доработке' : 'Готово'}
-				</Text>
-				<Text color="orange" weight={500} size="lg">
-					Общение с талантом {task.user && `${task.user.name} ${task.user.surname}`}
+				</Text> */}
+				<Text weight={500} size="lg">
+					Общение с учеником {task.user && `${task.user.name} ${task.user.surname}`}
 				</Text>
 				<Space h="md" />
 			</>}
@@ -136,7 +125,7 @@ export const Answer = ({ opened, setOpened, task }) => {
 				<div className={styles.messages}>
 					{chat.map(message => {
 						return <div className={`${styles.message} ${(message.answer_id ? styles.you : styles.interlocutor)}`} key={message.id}>
-							<Text size="sm">{message.answer_id ? 'Вы' : `Талант ${task.user.name} ${task.user.surname}`}:</Text>
+							<Text size="sm">{message.answer_id ? 'Вы' : `Ученик ${task.user.name} ${task.user.surname}`}:</Text>
 							<Text size="md" weight={500}>{message.message}</Text>
 							{message.files.map((file, index) => {
 								return <>
@@ -154,30 +143,47 @@ export const Answer = ({ opened, setOpened, task }) => {
 						<div className={styles.input}>
 							<input type="text" placeholder="Введите ваше сообщение" name="message" />
 							<Send onClick={() => { document.getElementById('send-message').click() }} />
-							{/* <button type="submit" id="send-message"></button> непонятная точка*/}
+							<button type="submit" id="send-message"></button>
 						</div>
 						<Space h="md" />
-						<Center className="mt-2">
-            <button className={styles.button} 
-            onClick={() => sendMessage(true)} id="send-message">
-              Принять
-            </button>
-            <div style={{margin:"10px"}}></div>
-            <button className={styles.button}
-            onClick={() => sendMessage(false)} id="send-message">
-              Не принять
-            </button>
-          </Center>
+						<Select
+							data={['Принято', 'Доработать']}
+							label="Выберите статус задания"
+							placeholder="Не выбрано"
+							required
+							name="status"
+						/>
+						<RadioGroup
+							label="Выберите статус задания"
+							description="This is anonymous"
+							required
+							name="status"
+							>
+							<Radio value="Принято">Принято</Radio>
+							<Radio value="Не принято">Не принято</Radio>
+							</RadioGroup>
 						<Space h="md" />
 						{files.length > 0 && <>
 							<Text size="sm">Прикрепленные файлы: {files.map(el => {
 								return ` ${el.name},`
 							})}</Text>
 						</>}
-						
 					</form>
 				</div>
 			</>}
 		</Modal>
 	)
 }
+
+
+{/* <Center className="mt-2">
+							<button className={styles.button} 
+							onClick={() => sendMessage(true)} id="send-message">
+							Принять
+							</button>
+							<div style={{margin:"10px"}}></div>
+							<button className={styles.button}
+							onClick={() => sendMessage(false)} id="send-message">
+							Не принять
+							</button>
+</Center> */}

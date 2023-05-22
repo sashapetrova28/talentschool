@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Modal, Center, Button, LoadingOverlay, Text } from '@mantine/core';
+import { Modal, Center, Button, LoadingOverlay, Text, Space } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { TrashX } from 'tabler-icons-react';
 import axios from '/utils/rest';
@@ -56,22 +56,21 @@ export const DeleteUser = ({ opened, setOpened, removeUser, deleteUserId }) => {
 		>
 			<LoadingOverlay visible={loading} />
 			<Text>Это действие нельзя будет отменить</Text>
+			<Space h="md" />
 			<Center>
-				<Button
+				<button className="redButton"
 					onClick={() => deleteUser(false)}
-					color="red"
 					style={{ marginRight: '20px' }}
 				>
 					Удалить
-				</Button>
-				<Button
+				</button>
+				<button className="greyButton"
 					onClick={() => setOpened(false)}
-					variant="light"
-					color="dark"
 				>
 					Отменить
-				</Button>
+				</button>
 			</Center>
+			<Space h="md" />
 			<Center>
 				<Text color="red">{deleteError}</Text>
 			</Center>

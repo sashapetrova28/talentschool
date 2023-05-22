@@ -56,20 +56,17 @@ export const DeleteCourse = ({ opened, setOpened, removeCourse, deleteCourseId }
 			<Text>Это действие нельзя будет отменить. Будут удалены все связанные с курсом дни, задания и ответы пользователей</Text>
 			<Space h="md" />
 			<Center>
-				<Button
+				<button className='redButton'
 					onClick={() => deleteCourse(false)}
-					color="red"
 					style={{ marginRight: '20px' }}
 				>
 					Удалить
-				</Button>
-				<Button
+				</button>
+				<button className='greyButton'
 					onClick={() => setOpened(false)}
-					variant="light"
-					color="dark"
 				>
 					Отменить
-				</Button>
+				</button>
 			</Center>
 			<Space h="md" />
 			<Center>

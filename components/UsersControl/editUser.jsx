@@ -182,20 +182,16 @@ export const EditUser = ({ opened, setOpened, updateUserList, editUserId }) => {
 				/>
 				<Space h="md" />
 				<Center>
-					<Button
-						color="green"
-						type="submit"
+					<button className="greenButton"
 						style={{ marginRight: '20px' }}
 					>
 						Сохранить
-					</Button>
-					<Button
-						variant="light"
-						color="dark"
+					</button>
+					<button className="redButton"
 						onClick={() => { setOpened(false) }}
 					>
 						Отменить
-					</Button>
+					</button>
 				</Center>
 				<Center>
 					<Text color="red">{editError}</Text>

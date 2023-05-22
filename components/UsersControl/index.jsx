@@ -58,24 +58,20 @@ export const UsersControl = () => {
   return (
     <Container>
       <Space h="xl" />
-      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>Пользователи</div>
+      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600", display: "inline-block" }}>Пользователи</div>
       {!addUserModalOpened && (
         <>
           {" "}
-          <button
-            style={{
-              fontSize: "16px",
-              color: "white",
-              fontWeight: "600",
-              padding: "10px",
-              borderRadius: "5px",
-              border: "none",
-              backgroundColor: "#1FBEAC",
-            }}
-            onClick={() => setAddUserModalOpened(true)}
-          >
-            Добавить пользователя
-          </button>
+
+          <div style={{display: "inline-block"}}>
+            <UserPlus
+              style={{ cursor: "pointer", marginLeft: "45px" }}
+              size={32}
+              color='#1FBEAC'
+              onClick={() => setAddUserModalOpened(true)}
+            />
+          </div>
+
           <Space h="xl" />
           <Table verticalSpacing="sm" striped highlightOnHover style={{ color: "#036459", fontWeight: "600" }}>
             <thead>

@@ -63,17 +63,15 @@ export const Main = ({
                 <div style={{ position: "absolute", bottom: "10px", right: "20px" }}>
                   <Button
                     size="xs"
-                    variant="outline"
-                    color="red"
-                    leftIcon={<TrashX />}
+                    variant="subtle"
+                    color="dark"
+                    leftIcon={<TrashX style={{ color: "#E74750" }} />}
                     onClick={(e) => {
                       e.stopPropagation();
                       setDeleteCourseId(course.id);
                       setDeleteCourseModalOpened(true);
                     }}
-                  >
-                    Удалить
-                  </Button>
+                  ></Button>
                 </div>
               </Card>
             );
