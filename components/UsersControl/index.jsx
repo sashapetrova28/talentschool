@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "/utils/rest";
 
 import { Space, Loader, Title, Button, Center, Table, Stack } from "@mantine/core";
-import { Plus, TrashX, Edit } from "tabler-icons-react";
+import { Plus, TrashX, Edit, UserPlus } from "tabler-icons-react";
 import Container from "react-bootstrap/Container";
 
 import { AddUser } from "./addUser";

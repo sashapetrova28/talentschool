@@ -153,15 +153,6 @@ export const Answer = ({ opened, setOpened, task }) => {
 							required
 							name="status"
 						/>
-						<RadioGroup
-							label="Выберите статус задания"
-							description="This is anonymous"
-							required
-							name="status"
-							>
-							<Radio value="Принято">Принято</Radio>
-							<Radio value="Не принято">Не принято</Radio>
-							</RadioGroup>
 						<Space h="md" />
 						{files.length > 0 && <>
 							<Text size="sm">Прикрепленные файлы: {files.map(el => {
