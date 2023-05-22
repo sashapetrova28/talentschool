@@ -113,9 +113,9 @@ export const Answer = ({ opened, setOpened, task }) => {
 				<Text>
 					{`Ответ на задание: ${task.task && task.task.name}`}
 				</Text>
-				{/* <Text color="blue">
+				<Text color="blue">
 					Статус задания: {taskStatus === 'check' ? 'Ожидает проверки' : taskStatus === 'waiting' ? 'На доработке' : 'Готово'}
-				</Text> */}
+				</Text>
 				<Text weight={500} size="lg">
 					Общение с учеником {task.user && `${task.user.name} ${task.user.surname}`}
 				</Text>

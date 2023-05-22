@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 
-import { Modal, Stack, Space, Button, useMantineTheme, Center, Table, SimpleGrid, Card } from "@mantine/core";
-import { Plus, TrashX, Edit, List, Loader } from "tabler-icons-react";
+import {
+  Box,
+  Button,
+  Card,
+  Center,
+  SimpleGrid,
+  Space,
+  useMantineTheme,
+} from "@mantine/core";
+import { Edit, Loader, TrashX } from "tabler-icons-react";
 import axios from "/utils/rest";
 
+import { Tasks } from "../Tasks";
 import { AddDay } from "./addDay";
 import { DeleteDay } from "./deleteDay";
-import { Tasks } from "../Tasks";
+import { EditDay } from "./editDay";
 
 export const Days = ({ opened, setOpened, courseId }) => {
   const [addDayModalOpened, setAddDayModalOpened] = useState(false);
@@ -67,13 +76,17 @@ export const Days = ({ opened, setOpened, courseId }) => {
   return (
     <div>
       <Space h="sm" />
-      {!addDayModalOpened && <div style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>Материалы</div>}
+      {!addDayModalOpened && (
+        <div style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>
+          Материалы
+        </div>
+      )}
       <Space h="sm" />
-      {!addDayModalOpened && ( //!addDayModalOpened && !tasksModalOpened
+      {!addDayModalOpened && ( //\ !addDayModalOpened && !tasksModalOpened
         <>
           <SimpleGrid cols={5}>
             <Card
-              style={{ cursor: "pointer", boxShadow:"0px 2px 20px #BBBBBB" }}
+              style={{ cursor: "pointer", boxShadow: "0px 2px 20px #BBBBBB" }}
               shadow="sm"
               padding="lg"
               radius="md"
@@ -82,7 +95,12 @@ export const Days = ({ opened, setOpened, courseId }) => {
             >
               <div
                 className="d-flex flex-column align-items-center"
-                style={{ color: "#DFDFDF", fontWeight: "600", fontSize: "16px", height: "165px" }}
+                style={{
+                  color: "#DFDFDF",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  height: "165px",
+                }}
               >
                 <div style={{ fontSize: "20px", marginTop: "42px" }}>+</div>
                 <div>Добавить день</div>
@@ -92,41 +110,76 @@ export const Days = ({ opened, setOpened, courseId }) => {
               daysList.map((day) => {
                 return (
                   <Card
-                  style={{ cursor: "pointer", border:"2px solid #F9B312", boxShadow:"0px 2px 20px #BBBBBB" }}
-                    shadow="sm"
+                    style={{
+                      width: 200,
+                      cursor: "pointer",
+                      border: "2px solid #F9B312",
+                      boxShadow: "0px 2px 20px #BBBBBB",
+                    }}
+                    shadow="md"
                     padding="lg"
                     radius="md"
                     withBorder
                     key={day.id}
-                    onClick={() => {
+                    onClick={(e) => {
                       setTasksId(day.id);
                       setTasksModalOpened(true);
                     }}
                   >
-                    <div className="d-flex flex-column justify-content-between" style={{ height: "165px" }}>
-                      <div style={{ color: "#036459", fontWeight: "600", padding: "15px 0 0 15px" }}>{day.name}</div>
-                      <Button
-                        className="align-self-end"
-                        size="xs"
-                        variant="outline"
-                        color="red"
-                        leftIcon={<TrashX />}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setDeleteDayId(day.id);
-                          setDeleteDayModalOpened(true);
+                    <div
+                      className="d-flex flex-column justify-content-between"
+                      style={{ height: "165px" }}
+                    >
+                      <div
+                        style={{
+                          color: "#036459",
+                          fontWeight: "600",
+                          padding: "15px 0 0 15px",
                         }}
                       >
-                        Удалить
-                      </Button>
+                        {day.name}
+                      </div>
+                      <Box>
+                        <Button
+                          className="align-self-end"
+                          size="xs"
+                          variant="outline"
+                          color="cyan"
+                          leftIcon={<Edit />}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditDayId(day.id);
+                            setEditDayModalOpened(true);
+                          }}
+                        >
+                          Редактировать
+                        </Button>
+                        <Button
+                          className="align-self-end"
+                          size="xs"
+                          variant="outline"
+                          color="red"
+                          leftIcon={<TrashX />}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteDayId(day.id);
+                            setDeleteDayModalOpened(true);
+                          }}
+                        >
+                          Удалить
+                        </Button>
+                      </Box>
                     </div>
                   </Card>
                 );
               })}
           </SimpleGrid>
-          {!daysLoading && daysList.length === 0 && <Center>Список дней пуст</Center>}
+          {!daysLoading && daysList.length === 0 && (
+            <Center>Список дней пуст</Center>
+          )}
         </>
       )}
+      {/*  */}
       {daysLoading && (
         <Center>
           <Loader color="orange" variant="bars" />
@@ -134,8 +187,21 @@ export const Days = ({ opened, setOpened, courseId }) => {
       )}
       <Center>{daysListError}</Center>
       {addDayModalOpened && (
-        <AddDay opened={addDayModalOpened} setOpened={setAddDayModalOpened} pushDay={pushDay} courseId={courseId} />
+        <AddDay
+          opened={addDayModalOpened}
+          setOpened={setAddDayModalOpened}
+          pushDay={pushDay}
+          courseId={courseId}
+        />
       )}
+      <EditDay
+        pushDay={pushDay}
+        opened={editDayModalOpened}
+        day={daysList.find((day) => day.id == editDayId)}
+        setOpened={setEditDayModalOpened}
+        courseId={courseId}
+        deleteDayId={editDayId}
+      />
       <DeleteDay
         opened={deleteDayModalOpened}
         setOpened={setDeleteDayModalOpened}
@@ -143,21 +209,12 @@ export const Days = ({ opened, setOpened, courseId }) => {
         courseId={courseId}
         deleteDayId={deleteDayId}
       />
-      <Tasks opened={tasksModalOpened} setOpened={setTasksModalOpened} courseId={courseId} dayId={tasksId} />
+      <Tasks
+        opened={tasksModalOpened}
+        setOpened={setTasksModalOpened}
+        courseId={courseId}
+        dayId={tasksId}
+      />
     </div>
   );
 };
-
-{
-  /* <Button
-variant="outline"
-color="blue"
-leftIcon={<Edit />}
-onClick={() => {
-  setEditDayId(day.id);
-  setEditDayModalOpened(true);
-}}
->
-Редактировать
-</Button> */
-}

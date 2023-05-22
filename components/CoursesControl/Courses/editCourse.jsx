@@ -324,7 +324,7 @@ export const EditCourse = ({
 											)
 										}}
 										label='Добавьте пользователя'
-										placeholder='Пользователей не выбрано'
+										placeholder='Пользователи не выбраны'
 										searchable
 										nothingFound='Пользователей не найдено'
 									/>

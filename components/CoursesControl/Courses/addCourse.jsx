@@ -215,9 +215,9 @@ export const AddCourse = ({ opened, setOpened, pushCourse }) => {
 									onChange={(selected) => setSelectedUsers(selected)}
 									data={users.map((el) => el.email)}
 									label='Выберите пользователей, которые должны попасть на курс'
-									placeholder='Пользователей не выбрано'
+									placeholder='Пользователи не выбраны'
 									searchable
-									nothingFound='Пользователей не найдено'
+									nothingFound='Пользователи не найдены'
 								/>
 							</Tabs.Tab>
 							<Tabs.Tab label='О курсе'>

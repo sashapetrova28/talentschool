@@ -175,7 +175,7 @@ export default function Days({ course, days, tasks, tasks_ready }) {
 																		src={"/" + day.image}
 																		width={36}
 																		height={36}
-																		alt='Инкубатор талантов'
+																		alt='Школа талантов'
 																	/>
 																)}
 															</Card.Section>

@@ -60,11 +60,19 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
   };
 
   const dropzoneChildren = (status, theme) => (
-    <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: "none" }}>
+    <Group
+      position="center"
+      spacing="xl"
+      style={{ minHeight: 220, pointerEvents: "none" }}
+    >
       {createObjectURL ? (
         <img src={createObjectURL} width={125} />
       ) : (
-        <ImageUploadIcon status={status} style={{ color: getIconColor(status, theme) }} size={80} />
+        <ImageUploadIcon
+          status={status}
+          style={{ color: getIconColor(status, theme) }}
+          size={80}
+        />
       )}
       <div>
         <Text size="xl" inline>
@@ -92,11 +100,12 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
       /(?:https?:\/\/)?(?:www\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/shorts\/|\/)(\w+)/;
     const video_id = youtubeRegExp.exec(e.target.video.value);
     body.append("video", "https://www.youtube.com/embed/" + video_id[1]);
-    if (image) {
+    if (image && image.length) {
       body.append("image", image, `day_${nanoid()}`);
     }
     axios
-      .post(`/courses/${courseId}/days`, body)
+      .put(`/courses/${courseId}/days`, body)
+
       .then((res) => {
         if (res.status === 200) {
           pushDay(res.data);
@@ -126,7 +135,9 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
 
   return (
     <div className="mb-5">
-      <div style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>Материалы &gt; Добавление дня</div>{" "}
+      <div style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>
+        Материалы &gt; Добавление дня
+      </div>{" "}
       <Space h="sm" />
       <form onSubmit={saveDay}>
         <div style={{ textAlign: "end" }}>
@@ -171,7 +182,11 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
             </Card>
           </Col>
           <Col md={8}>
-            <InputWrapper label="Видео" description="Ссылка на видео с YouTube" error={videoError}>
+            <InputWrapper
+              label="Видео"
+              description="Ссылка на видео с YouTube"
+              error={videoError}
+            >
               <Input type="text" name="video" />
             </InputWrapper>
             <Space h="md" />
