@@ -29,6 +29,15 @@ const mainAnswerHandler = async (req, res) => {
 					path.push(saveFile(files[key]));
 				}
 				const user = await database.select('*').from('users').where({ email: req.session.user.email }).limit(1);
+				await database('notifications').insert({
+					notification_type: `accept_task_${user[0].status === 'user' ? 'user' : 'admin'}`,
+					params: {
+						task_id: task_id, 
+						user_id: user[0].id,
+						new_status: fields.status
+					}
+				});
+				
 				if (user[0].status === 'user') {
 					const new_id = await database('task_messages').returning('id').insert({ task_id: task_id, user_id: user[0].id, message: fields.message, files: JSON.stringify(path) });
 					await database('accepted_tasks').update({ status: 'check' }).where({ task_id: task_id, user_id: user[0].id });
