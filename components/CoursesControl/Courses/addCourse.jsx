@@ -14,11 +14,11 @@ import {
 } from "@mantine/core"
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
+import { RichTextEditor } from '@mantine/rte'
 import { nanoid } from "nanoid"
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import { Check, Photo, Upload, X } from "tabler-icons-react"
-import RichTextEditor from "/components/RichText"
 import axios from "/utils/rest"
 
 export const AddCourse = ({ opened, setOpened, pushCourse }) => {
@@ -221,6 +221,7 @@ export const AddCourse = ({ opened, setOpened, pushCourse }) => {
 								/>
 							</Tabs.Tab>
 							<Tabs.Tab label='О курсе'>
+								
 								<RichTextEditor
 									name='description'
 									value={description}

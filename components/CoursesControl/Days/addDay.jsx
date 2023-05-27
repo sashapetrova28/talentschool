@@ -104,7 +104,7 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
       body.append("image", image, `day_${nanoid()}`);
     }
     axios
-      .put(`/courses/${courseId}/days`, body)
+      .post(`/courses/${courseId}/days`, body)
 
       .then((res) => {
         if (res.status === 200) {
@@ -116,6 +116,7 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
             icon: <Check size={18} />,
           });
           e.target.reset();
+          setOpened(false);
         } else {
           setAddError("Ошибка добавления дня, попробуйте позже");
         }
