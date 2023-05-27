@@ -169,7 +169,7 @@ export const TasksCheck = () => {
       </Table>
       {tasksLoading && (
         <Center>
-          <Loader color="orange" variant="bars" />
+          <Loader color="cyan" variant="dots" />
         </Center>
       )}
       {!tasksLoading && tasksList.length === 0 && (

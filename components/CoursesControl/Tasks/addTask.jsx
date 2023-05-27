@@ -175,10 +175,11 @@ export const AddTask = ({ opened, setOpened, pushTask, courseId, dayId }) => {
         </Dropzone>
         <Space h="md" />
         <Center>
-          <Button color="green" type="submit" style={{ marginRight: "20px" }}>
+          <button className="greenButton" color="green" type="submit" style={{ marginRight: "20px" }}>
             Добавить
-          </Button>
-          <Button
+          </button>
+          <button
+            className="redButton"
             variant="light"
             color="dark"
             onClick={() => {
@@ -186,7 +187,7 @@ export const AddTask = ({ opened, setOpened, pushTask, courseId, dayId }) => {
             }}
           >
             Отменить
-          </Button>
+          </button>
         </Center>
         <Center>
           <Text color="red">{addError}</Text>

@@ -90,14 +90,20 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
       transitionDuration={300}
       transitionTimingFunction="ease"
     >
-      <Button
+      <button 
         leftIcon={<Plus />}
-        variant="light"
-        color="green"
-        onClick={() => setAddTaskModalOpened(true)}
-      >
-        Добавить задание
-      </Button>
+        style={{
+          fontSize: "16px",
+          color: "white",
+          fontWeight: "600",
+          padding: "10px",
+          borderRadius: "5px",
+          border: "none",
+          backgroundColor: "#1FBEAC",
+        }}
+        onClick={() => setAddTaskModalOpened(true)}>
+          Добавить задние
+      </button>
       <Space h="sm" />
       <Table verticalSpacing="sm" striped highlightOnHover>
         <thead>
@@ -118,28 +124,33 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
                   <td>{task.files.length}</td>
                   <td>
                     <Stack>
-                      <Button
-                        variant="outline"
-                        color="blue"
-                        leftIcon={<Edit />}
-                        onClick={() => {
-                          setEditTaskId(task.id);
-                          setEditTaskModalOpened(true);
-                        }}
-                      >
-                        Редактировать
-                      </Button>
-                      <Button
-                        variant="outline"
-                        color="red"
-                        leftIcon={<TrashX />}
-                        onClick={() => {
-                          setDeleteTaskId(task.id);
-                          setDeleteTaskModalOpened(true);
-                        }}
-                      >
-                        Удалить
-                      </Button>
+                    <Button
+                          // className="align-self-end"
+                          size="xs"
+                          variant="outline"
+                          color="cyan"
+                          leftIcon={<Edit />}
+                          onClick={() => {
+                            setEditTaskId(task.id);
+                            setEditTaskModalOpened(true);
+                          }}
+                        >
+                          Редактировать
+                        </Button>
+                        <Button
+                          // className="align-self-end"
+                          size="xs"
+                          variant="outline"
+                          color="red"
+                          leftIcon={<TrashX />}
+                          onClick={() => {
+                            setDeleteTaskId(task.id);
+                            setDeleteTaskModalOpened(true);
+                          }}
+                        >
+                          Удалить
+                        </Button>
+                      
                     </Stack>
                   </td>
                 </tr>
@@ -149,7 +160,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
       </Table>
       {tasksLoading && (
         <Center>
-          <Loader color="orange" variant="bars" />
+          <Loader color="cyan" variant="dots" />
         </Center>
       )}
       {!tasksLoading && tasksList.length === 0 && (

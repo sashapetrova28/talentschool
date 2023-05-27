@@ -74,16 +74,17 @@ export const DeleteTask = ({
 			</Text>
 			<Space h='md' />
 			<Center>
-				<Button
+				<button
+					className="redButton"
 					onClick={() => deleteTask(false)}
 					color='red'
 					style={{ marginRight: "20px" }}
 				>
 					Удалить
-				</Button>
-				<Button onClick={() => setOpened(false)} variant='light' color='dark'>
+				</button>
+				<button className="greyButton" onClick={() => setOpened(false)} variant='light' color='dark'>
 					Отменить
-				</Button>
+				</button>
 			</Center>
 			<Space h='md' />
 			<Center>

@@ -18,7 +18,7 @@ export const Header = ({ user }) => {
         <Grid className={styles.header}>
           <div style={{ cursor: "pointer" }}>
             <Link href="/" passHref>
-              <Image src={Logo} alt="Школа талантов" width={200} height={77} />
+              <Image src={Logo} alt="Школа талантов" width={200} height={55} />
             </Link>
           </div>
           <div className={styles.menu}>

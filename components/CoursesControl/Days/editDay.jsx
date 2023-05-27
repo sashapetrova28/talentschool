@@ -216,18 +216,17 @@ export const EditDay = ({ opened, setOpened, pushDay, courseId, day }) => {
           </Dropzone>
           <Space h="md" />
           <Center>
-            <Button color="green" type="submit" style={{ marginRight: "20px" }}>
+            <button className="greenButton" type="submit" style={{ marginRight: "20px" }}>
               Сохранить
-            </Button>
-            <Button
-              variant="light"
-              color="dark"
+            </button>
+            <button
+              className="redButton"
               onClick={() => {
                 setOpened(false);
               }}
             >
               Отменить
-            </Button>
+            </button>
           </Center>
           <Center>
             <Text color="red">{addError}</Text>

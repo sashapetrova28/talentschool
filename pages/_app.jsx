@@ -31,14 +31,14 @@ const MyApp = ({ Component, pageProps }) => {
 			<Affix position={{ bottom: 20, right: 20 }}>
 				<Transition transition="slide-up" mounted={scroll.y > 0}>
 					{(transitionStyles) => (
-						<Button
-							color="orange"
+						<button
+							color="#33CFBD"
 							leftIcon={<ArrowUp />}
 							style={transitionStyles}
 							onClick={() => scrollTo({ y: 0 })}
 						>
 							Наверх
-						</Button>
+						</button>
 					)}
 				</Transition>
 			</Affix>

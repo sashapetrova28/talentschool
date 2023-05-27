@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axios from "/utils/rest";
 import Container from "react-bootstrap/Container";
-import { ArrowBigRightLine } from "tabler-icons-react";
+import { ArrowNarrowRight } from "tabler-icons-react";
 
 import {
   Text,
@@ -128,7 +128,7 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
                             </div>
                           </div>
                           <div>
-                            <ArrowBigRightLine size={48} strokeWidth={2} color={"#036459"} />
+                            < ArrowNarrowRight  size={48} strokeWidth={2} color={"#036459"} />
                           </div>
                         </div>
                       </Link>
@@ -139,14 +139,6 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
             </Tabs>
           </Col>
         </Row>
-        {/* <Card p="lg">
-          <Text
-            size="sm"
-            weight={500}
-            style={{ color: secondaryColor, lineHeight: 1.5 }}
-            dangerouslySetInnerHTML={{ __html: day.description }}
-          ></Text>
-        </Card> */}
       </Container>
     </>
   );

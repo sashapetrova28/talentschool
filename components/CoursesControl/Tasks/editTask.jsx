@@ -86,7 +86,7 @@ const EditTask = ({
     <Modal
       opened={opened}
       onClose={() => setOpened(false)}
-      title="Редактировать задание?"
+      title="Редактировать задание"
       transition="fade"
       transitionDuration={300}
       transitionTimingFunction="ease"
@@ -128,12 +128,12 @@ const EditTask = ({
           </Dropzone>
         </Box>
         <Center>
-          <Button color="cyan" type="submit" mt="sm">
+          <button className="greenButton" style={{margin: "20px"}} color="cyan" type="submit" mt="sm">
             Сохранить
-          </Button>
-          <Button color="gray" mt="sm" ml="sm" onClick={resetHandle}>
+          </button>
+          <button className="redButton" color="gray" mt="sm" ml="sm" onClick={resetHandle}>
             Отмена
-          </Button>
+          </button>
         </Center>
       </form>
     </Modal>

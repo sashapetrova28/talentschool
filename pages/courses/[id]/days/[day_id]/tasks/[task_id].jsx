@@ -73,9 +73,11 @@ export default function Task({ task, day, course, task_status, messages }) {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    if (files.length == 0) return;
+    if (e.target.message.value === ""){
+        return;
+    }
     const body = new FormData();
-    body.append("message", "");
+    body.append('message', e.target.message.value);
     if (files) {
       for (let index in files) {
         body.append(
@@ -114,31 +116,6 @@ export default function Task({ task, day, course, task_status, messages }) {
         <Space h="xl" />
         <Card p="lg">
           <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>{task.name}</div>
-          {/* <Card.Section>
-            <Text color="orange" size="xl" weight={600} style={{}}>
-              Статус задания
-            </Text>
-          </Card.Section> */}
-          {/* <Space h="sm" /> */}
-          {/* {task_status === "waiting" ? (
-            <Text size="lg" weight={700} color="orange">
-              Ожидаем вашего ответа
-            </Text>
-          ) : task_status === "ready" ? (
-            <Text size="lg" weight={700} color="green">
-              Задание выполнено, поздравляем!
-            </Text>
-          ) : (
-            <Text size="lg" weight={700} color="blue">
-              Начните выполнение!
-            </Text>
-          )} */}
-          {/* <Text
-            size="sm"
-            weight={500}
-            style={{ color: secondaryColor, lineHeight: 1.5 }}
-            dangerouslySetInnerHTML={{ __html: task.description }}
-          ></Text> */}
           <Space h="lg" />
           {task_status !== "empty" ? (
             <>
@@ -152,6 +129,10 @@ export default function Task({ task, day, course, task_status, messages }) {
                   </Text>
                 );
               })}
+              <Space h="md" />
+							<div style={{ color: "#036459", fontSize: "16px", fontWeight: "600" }}>
+								Общение с экспертом
+							</div>
 
               <div className={styles.messages}>
                 {chat.map((message) => {
@@ -160,9 +141,9 @@ export default function Task({ task, day, course, task_status, messages }) {
                       className={`${styles.message} ${message.answer_id ? styles.interlocutor : styles.you}`}
                       key={message.id}
                     >
-                      <Text size="md" weight={500}>
-                        {message.message}
-                      </Text>
+                      <Text size="sm">{message.answer_id ? 'Эксперт' : 'Вы'}:</Text>
+										  <Text size="md" weight={500}>{message.message}</Text>
+
                       {message.files.map((file, index) => {
                         return (
                           <>
@@ -179,25 +160,27 @@ export default function Task({ task, day, course, task_status, messages }) {
               </div>
               {task_status !== "ready" && (
                 <div>
-                  <form onSubmit={(e) => sendMessage(e)}>
+                  <form onSubmit={sendMessage} >
+                    <div className={styles.input}>
+                      <input type="text" placeholder="Введите ваше сообщение" name="message" />
+                      <Send onClick={() => { document.getElementById('send-message').click() }} />
+                      <button type="submit" id="send-message"></button>
+                    </div>
                     <Space h="sm" />
-                    {files.length > 0 && (
-                      <Text size="sm">
-                        Прикрепленные файлы:{" "}
-                        {files.map((el) => {
-                          return ` ${el.name},`;
-                        })}
-                      </Text>
-                    )}
+                    {files.length > 0 && <>
+                      <Text size="sm">Прикрепленные файлы: {files.map(el => {
+                        return ` ${el.name},`
+                      })}</Text>
+                    </>}
                     <Dropzone
                       onDrop={(files) => {
                         setFiles(files);
                       }}
                       onReject={() => {
                         showNotification({
-                          title: "Файл отклонен",
+                          title: 'Файл отклонен',
                           autoClose: 3500,
-                          color: "red",
+                          color: 'red',
                           icon: <X size={18} />,
                         });
                       }}
@@ -206,17 +189,14 @@ export default function Task({ task, day, course, task_status, messages }) {
                     >
                       {(status) => dropzoneChildren(status, theme)}
                     </Dropzone>
-                    <Button disabled={files.length == 0} fullWidth className="mt-1" type="submit" id="send-message">
-                      Отправить
-                    </Button>
                   </form>
                 </div>
               )}
               {task_status === "ready" && (
                 <Center>
-                  <Text color="green" size="xl" weight={700}>
+                  <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600", marginTop: "20px"}}>
                     Вы выполнили задание, можете приступать к выполнению следующих
-                  </Text>
+                  </div>
                 </Center>
               )}
             </>

@@ -1,0 +1,6 @@
+e.preventDefault();
+    if (e.target.message.value === ""){
+        return;
+    }
+    const body = new FormData();
+    body.append('message', e.target.message.value);

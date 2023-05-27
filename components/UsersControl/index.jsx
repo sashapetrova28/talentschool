@@ -123,7 +123,7 @@ export const UsersControl = () => {
           </Table>
           {usersLoading && (
             <Center>
-              <Loader color="orange" variant="bars" />
+              <Loader color="cyan" variant="dots" />
             </Center>
           )}
           {!usersLoading && usersList.length === 0 && <Center>Список пользователей пуст</Center>}

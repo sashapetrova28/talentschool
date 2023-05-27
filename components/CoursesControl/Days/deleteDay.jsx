@@ -56,20 +56,22 @@ export const DeleteDay = ({ opened, setOpened, removeDay, courseId, deleteDayId 
 			<Text>Это действие нельзя будет отменить. Будут удалены все связанные с днем задания и ответы пользователей</Text>
 			<Space h="md" />
 			<Center>
-				<Button
+				<button
 					onClick={() => deleteDay(false)}
+					className="redButton"
 					color="red"
 					style={{ marginRight: '20px' }}
 				>
 					Удалить
-				</Button>
-				<Button
+				</button>
+				<button
+					className="greyButton"
 					onClick={() => setOpened(false)}
 					variant="light"
 					color="dark"
 				>
 					Отменить
-				</Button>
+				</button>
 			</Center>
 			<Space h="md" />
 			<Center>

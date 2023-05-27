@@ -150,28 +150,13 @@ export const AddCourse = ({ opened, setOpened, pushCourse }) => {
 		<div>
 			<form onSubmit={saveCourse}>
 				<div style={{ textAlign: "end" }}>
-					<button
-						style={{
-							fontSize: "16px",
-							color: "#1FBEAC",
-							fontWeight: "600",
-							marginRight: "35px",
-							border: "none",
-							backgroundColor: "white",
-						}}
-						color='green'
+					<button className="greenButton"
+						style={{marginRight: "20px"}}
 						type='submit'
 					>
 						Сохранить
 					</button>
-					<button
-						style={{
-							fontSize: "16px",
-							color: "#1FBEAC",
-							fontWeight: "600",
-							border: "none",
-							backgroundColor: "white",
-						}}
+					<button className="redButton"
 						onClick={() => setOpened(false)}
 					>
 						Отменить

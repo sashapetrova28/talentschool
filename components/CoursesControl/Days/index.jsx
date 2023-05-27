@@ -181,8 +181,7 @@ export const Days = ({ opened, setOpened, courseId }) => {
       )}
       {/*  */}
       {daysLoading && (
-        <Center>
-          <Loader color="orange" variant="bars" />
+        <Center><Loader color="cyan" variant="dots" />
         </Center>
       )}
       <Center>{daysListError}</Center>

@@ -154,7 +154,7 @@ export const Main = ({
       </SimpleGrid>
       {coursesLoading && (
         <Center>
-          <Loader color="orange" variant="bars" />
+          <Loader color="cyan" variant="dots" />
         </Center>
       )}
       {!coursesLoading && coursesList.length === 0 && (
