@@ -93,9 +93,11 @@ export default function Task({ task, day, course, task_status, messages }) {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    if (files.length == 0) return;
+    if (e.target.message.value === "") {
+      return;
+    }
     const body = new FormData();
-    body.append("message", "");
+    body.append('message', e.target.message.value);
     if (files) {
       body.append("files", [files[0].path]);
     }
@@ -132,31 +134,6 @@ export default function Task({ task, day, course, task_status, messages }) {
           >
             {task.name}
           </div>
-          {/* <Card.Section>
-            <Text color="orange" size="xl" weight={600} style={{}}>
-              Статус задания
-            </Text>
-          </Card.Section> */}
-          {/* <Space h="sm" /> */}
-          {/* {task_status === "waiting" ? (
-            <Text size="lg" weight={700} color="orange">
-              Ожидаем вашего ответа
-            </Text>
-          ) : task_status === "ready" ? (
-            <Text size="lg" weight={700} color="green">
-              Задание выполнено, поздравляем!
-            </Text>
-          ) : (
-            <Text size="lg" weight={700} color="blue">
-              Начните выполнение!
-            </Text>
-          )} */}
-          {/* <Text
-            size="sm"
-            weight={500}
-            style={{ color: secondaryColor, lineHeight: 1.5 }}
-            dangerouslySetInnerHTML={{ __html: task.description }}
-          ></Text> */}
           <Space h="lg" />
           {task_status !== "empty" ? (
             <>
@@ -181,6 +158,10 @@ export default function Task({ task, day, course, task_status, messages }) {
                   </Text>
                 );
               })}
+               <Space h="md" />
+							<div style={{ color: "#036459", fontSize: "16px", fontWeight: "600" }}>
+								Общение с экспертом
+							</div>
 
               <div className={styles.messages}>
                 {chat.map((message) => {
@@ -191,9 +172,8 @@ export default function Task({ task, day, course, task_status, messages }) {
                       }`}
                       key={message.id}
                     >
-                      <Text size="md" weight={500}>
-                        {message.message}
-                      </Text>
+                      <Text size="sm">{message.answer_id ? 'Эксперт' : 'Вы'}:</Text>
+										  <Text size="md" weight={500}>{message.message}</Text>
                       {messages.length > 0
                         ? messages?.map((answer, index) => {
                             return (
@@ -244,7 +224,10 @@ export default function Task({ task, day, course, task_status, messages }) {
               </div>
               {task_status !== "ready" && (
                 <div>
-                  <form onSubmit={sendMessage}>
+                  <form onSubmit={sendMessage} >
+                    <div className={styles.input}>
+                      <input type="text" placeholder="Введите ваше сообщение" name="message" />
+                    </div>
                     <Space h="sm" />
                     {files.length > 0 && (
                       <Text size="sm">
@@ -285,10 +268,14 @@ export default function Task({ task, day, course, task_status, messages }) {
               )}
               {task_status === "ready" && (
                 <Center>
-                  <Text color="green" size="xl" weight={700}>
+                  <div style={{ 
+                    color: "#036459", 
+                    fontSize: "24px", 
+                    fontWeight: "600", 
+                    marginTop: "20px"}}>
                     Вы выполнили задание, можете приступать к выполнению
                     следующих
-                  </Text>
+                  </div>
                 </Center>
               )}
             </>
