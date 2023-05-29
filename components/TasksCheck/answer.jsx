@@ -43,10 +43,10 @@ export const Answer = ({ opened, setOpened, task }) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-      : theme.colorScheme === "dark"
-      ? theme.colors.dark[0]
-      : theme.colors.gray[7];
+        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+        : theme.colorScheme === "dark"
+          ? theme.colors.dark[0]
+          : theme.colors.gray[7];
   };
 
   const FileUploadIcon = ({ status, ...props }) => {
@@ -76,10 +76,9 @@ export const Answer = ({ opened, setOpened, task }) => {
         body.append(
           `file_${index}`,
           files[index],
-          `task_${nanoid()}.${
-            files[index].path.split(".")[
-              files[index].path.split(".").length - 1
-            ]
+          `task_${nanoid()}.${files[index].path.split(".")[
+          files[index].path.split(".").length - 1
+          ]
           }`
         );
       }
@@ -100,8 +99,8 @@ export const Answer = ({ opened, setOpened, task }) => {
         setChat([...chat, res.data]);
         setOpened(false);
       })
-      .catch((error) => {})
-      .finally(() => {});
+      .catch((error) => { })
+      .finally(() => { });
   };
 
   const deviationMessage = () => {
@@ -126,8 +125,8 @@ export const Answer = ({ opened, setOpened, task }) => {
             {taskStatus === "check"
               ? "Ожидает проверки"
               : taskStatus === "waiting"
-              ? "На доработке"
-              : "Готово"}
+                ? "На доработке"
+                : "Готово"}
           </Text>
           <Text color="orange" weight={500} size="lg">
             Общение с талантом{" "}
@@ -142,9 +141,8 @@ export const Answer = ({ opened, setOpened, task }) => {
             {chat.map((message) => {
               return (
                 <div
-                  className={`${styles.message} ${
-                    message.answer_id ? styles.you : styles.interlocutor
-                  }`}
+                  className={`${styles.message} ${message.answer_id ? styles.you : styles.interlocutor
+                    }`}
                   key={message.id}
                 >
                   <Text size="sm">
@@ -156,47 +154,15 @@ export const Answer = ({ opened, setOpened, task }) => {
                   <Text size="md" weight={500}>
                     {message.message}
                   </Text>
-                  {message?.files?.length > 0 ? (
-                    message?.files?.map((file, index) => {
-                      return (
-                        <>
-                          <Text
-                            key={file}
-                            variant="link"
-                            component="a"
-                            size="sm"
-                            download
-                            href={`${window?.location?.origin}/${file}`}
-                          >
-                            Скачать файл {index + 1}
-                          </Text>
-                          <Space h="sm" />
-                        </>
-                      );
-                    })
-                  ) : message?.length > 0 ? (
-                    message.map((m, i) => (
-                      <>
-                        <text
-                          key={m.file}
-                          size="sm"
-                          href={`${window?.location?.origin}/${m.file}`}
-                        >
-                          скачать файл {i + 1}
-                        </text>
-                      </>
-                    ))
-                  ) : (
-                    <>
-                      <text
-                        key={message.id}
-                        size="sm"
-                        href={`${window?.location?.origin}/${message.file}`}
-                      >
-                        скачать файл {message.message}
-                      </text>
-                    </>
-                  )}
+                  <>
+                    <a
+                      key={message.id}
+                      download
+                      href={`${window?.location?.origin}/${message?.files[0]}`}
+                    >
+                      скачать файл {message.message}
+                    </a>
+                  </>
                 </div>
               );
             })}

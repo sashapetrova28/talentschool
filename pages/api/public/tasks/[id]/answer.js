@@ -24,7 +24,7 @@ const mainAnswerHandler = async (req, res) => {
           res.status(500).json({ errorMessage: "Error" });
           return;
         }
-        let path = [];
+        const path = [];
         for (let key of Object.keys(files)) {
           path.push(saveFile(files[key]));
         }
@@ -59,13 +59,15 @@ const mainAnswerHandler = async (req, res) => {
           task_id: id,
         });
 
-        const new_id = await database("task_messages").returning("id").insert({
-          task_id: id,
-          user_id: user[0].id,
-          message: fields.message,
-          files: files,
-          answer_id: answer[0].id,
-        });
+        const new_id = await database("task_messages")
+          .returning("id")
+          .insert({
+            task_id: id,
+            user_id: user[0].id,
+            message: fields.message,
+            files: JSON.stringify(path),
+            answer_id: answer[0].id,
+          });
         await database("accepted_tasks")
           .update({ status: "check" })
           .where({ task_id: id, user_id: user[0].id });
@@ -75,7 +77,7 @@ const mainAnswerHandler = async (req, res) => {
           user_id: user[0].id,
           task_id: id,
           message: fields.message,
-          files: files,
+          files: path,
         });
       });
     default:

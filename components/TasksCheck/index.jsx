@@ -24,7 +24,7 @@ export const TasksCheck = () => {
   const [tasksLoading, setTasksLoading] = useState(true);
   const [tasksList, setTasksList] = useState([]);
   const [tasksListError, setTasksListError] = useState("");
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState([]);
   const [coursesNames, setCoursesNames] = useState({});
   useEffect(() => {
     axios
@@ -34,8 +34,10 @@ export const TasksCheck = () => {
           setTasksList(
             res.data.filter((info) => info.user.status === "curator")
           );
+          setFilter(tasksList);
         } else {
           setTasksList(res.data);
+          setFilter(tasksList);
         }
         let arr = Array.from(
           new Set(res.data.map((e) => e.day).map((e) => e.course_id))
@@ -56,8 +58,22 @@ export const TasksCheck = () => {
       });
   }, [answerModalOpened, user]);
   function handleFilter(key, value) {
-    setFilter((prev) => ({ ...prev, [key]: value }));
+    setFilter((prev) => {
+      const some = prev.filter((prevf) => !prevf[key]?.name?.match(value));
+      console.log(some);
+      return prev;
+    });
   }
+  const filterByDay = (value) => {
+    if (value == "Не выбрано") {
+      return setFilter(tasksList);
+    }
+    const filtered = tasksList.filter((item) => {
+      return item.day.name.match(value);
+    });
+    console.log(filtered);
+    setFilter(filtered);
+  };
   return (
     <Container>
       <Space h="xl" />
@@ -103,7 +119,9 @@ export const TasksCheck = () => {
             data={["Не выбрано"].concat(
               Array.from(new Set(tasksList?.map((e) => e.day.name)))
             )}
-            onChange={(event) => handleFilter("day", event.currentTarget.value)}
+            onChange={(event) => {
+              filterByDay(event.currentTarget.value);
+            }}
             description="Выберите день"
             variant="filled"
           />
@@ -122,10 +140,14 @@ export const TasksCheck = () => {
         </thead>
         <tbody>
           {!tasksLoading &&
-            tasksList.map((task, i) => {
+            tasksList?.map((task, i) => {
               return (
                 <tr
-                  key={task.task.id}
+                  key={
+                    task.task.id +
+                    Math.random() * new Date().getMilliseconds() +
+                    Math.random()
+                  }
                   style={{
                     border: "2px solid #33CFBD",
                     borderRadius: "8px",

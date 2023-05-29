@@ -15,6 +15,8 @@ export const config = {
 const mainAnswerHandler = async (req, res) => {
   const { method } = req;
   const { task_id } = req.query;
+
+
   switch (method) {
     case "POST":
       const form = new formidable.IncomingForm();
@@ -32,6 +34,16 @@ const mainAnswerHandler = async (req, res) => {
           .from("users")
           .where({ email: req.session.user.email })
           .limit(1);
+
+        await database('notifications').insert({
+          notification_type: `accept_task_${user[0].status === 'user' ? 'user' : 'admin'}`,
+          params: {
+            task_id: task_id,
+            user_id: user[0].id,
+            new_status: fields.status
+          }
+        });
+		
         if (user[0].status === "user") {
           const new_id = await database("task_messages")
             .returning("id")
