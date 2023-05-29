@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Center, Modal, Space, Text, useMantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { nanoid } from "nanoid";
-import { Check, File, Send, Upload, X } from "tabler-icons-react";
+import { Check, Dental, File, Send, Upload, X } from "tabler-icons-react";
 import styles from "./messages.module.scss";
 import axios from "/utils/rest";
 
@@ -43,10 +43,10 @@ export const Answer = ({ opened, setOpened, task }) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-        : theme.colorScheme === "dark"
-          ? theme.colors.dark[0]
-          : theme.colors.gray[7];
+      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+      : theme.colorScheme === "dark"
+      ? theme.colors.dark[0]
+      : theme.colors.gray[7];
   };
 
   const FileUploadIcon = ({ status, ...props }) => {
@@ -63,6 +63,8 @@ export const Answer = ({ opened, setOpened, task }) => {
 
   const sendMessage = (e) => {
     e.preventDefault();
+    const denyText = "Не принять";
+    const denyButton = e.nativeEvent.submitter;
     const body = new FormData();
     body.append("message", e.target.message.value);
     body.append("user_id", task.user.id.toString());
@@ -70,15 +72,18 @@ export const Answer = ({ opened, setOpened, task }) => {
       "status",
       e?.target.value === "Доработать" ? "waiting" : "ready"
     );
+    body.append("status", denyButton.innerText == denyText ? "wait" : "check");
+
     setTaskStatus(e?.target.value === "Доработать" ? "waiting" : "ready");
     if (files) {
       for (let index in files) {
         body.append(
           `file_${index}`,
           files[index],
-          `task_${nanoid()}.${files[index].path.split(".")[
-          files[index].path.split(".").length - 1
-          ]
+          `task_${nanoid()}.${
+            files[index].path.split(".")[
+              files[index].path.split(".").length - 1
+            ]
           }`
         );
       }
@@ -99,12 +104,14 @@ export const Answer = ({ opened, setOpened, task }) => {
         setChat([...chat, res.data]);
         setOpened(false);
       })
-      .catch((error) => { })
-      .finally(() => { });
+      .catch((error) => {})
+      .finally(() => {});
   };
 
   const deviationMessage = () => {
-    axios.put(`/to_check/${task.task.id}/answer`).then(() => setOpened(false));
+    axios
+      .put(`/to_check/${task.task.id}/answer`, body)
+      .then(() => setOpened(false));
   };
 
   return (
@@ -125,8 +132,8 @@ export const Answer = ({ opened, setOpened, task }) => {
             {taskStatus === "check"
               ? "Ожидает проверки"
               : taskStatus === "waiting"
-                ? "На доработке"
-                : "Готово"}
+              ? "На доработке"
+              : "Готово"}
           </Text>
           <Text color="orange" weight={500} size="lg">
             Общение с талантом{" "}
@@ -141,8 +148,9 @@ export const Answer = ({ opened, setOpened, task }) => {
             {chat.map((message) => {
               return (
                 <div
-                  className={`${styles.message} ${message.answer_id ? styles.you : styles.interlocutor
-                    }`}
+                  className={`${styles.message} ${
+                    message.answer_id ? styles.you : styles.interlocutor
+                  }`}
                   key={message.id}
                 >
                   <Text size="sm">
@@ -151,18 +159,22 @@ export const Answer = ({ opened, setOpened, task }) => {
                       : `Талант ${task.user.name} ${task.user.surname}`}
                     :
                   </Text>
-                  <Text size="md" weight={500}>
-                    {message.message}
-                  </Text>
-                  <>
-                    <a
-                      key={message.id}
-                      download
-                      href={`${window?.location?.origin}/${message?.files[0]}`}
-                    >
-                      скачать файл {message.message}
-                    </a>
-                  </>
+                  <Text size="md" weight={500}></Text>
+                  {message.answer_id ? (
+                    <>
+                      {message.message}
+
+                      <a
+                        key={message.id}
+                        download
+                        href={`${window?.location?.origin}/${message?.files[0]}`}
+                      >
+                        скачать файл{" "}
+                      </a>
+                    </>
+                  ) : (
+                    <>{message.message}</>
+                  )}
                 </div>
               );
             })}
@@ -188,8 +200,7 @@ export const Answer = ({ opened, setOpened, task }) => {
                 <div style={{ margin: "10px" }}></div>
                 <button
                   className={styles.button}
-                  type="button"
-                  onClick={deviationMessage}
+                  type="submit"
                   id="send-message"
                 >
                   Не принять

@@ -16,7 +16,6 @@ const mainAnswerHandler = async (req, res) => {
   const { method } = req;
   const { task_id } = req.query;
 
-
   switch (method) {
     case "POST":
       const form = new formidable.IncomingForm();
@@ -35,15 +34,16 @@ const mainAnswerHandler = async (req, res) => {
           .where({ email: req.session.user.email })
           .limit(1);
 
-        await database('notifications').insert({
-          notification_type: `accept_task_${user[0].status === 'user' ? 'user' : 'admin'}`,
+        await database("notifications").insert({
+          notification_type: `accept_task_${
+            user[0].status === "user" ? "user" : "admin"
+          }`,
           params: {
             task_id: task_id,
             user_id: user[0].id,
-            new_status: fields.status
-          }
+            new_status: fields.status,
+          },
         });
-		
         if (user[0].status === "user") {
           const new_id = await database("task_messages")
             .returning("id")
@@ -54,8 +54,9 @@ const mainAnswerHandler = async (req, res) => {
               files: JSON.stringify(path),
             });
           await database("accepted_tasks")
-            .update({ status: "check" })
+            .update({ status: fields.status })
             .where({ task_id: task_id, user_id: user[0].id });
+
           res.status(200).json({
             id: new_id[0].id,
             user_id: user[0].id,

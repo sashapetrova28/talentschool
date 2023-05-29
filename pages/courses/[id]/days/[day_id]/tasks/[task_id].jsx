@@ -6,7 +6,6 @@ import { nanoid } from "nanoid";
 import styles from "./messages.module.scss";
 import { sessionOptions } from "/lib/session";
 import { withIronSessionSsr } from "iron-session/next";
-
 import axios from "/utils/rest";
 import { Dropzone } from "@mantine/dropzone";
 import { showNotification } from "@mantine/notifications";
@@ -93,13 +92,12 @@ export default function Task({ task, day, course, task_status, messages }) {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    if (e.target.message.value === "") {
-      return;
-    }
+    const userMessage = e.target["user-message"].value;
+    if (files.length == 0) return;
     const body = new FormData();
-    body.append('message', e.target.message.value);
+    body.append("message", userMessage);
     if (files) {
-      body.append("files", [files[0].path]);
+      body.append("files", files[0]);
     }
     axios
       .post(`/public/tasks/${task_id}/answer`, body)
@@ -119,6 +117,7 @@ export default function Task({ task, day, course, task_status, messages }) {
       .catch((error) => {})
       .finally(() => {});
   };
+  console.log(task);
   return (
     <>
       <Head>
@@ -134,6 +133,31 @@ export default function Task({ task, day, course, task_status, messages }) {
           >
             {task.name}
           </div>
+          {/* <Card.Section>
+            <Text color="orange" size="xl" weight={600} style={{}}>
+              Статус задания
+            </Text>
+          </Card.Section> */}
+          {/* <Space h="sm" /> */}
+          {/* {task_status === "waiting" ? (
+            <Text size="lg" weight={700} color="orange">
+              Ожидаем вашего ответа
+            </Text>
+          ) : task_status === "ready" ? (
+            <Text size="lg" weight={700} color="green">
+              Задание выполнено, поздравляем!
+            </Text>
+          ) : (
+            <Text size="lg" weight={700} color="blue">
+              Начните выполнение!
+            </Text>
+          )} */}
+          {/* <Text
+            size="sm"
+            weight={500}
+            style={{ color: secondaryColor, lineHeight: 1.5 }}
+            dangerouslySetInnerHTML={{ __html: task.description }}
+          ></Text> */}
           <Space h="lg" />
           {task_status !== "empty" ? (
             <>
@@ -146,22 +170,13 @@ export default function Task({ task, day, course, task_status, messages }) {
               >
                 Скачайте материалы для работы и изучите их
               </div>
-              {task?.files?.map((file, index) => {
-                return (
-                  <Text
-                    key={file}
-                    variant="link"
-                    component="a"
-                    href={`/${file}`}
-                  >
-                    Скачать файл {index + 1}
-                  </Text>
-                );
-              })}
-               <Space h="md" />
-							<div style={{ color: "#036459", fontSize: "16px", fontWeight: "600" }}>
-								Общение с экспертом
-							</div>
+              <Text
+                variant="link"
+                component="a"
+                href={`/${task?.files?.at(0)}`}
+              >
+                Скачать файл {task.name}
+              </Text>
 
               <div className={styles.messages}>
                 {chat.map((message) => {
@@ -172,62 +187,31 @@ export default function Task({ task, day, course, task_status, messages }) {
                       }`}
                       key={message.id}
                     >
-                      <Text size="sm">{message.answer_id ? 'Эксперт' : 'Вы'}:</Text>
-										  <Text size="md" weight={500}>{message.message}</Text>
-                      {messages.length > 0
-                        ? messages?.map((answer, index) => {
-                            return (
-                              <>
-                                <Text
-                                  key={answer.id}
-                                  variant="link"
-                                  component="a"
-                                  size="sm"
-                                  href={`/${
-                                    answer.file && answer.file.length > 0
-                                      ? answer.file[0]
-                                      : ""
-                                  }`}
-                                >
-                                  Скачать файл {index + 1}
-                                </Text>
-                                <Space h="sm" />
-                              </>
-                            );
-                          })
-                        : messages?.files?.length >
-                          0(
-                            messages?.map((answer, index) => {
-                              return (
-                                <>
-                                  <Text
-                                    key={answer.id}
-                                    variant="link"
-                                    component="a"
-                                    size="sm"
-                                    href={`/${
-                                      answer.file && answer.file.length > 0
-                                        ? answer.file[0]
-                                        : ""
-                                    }`}
-                                  >
-                                    Скачать файл {index + 1}
-                                  </Text>
-                                  <Space h="sm" />
-                                </>
-                              );
-                            })
-                          )}
+                      <Text size="md" weight={500}>
+                        {message.message}
+                      </Text>
+                      {
+                        <>
+                          <Text
+                            key={message.id}
+                            variant="link"
+                            component="a"
+                            size="sm"
+                            download
+                            href={`/${message?.files[0]}`}
+                          >
+                            Скачать файл
+                          </Text>
+                          <Space h="sm" />
+                        </>
+                      }
                     </div>
                   );
                 })}
               </div>
               {task_status !== "ready" && (
                 <div>
-                  <form onSubmit={sendMessage} >
-                    <div className={styles.input}>
-                      <input type="text" placeholder="Введите ваше сообщение" name="message" />
-                    </div>
+                  <form onSubmit={sendMessage}>
                     <Space h="sm" />
                     {files.length > 0 && (
                       <Text size="sm">
@@ -237,6 +221,8 @@ export default function Task({ task, day, course, task_status, messages }) {
                         })}
                       </Text>
                     )}
+
+                    <Input placeholder="Введите ваше сообщение" name="user-message" />
                     <Dropzone
                       onDrop={(files) => {
                         setFiles(files);
@@ -268,14 +254,10 @@ export default function Task({ task, day, course, task_status, messages }) {
               )}
               {task_status === "ready" && (
                 <Center>
-                  <div style={{ 
-                    color: "#036459", 
-                    fontSize: "24px", 
-                    fontWeight: "600", 
-                    marginTop: "20px"}}>
+                  <Text color="green" size="xl" weight={700}>
                     Вы выполнили задание, можете приступать к выполнению
                     следующих
-                  </div>
+                  </Text>
                 </Center>
               )}
             </>

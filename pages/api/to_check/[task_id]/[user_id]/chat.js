@@ -7,8 +7,9 @@ const mainChatHandler = async (req, res) => {
 	const { method } = req;
 	const { task_id, user_id } = req.query
 	switch (method) {
-		case 'GET':
+		case 'GET':	
 			const chat = await database.select('*').from('task_messages').where({task_id: task_id, user_id: user_id});
+			
 			res.status(200).json(chat);
 			break;
 		default:

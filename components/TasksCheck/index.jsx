@@ -30,15 +30,8 @@ export const TasksCheck = () => {
     axios
       .get("/to_check")
       .then((res) => {
-        if (user.status === "curator") {
-          setTasksList(
-            res.data.filter((info) => info.user.status === "curator")
-          );
-          setFilter(tasksList);
-        } else {
-          setTasksList(res.data);
-          setFilter(tasksList);
-        }
+        setTasksList(res.data);
+        console.log(res.data);
         let arr = Array.from(
           new Set(res.data.map((e) => e.day).map((e) => e.course_id))
         );
