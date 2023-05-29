@@ -132,7 +132,6 @@ export const EditDay = ({ opened, setOpened, pushDay, courseId, day }) => {
         //     .finally(() => {
         //       setLoading(false);
         //     });
-        console.log(res);
         setLoading(false);
       }
     });
@@ -142,7 +141,7 @@ export const EditDay = ({ opened, setOpened, pushDay, courseId, day }) => {
     <Modal
       opened={opened}
       onClose={() => setOpened(false)}
-      title="Редактировать день"
+      title="Изменить День"
       size="lg"
       transition="fade"
       transitionDuration={300}
@@ -154,7 +153,7 @@ export const EditDay = ({ opened, setOpened, pushDay, courseId, day }) => {
           <InputWrapper
             required
             label="Название дня"
-            description="Название дня в свободной форме, будет отображаться в качестве заголовка"
+            description="Название дня в свободной форме, будет отображаться в качесвте заголовка"
             error={nameError}
           >
             <Input
@@ -191,7 +190,7 @@ export const EditDay = ({ opened, setOpened, pushDay, courseId, day }) => {
               ["sup", "sub"],
               ["alignLeft", "alignCenter", "alignRight"],
             ]}
-            style={{ height: "300px", overflow: "auto" }}
+            style={{ height: "400px", overflow: "auto" }}
           />
           <Space h="md" />
           <Text>Изображение</Text>
@@ -216,17 +215,18 @@ export const EditDay = ({ opened, setOpened, pushDay, courseId, day }) => {
           </Dropzone>
           <Space h="md" />
           <Center>
-            <button className="greenButton" type="submit" style={{ marginRight: "20px" }}>
+            <Button color="green" type="submit" style={{ marginRight: "20px" }}>
               Сохранить
-            </button>
-            <button
-              className="redButton"
+            </Button>
+            <Button
+              variant="light"
+              color="dark"
               onClick={() => {
                 setOpened(false);
               }}
             >
               Отменить
-            </button>
+            </Button>
           </Center>
           <Center>
             <Text color="red">{addError}</Text>

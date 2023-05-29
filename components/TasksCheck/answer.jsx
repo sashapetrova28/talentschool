@@ -1,24 +1,11 @@
 import { useEffect, useState } from "react";
 
-import {
-  Modal,
-  InputWrapper,
-  Input,
-  Group,
-  Text,
-  Space,
-  Button,
-  useMantineTheme,
-  Center,
-  NativeSelect,
-  Grid,
-} from "@mantine/core";
-import { nanoid } from "nanoid";
+import { Center, Modal, Space, Text, useMantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { Upload, X, File, Check, Send } from "tabler-icons-react";
-import axios from "/utils/rest";
+import { nanoid } from "nanoid";
+import { Check, File, Send, Upload, X } from "tabler-icons-react";
 import styles from "./messages.module.scss";
+import axios from "/utils/rest";
 
 export const Answer = ({ opened, setOpened, task }) => {
   const theme = useMantineTheme();
@@ -56,10 +43,10 @@ export const Answer = ({ opened, setOpened, task }) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-        : theme.colorScheme === "dark"
-          ? theme.colors.dark[0]
-          : theme.colors.gray[7];
+      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+      : theme.colorScheme === "dark"
+      ? theme.colors.dark[0]
+      : theme.colors.gray[7];
   };
 
   const FileUploadIcon = ({ status, ...props }) => {
@@ -76,8 +63,6 @@ export const Answer = ({ opened, setOpened, task }) => {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log(e.target.message.value);
-    console.log(e.target.status);
     const body = new FormData();
     body.append("message", e.target.message.value);
     body.append("user_id", task.user.id.toString());
@@ -85,16 +70,16 @@ export const Answer = ({ opened, setOpened, task }) => {
       "status",
       e?.target.value === "Доработать" ? "waiting" : "ready"
     );
-    setTaskStatus("Доработать" ? "waiting" : "ready");
+    setTaskStatus(e?.target.value === "Доработать" ? "waiting" : "ready");
     if (files) {
       for (let index in files) {
-        console.log(files[index].path);
         body.append(
           `file_${index}`,
           files[index],
-          `task_${nanoid()}.${files[index].path.split(".")[
-          files[index].path.split(".").length - 1
-          ]
+          `task_${nanoid()}.${
+            files[index].path.split(".")[
+              files[index].path.split(".").length - 1
+            ]
           }`
         );
       }
@@ -115,9 +100,14 @@ export const Answer = ({ opened, setOpened, task }) => {
         setChat([...chat, res.data]);
         setOpened(false);
       })
-      .catch((error) => { })
-      .finally(() => { });
+      .catch((error) => {})
+      .finally(() => {});
   };
+
+  const deviationMessage = () => {
+    axios.put(`/to_check/${task.task.id}/answer`).then(() => setOpened(false));
+  };
+
   return (
     <Modal
       opened={opened}
@@ -136,8 +126,8 @@ export const Answer = ({ opened, setOpened, task }) => {
             {taskStatus === "check"
               ? "Ожидает проверки"
               : taskStatus === "waiting"
-                ? "На доработке"
-                : "Готово"}
+              ? "На доработке"
+              : "Готово"}
           </Text>
           <Text color="orange" weight={500} size="lg">
             Общение с талантом{" "}
@@ -152,8 +142,9 @@ export const Answer = ({ opened, setOpened, task }) => {
             {chat.map((message) => {
               return (
                 <div
-                  className={`${styles.message} ${message.answer_id ? styles.you : styles.interlocutor
-                    }`}
+                  className={`${styles.message} ${
+                    message.answer_id ? styles.you : styles.interlocutor
+                  }`}
                   key={message.id}
                 >
                   <Text size="sm">
@@ -165,23 +156,47 @@ export const Answer = ({ opened, setOpened, task }) => {
                   <Text size="md" weight={500}>
                     {message.message}
                   </Text>
-                  {message.files.map((file, index) => {
-                    return (
+                  {message?.files?.length > 0 ? (
+                    message?.files?.map((file, index) => {
+                      return (
+                        <>
+                          <Text
+                            key={file}
+                            variant="link"
+                            component="a"
+                            size="sm"
+                            download
+                            href={`${window?.location?.origin}/${file}`}
+                          >
+                            Скачать файл {index + 1}
+                          </Text>
+                          <Space h="sm" />
+                        </>
+                      );
+                    })
+                  ) : message?.length > 0 ? (
+                    message.map((m, i) => (
                       <>
-                        <Text
-                          key={file}
-                          variant="link"
-                          component="a"
+                        <text
+                          key={m.file}
                           size="sm"
-                          download
-                          href={`${window?.location?.origin}/${file}`}
+                          href={`${window?.location?.origin}/${m.file}`}
                         >
-                          Скачать файл {index + 1}
-                        </Text>
-                        <Space h="sm" />
+                          скачать файл {i + 1}
+                        </text>
                       </>
-                    );
-                  })}
+                    ))
+                  ) : (
+                    <>
+                      <text
+                        key={message.id}
+                        size="sm"
+                        href={`${window?.location?.origin}/${message.file}`}
+                      >
+                        скачать файл {message.message}
+                      </text>
+                    </>
+                  )}
                 </div>
               );
             })}
@@ -194,22 +209,21 @@ export const Answer = ({ opened, setOpened, task }) => {
                   placeholder="Введите ваше сообщение"
                   name="message"
                 />
-                <Send
-                  onClick={() => {
-                    document.getElementById("send-message").click();
-                  }}
-                />
-                {/* <button type="submit" id="send-message"></button> непонятная точка*/}
               </div>
               <Space h="md" />
               <Center className="mt-2">
-                <button className={styles.button} id="send-message">
+                <button
+                  className={styles.button}
+                  type="submit"
+                  id="send-message"
+                >
                   Принять
                 </button>
                 <div style={{ margin: "10px" }}></div>
                 <button
                   className={styles.button}
-                  onClick={() => sendMessage(false)}
+                  type="button"
+                  onClick={deviationMessage}
                   id="send-message"
                 >
                   Не принять

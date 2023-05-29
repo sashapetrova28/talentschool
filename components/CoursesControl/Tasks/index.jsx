@@ -14,7 +14,7 @@ import axios from "/utils/rest";
 
 import { AddTask } from "./addTask";
 import { DeleteTask } from "./deleteTask";
-import  EditTask  from "./editTask";
+import EditTask from "./EditTask";
 
 export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
   const [addTaskModalOpened, setAddTaskModalOpened] = useState(false);
@@ -69,12 +69,11 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
         `/courses/${courseId}/days/${dayId}/tasks/${tasksList[update_index].id}`,
         updatedTask
       )
-      .then((res) => console.log(res));
+      .then((res) => res);
     if (update_index === -1) return;
     tasksList[update_index] = updatedTask;
     setTasksList([...tasksList]);
   };
-
   return (
     <Modal
       opened={opened}
@@ -90,20 +89,14 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
       transitionDuration={300}
       transitionTimingFunction="ease"
     >
-      <button 
+      <Button
         leftIcon={<Plus />}
-        style={{
-          fontSize: "16px",
-          color: "white",
-          fontWeight: "600",
-          padding: "10px",
-          borderRadius: "5px",
-          border: "none",
-          backgroundColor: "#1FBEAC",
-        }}
-        onClick={() => setAddTaskModalOpened(true)}>
-          Добавить задние
-      </button>
+        variant="light"
+        color="green"
+        onClick={() => setAddTaskModalOpened(true)}
+      >
+        Добавить задание
+      </Button>
       <Space h="sm" />
       <Table verticalSpacing="sm" striped highlightOnHover>
         <thead>
@@ -124,33 +117,28 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
                   <td>{task.files.length}</td>
                   <td>
                     <Stack>
-                    <Button
-                          // className="align-self-end"
-                          size="xs"
-                          variant="outline"
-                          color="cyan"
-                          leftIcon={<Edit />}
-                          onClick={() => {
-                            setEditTaskId(task.id);
-                            setEditTaskModalOpened(true);
-                          }}
-                        >
-                          Редактировать
-                        </Button>
-                        <Button
-                          // className="align-self-end"
-                          size="xs"
-                          variant="outline"
-                          color="red"
-                          leftIcon={<TrashX />}
-                          onClick={() => {
-                            setDeleteTaskId(task.id);
-                            setDeleteTaskModalOpened(true);
-                          }}
-                        >
-                          Удалить
-                        </Button>
-                      
+                      <Button
+                        variant="outline"
+                        color="blue"
+                        leftIcon={<Edit />}
+                        onClick={() => {
+                          setEditTaskId(task.id);
+                          setEditTaskModalOpened(true);
+                        }}
+                      >
+                        Редактировать
+                      </Button>
+                      <Button
+                        variant="outline"
+                        color="red"
+                        leftIcon={<TrashX />}
+                        onClick={() => {
+                          setDeleteTaskId(task.id);
+                          setDeleteTaskModalOpened(true);
+                        }}
+                      >
+                        Удалить
+                      </Button>
                     </Stack>
                   </td>
                 </tr>
@@ -160,7 +148,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
       </Table>
       {tasksLoading && (
         <Center>
-          <Loader color="cyan" variant="dots" />
+          <Loader color="orange" variant="bars" />
         </Center>
       )}
       {!tasksLoading && tasksList.length === 0 && (

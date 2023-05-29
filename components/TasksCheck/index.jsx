@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "/utils/rest";
-
+import useUser from "/lib/useUser";
 import {
   Space,
   Loader,
@@ -18,7 +18,7 @@ import Col from "react-bootstrap/Col";
 
 export const TasksCheck = () => {
   const [answerModalOpened, setAnswerModalOpened] = useState(false);
-
+  const { user } = useUser();
   const [task, setTask] = useState(-1);
 
   const [tasksLoading, setTasksLoading] = useState(true);
@@ -26,12 +26,17 @@ export const TasksCheck = () => {
   const [tasksListError, setTasksListError] = useState("");
   const [filter, setFilter] = useState({});
   const [coursesNames, setCoursesNames] = useState({});
-  const log = console.log;
   useEffect(() => {
     axios
       .get("/to_check")
       .then((res) => {
-        setTasksList(res.data);
+        if (user.status === "curator") {
+          setTasksList(
+            res.data.filter((info) => info.user.status === "curator")
+          );
+        } else {
+          setTasksList(res.data);
+        }
         let arr = Array.from(
           new Set(res.data.map((e) => e.day).map((e) => e.course_id))
         );
@@ -43,14 +48,13 @@ export const TasksCheck = () => {
           });
         });
       })
-
       .catch((error) => {
         setTasksListError("Ошибка получения списка курсов");
       })
       .finally(() => {
         setTasksLoading(false);
       });
-  }, [answerModalOpened]);
+  }, [answerModalOpened, user]);
   function handleFilter(key, value) {
     setFilter((prev) => ({ ...prev, [key]: value }));
   }
@@ -169,7 +173,7 @@ export const TasksCheck = () => {
       </Table>
       {tasksLoading && (
         <Center>
-          <Loader color="cyan" variant="dots" />
+          <Loader color="orange" variant="bars" />
         </Center>
       )}
       {!tasksLoading && tasksList.length === 0 && (

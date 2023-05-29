@@ -74,8 +74,6 @@ const daysHandler = async (req, res) => {
           res.status(500).json({ errorMessage: "Error" });
           return;
         }
-        console.log(fields);
-        console.log(files);
       });
       res.status(200).json({ just: "wait" });
       break;
