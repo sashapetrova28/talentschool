@@ -55,30 +55,7 @@ const mainAnswerHandler = async (req, res) => {
             files: path,
           });
         }
-        const answer = await database("accepted_tasks").where({
-          task_id: id,
-        });
-
-        const new_id = await database("task_messages")
-          .returning("id")
-          .insert({
-            task_id: id,
-            user_id: user[0].id,
-            message: fields.message,
-            files: JSON.stringify(path),
-            answer_id: answer[0].id,
-          });
-        await database("accepted_tasks")
-          .update({ status: "check" })
-          .where({ task_id: id, user_id: user[0].id });
-
-        res.status(200).json({
-          id: new_id[0].id,
-          user_id: user[0].id,
-          task_id: id,
-          message: fields.message,
-          files: path,
-        });
+        return;
       });
     default:
       res.setHeader("Allow", ["GET", "POST"]);

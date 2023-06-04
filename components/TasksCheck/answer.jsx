@@ -16,7 +16,6 @@ export const Answer = ({ opened, setOpened, task }) => {
   const [taskStatus, setTaskStatus] = useState("check");
 
   const [files, setFiles] = useState([]);
-
   useEffect(() => {
     if (task.task) {
       axios
@@ -43,10 +42,10 @@ export const Answer = ({ opened, setOpened, task }) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-      : theme.colorScheme === "dark"
-      ? theme.colors.dark[0]
-      : theme.colors.gray[7];
+        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+        : theme.colorScheme === "dark"
+          ? theme.colors.dark[0]
+          : theme.colors.gray[7];
   };
 
   const FileUploadIcon = ({ status, ...props }) => {
@@ -72,7 +71,7 @@ export const Answer = ({ opened, setOpened, task }) => {
       "status",
       e?.target.value === "Доработать" ? "waiting" : "ready"
     );
-    body.append("status", denyButton.innerText == denyText ? "wait" : "check");
+    body.append("status", denyButton.innerText == denyText ? "waiting" : "check");
 
     setTaskStatus(e?.target.value === "Доработать" ? "waiting" : "ready");
     if (files) {
@@ -80,10 +79,9 @@ export const Answer = ({ opened, setOpened, task }) => {
         body.append(
           `file_${index}`,
           files[index],
-          `task_${nanoid()}.${
-            files[index].path.split(".")[
-              files[index].path.split(".").length - 1
-            ]
+          `task_${nanoid()}.${files[index].path.split(".")[
+          files[index].path.split(".").length - 1
+          ]
           }`
         );
       }
@@ -101,11 +99,10 @@ export const Answer = ({ opened, setOpened, task }) => {
           icon: <Check size={18} />,
         });
         setFiles([]);
-        setChat([...chat, res.data]);
         setOpened(false);
       })
-      .catch((error) => {})
-      .finally(() => {});
+      .catch((error) => { })
+      .finally(() => { });
   };
 
   const deviationMessage = () => {
@@ -132,8 +129,8 @@ export const Answer = ({ opened, setOpened, task }) => {
             {taskStatus === "check"
               ? "Ожидает проверки"
               : taskStatus === "waiting"
-              ? "На доработке"
-              : "Готово"}
+                ? "На доработке"
+                : "Готово"}
           </Text>
           <Text color="orange" weight={500} size="lg">
             Общение с талантом{" "}
@@ -148,9 +145,8 @@ export const Answer = ({ opened, setOpened, task }) => {
             {chat.map((message) => {
               return (
                 <div
-                  className={`${styles.message} ${
-                    message.answer_id ? styles.you : styles.interlocutor
-                  }`}
+                  className={`${styles.message} ${message.answer_id ? styles.you : styles.interlocutor
+                    }`}
                   key={message.id}
                 >
                   <Text size="sm">
@@ -160,7 +156,7 @@ export const Answer = ({ opened, setOpened, task }) => {
                     :
                   </Text>
                   <Text size="md" weight={500}></Text>
-                  {message.answer_id ? (
+                  {!message.answer_id ? (
                     <>
                       {message.message}
 
@@ -169,11 +165,11 @@ export const Answer = ({ opened, setOpened, task }) => {
                         download
                         href={`${window?.location?.origin}/${message?.files[0]}`}
                       >
-                        скачать файл{" "}
+                        Скачать файл{" "}
                       </a>
                     </>
                   ) : (
-                    <>{message.message}</>
+                    <p>{message.answer_id && message.message}</p>
                   )}
                 </div>
               );

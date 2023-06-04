@@ -31,7 +31,6 @@ export const TasksCheck = () => {
       .get("/to_check")
       .then((res) => {
         setTasksList(res.data);
-        console.log(res.data);
         let arr = Array.from(
           new Set(res.data.map((e) => e.day).map((e) => e.course_id))
         );
@@ -53,7 +52,6 @@ export const TasksCheck = () => {
   function handleFilter(key, value) {
     setFilter((prev) => {
       const some = prev.filter((prevf) => !prevf[key]?.name?.match(value));
-      console.log(some);
       return prev;
     });
   }
@@ -64,7 +62,6 @@ export const TasksCheck = () => {
     const filtered = tasksList.filter((item) => {
       return item.day.name.match(value);
     });
-    console.log(filtered);
     setFilter(filtered);
   };
   return (
@@ -125,8 +122,6 @@ export const TasksCheck = () => {
           <tr>
             <th>День</th>
             <th>Задание</th>
-            {/* <th>Талант</th>
-            <th>Email таланта</th> */}
             <th>Фамилия, Имя</th>
             <th>Действия</th>
           </tr>

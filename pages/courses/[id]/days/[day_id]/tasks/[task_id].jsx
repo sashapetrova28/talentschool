@@ -45,18 +45,18 @@ export default function Task({ task, day, course, task_status, messages }) {
       .then((res) => {
         router.replace(router.asPath);
       })
-      .catch((error) => {})
-      .finally(() => {});
+      .catch((error) => { })
+      .finally(() => { });
   };
 
   const getIconColor = (status, theme) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-      : theme.colorScheme === "dark"
-      ? theme.colors.dark[0]
-      : theme.colors.gray[7];
+        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+        : theme.colorScheme === "dark"
+          ? theme.colors.dark[0]
+          : theme.colors.gray[7];
   };
 
   const FileUploadIcon = ({ status, ...props }) => {
@@ -114,10 +114,9 @@ export default function Task({ task, day, course, task_status, messages }) {
         setFiles([]);
         setChat([...chat, res.data]);
       })
-      .catch((error) => {})
-      .finally(() => {});
+      .catch((error) => { })
+      .finally(() => { });
   };
-  console.log(task);
   return (
     <>
       <Head>
@@ -182,15 +181,11 @@ export default function Task({ task, day, course, task_status, messages }) {
                 {chat.map((message) => {
                   return (
                     <div
-                      className={`${styles.message} ${
-                        message.answer_id ? styles.interlocutor : styles.you
-                      }`}
+                      className={`${styles.message} ${message.answer_id ? styles.interlocutor : styles.you
+                        }`}
                       key={message.id}
                     >
-                      <Text size="md" weight={500}>
-                        {message.message}
-                      </Text>
-                      {
+                      {message?.files[0] ? (
                         <>
                           <Text
                             key={message.id}
@@ -200,11 +195,15 @@ export default function Task({ task, day, course, task_status, messages }) {
                             download
                             href={`/${message?.files[0]}`}
                           >
-                            Скачать файл
+                            {message.message} Скачать файл
                           </Text>
                           <Space h="sm" />
                         </>
-                      }
+                      ) : (
+                        <Text size="md" weight={500}>
+                          {message.message}
+                        </Text>
+                      )}
                     </div>
                   );
                 })}
@@ -222,7 +221,7 @@ export default function Task({ task, day, course, task_status, messages }) {
                       </Text>
                     )}
 
-                    <Input placeholder="Введите ваше сообщение" name="user-message" />
+                    <Input placeholder="Введите сообщение" name="user-message" />
                     <Dropzone
                       onDrop={(files) => {
                         setFiles(files);
