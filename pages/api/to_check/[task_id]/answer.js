@@ -70,6 +70,7 @@ const mainAnswerHandler = async (req, res) => {
             .insert({
               task_id: task_id,
               user_id: fields.user_id,
+              date: JSON.stringify(new Date()),
               message: fields.message,
               files: JSON.stringify(path),
               answer_id: user[0].id,

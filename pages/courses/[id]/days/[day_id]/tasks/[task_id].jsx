@@ -45,18 +45,18 @@ export default function Task({ task, day, course, task_status, messages }) {
       .then((res) => {
         router.replace(router.asPath);
       })
-      .catch((error) => { })
-      .finally(() => { });
+      .catch((error) => {})
+      .finally(() => {});
   };
 
   const getIconColor = (status, theme) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-        : theme.colorScheme === "dark"
-          ? theme.colors.dark[0]
-          : theme.colors.gray[7];
+      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+      : theme.colorScheme === "dark"
+      ? theme.colors.dark[0]
+      : theme.colors.gray[7];
   };
 
   const FileUploadIcon = ({ status, ...props }) => {
@@ -114,8 +114,8 @@ export default function Task({ task, day, course, task_status, messages }) {
         setFiles([]);
         setChat([...chat, res.data]);
       })
-      .catch((error) => { })
-      .finally(() => { });
+      .catch((error) => {})
+      .finally(() => {});
   };
   return (
     <>
@@ -178,35 +178,39 @@ export default function Task({ task, day, course, task_status, messages }) {
               </Text>
 
               <div className={styles.messages}>
-                {chat.map((message) => {
-                  return (
-                    <div
-                      className={`${styles.message} ${message.answer_id ? styles.interlocutor : styles.you
+                {chat
+                  .sort((prev, next) => Number(prev.id) - Number(next.id))
+                  .map((message) => {
+                    return (
+                      <div
+                        className={`${styles.message} ${
+                          message.answer_id ? styles.interlocutor : styles.you
                         }`}
-                      key={message.id}
-                    >
-                      {message?.files[0] ? (
-                        <>
-                          <Text
-                            key={message.id}
-                            variant="link"
-                            component="a"
-                            size="sm"
-                            download
-                            href={`/${message?.files[0]}`}
-                          >
-                            {message.message} Скачать файл
+                        key={message.id}
+                      >
+                        {message?.files[0] ? (
+                          <>
+                            {message.message}{" "}
+                            <Text
+                              key={message.id}
+                              variant="link"
+                              component="a"
+                              size="sm"
+                              download
+                              href={`/${message?.files[0]}`}
+                            >
+                              Скачать файл
+                            </Text>
+                            <Space h="sm" />
+                          </>
+                        ) : (
+                          <Text size="md" weight={500}>
+                            {message.message}
                           </Text>
-                          <Space h="sm" />
-                        </>
-                      ) : (
-                        <Text size="md" weight={500}>
-                          {message.message}
-                        </Text>
-                      )}
-                    </div>
-                  );
-                })}
+                        )}
+                      </div>
+                    );
+                  })}
               </div>
               {task_status !== "ready" && (
                 <div>
@@ -221,7 +225,7 @@ export default function Task({ task, day, course, task_status, messages }) {
                       </Text>
                     )}
 
-                    <Input placeholder="Введите сообщение" name="user-message" />
+                    <Input placeholder="message" name="user-message" />
                     <Dropzone
                       onDrop={(files) => {
                         setFiles(files);

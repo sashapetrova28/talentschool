@@ -37,6 +37,7 @@ const mainAnswerHandler = async (req, res) => {
           const new_id = await database("task_messages")
             .returning("id")
             .insert({
+              date: JSON.stringify(new Date()),
               task_id: id,
               user_id: user[0].id,
               message: fields.message,

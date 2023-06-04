@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Center, Modal, Space, Text, useMantineTheme } from "@mantine/core";
+import { Center, Modal, Space, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { nanoid } from "nanoid";
-import { Check, Dental, File, Send, Upload, X } from "tabler-icons-react";
+import { Check } from "tabler-icons-react";
 import styles from "./messages.module.scss";
 import axios from "/utils/rest";
 
 export const Answer = ({ opened, setOpened, task }) => {
-  const theme = useMantineTheme();
-
   const [chatLoading, setChatLoading] = useState(false);
   const [chat, setChat] = useState([]);
 
@@ -38,28 +36,6 @@ export const Answer = ({ opened, setOpened, task }) => {
     }
   }, [task]);
 
-  const getIconColor = (status, theme) => {
-    return status.accepted
-      ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
-      : status.rejected
-        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-        : theme.colorScheme === "dark"
-          ? theme.colors.dark[0]
-          : theme.colors.gray[7];
-  };
-
-  const FileUploadIcon = ({ status, ...props }) => {
-    if (status.accepted) {
-      return <Upload {...props} />;
-    }
-
-    if (status.rejected) {
-      return <X {...props} />;
-    }
-
-    return <File {...props} />;
-  };
-
   const sendMessage = (e) => {
     e.preventDefault();
     const denyText = "Не принять";
@@ -71,24 +47,25 @@ export const Answer = ({ opened, setOpened, task }) => {
       "status",
       e?.target.value === "Доработать" ? "waiting" : "ready"
     );
-    body.append("status", denyButton.innerText == denyText ? "waiting" : "check");
-
+    body.append("status", denyButton.innerText == denyText ? "waiting" : "ready");
+    setTaskStatus(e?.target.value === "Доработать" ? "waiting" : "ready");
     setTaskStatus(e?.target.value === "Доработать" ? "waiting" : "ready");
     if (files) {
       for (let index in files) {
         body.append(
           `file_${index}`,
           files[index],
-          `task_${nanoid()}.${files[index].path.split(".")[
-          files[index].path.split(".").length - 1
-          ]
+          `task_${nanoid()}.${
+            files[index].path.split(".")[
+              files[index].path.split(".").length - 1
+            ]
           }`
         );
       }
     }
     axios
       .post(`/to_check/${task.task.id}/answer`, body)
-      .then((res) => {
+      .then(() => {
         e.target.reset();
         showNotification({
           title: "Сообщение отправлено",
@@ -101,16 +78,8 @@ export const Answer = ({ opened, setOpened, task }) => {
         setFiles([]);
         setOpened(false);
       })
-      .catch((error) => { })
-      .finally(() => { });
+      .catch(console.log);
   };
-
-  const deviationMessage = () => {
-    axios
-      .put(`/to_check/${task.task.id}/answer`, body)
-      .then(() => setOpened(false));
-  };
-
   return (
     <Modal
       opened={opened}
@@ -129,8 +98,8 @@ export const Answer = ({ opened, setOpened, task }) => {
             {taskStatus === "check"
               ? "Ожидает проверки"
               : taskStatus === "waiting"
-                ? "На доработке"
-                : "Готово"}
+              ? "На доработке"
+              : "Готово"}
           </Text>
           <Text color="orange" weight={500} size="lg">
             Общение с талантом{" "}
@@ -142,38 +111,41 @@ export const Answer = ({ opened, setOpened, task }) => {
       {!chatLoading && (
         <>
           <div className={styles.messages}>
-            {chat.map((message) => {
-              return (
-                <div
-                  className={`${styles.message} ${message.answer_id ? styles.you : styles.interlocutor
+            {chat
+              .sort((prev, next) => Number(prev.id) - Number(next.id))
+              .map((message) => {
+                return (
+                  <div
+                    className={`${styles.message} ${
+                      message.answer_id ? styles.you : styles.interlocutor
                     }`}
-                  key={message.id}
-                >
-                  <Text size="sm">
-                    {message.answer_id
-                      ? "Вы"
-                      : `Талант ${task.user.name} ${task.user.surname}`}
-                    :
-                  </Text>
-                  <Text size="md" weight={500}></Text>
-                  {!message.answer_id ? (
-                    <>
-                      {message.message}
+                    key={message.id}
+                  >
+                    <Text size="sm">
+                      {message.answer_id
+                        ? "Вы"
+                        : `Талант ${task.user.name} ${task.user.surname}`}
+                      :
+                    </Text>
+                    <Text size="md" weight={500}></Text>
+                    {!message.answer_id ? (
+                      <>
+                        {message.message}
 
-                      <a
-                        key={message.id}
-                        download
-                        href={`${window?.location?.origin}/${message?.files[0]}`}
-                      >
-                        Скачать файл{" "}
-                      </a>
-                    </>
-                  ) : (
-                    <p>{message.answer_id && message.message}</p>
-                  )}
-                </div>
-              );
-            })}
+                        <a
+                          key={message.id}
+                          download
+                          href={`${window?.location?.origin}/${message?.files[0]}`}
+                        >
+                          Скачать файл {" "}
+                        </a>
+                      </>
+                    ) : (
+                      <p>{message.answer_id && message.message}</p>
+                    )}
+                  </div>
+                );
+              })}
           </div>
           <div>
             <form onSubmit={sendMessage}>
