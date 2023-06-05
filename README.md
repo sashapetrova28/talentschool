@@ -7,6 +7,8 @@
 Frontend:
 - Next.js
 - TypeScript
+- SCSS
+- Mantine
 
 Backend:
 - Next.js
