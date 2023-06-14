@@ -1,14 +1,12 @@
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import styles from "../account/account.module.scss";
 
 import useUser from "/lib/useUser.js";
-import { MyAccount } from "/components/MyAccount";
-import { CoursesControl } from "/components/CoursesControl/Courses";
-import { UsersControl } from "/components/UsersControl";
-import { TasksCheck } from "/components/TasksCheck";
+const UsersControl = dynamic(() => import("/components/UsersControl"), {
+  ssr: false,
+});
 
-import { Tabs } from "@mantine/core";
-import { ListCheck, Users, ListDetails, User, Settings, Checks } from "tabler-icons-react";
 import Container from "react-bootstrap/Container";
 
 const Account = () => {
@@ -24,7 +22,9 @@ const Account = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>{user && user.status === "admin" && <UsersControl />}</Container>
+      <Container>
+        {user && user.status === "admin" && <UsersControl />}
+      </Container>
     </div>
   );
 };

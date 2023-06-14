@@ -5,11 +5,14 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.svg$/,
 
-      use: ['@svgr/webpack'],
+      use: ["@svgr/webpack"],
     });
 
     return config;
   },
-}
+  env: {
+    NEXT_PUBLIC_SECRET_KEY: "Ta1ent12345",
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "/utils/rest";
-
 import { Space } from "@mantine/core";
 import Container from "react-bootstrap/Container";
 import { FolderPlus } from "tabler-icons-react";
-
 import { AddCourse } from "./addCourse";
 import { DeleteCourse } from "./deleteCourse";
 import { EditCourse } from "./editCourse";
 import { Main } from "./main";
 import { NextLink } from "@mantine/next";
 
-export const CoursesControl = () => {
+const CoursesControl = () => {
 	const [addCourseModalOpened, setAddCourseModalOpened] = useState(false);
 	const [deleteCourseModalOpened, setDeleteCourseModalOpened] = useState(false);
 	const [editCourseModalOpened, setEditCourseModalOpened] = useState(false);
@@ -32,12 +30,13 @@ export const CoursesControl = () => {
 				setCoursesList(res.data);
 			})
 			.catch((error) => {
+				console.error(error);
 				setCoursesListError("Ошибка получения списка курсов");
 			})
 			.finally(() => {
 				setCoursesLoading(false);
 			});
-	}, []);
+	}, [setCoursesList, setCoursesLoading, setCoursesListError]);
 
 	const pushCourse = (course) => {
 		setCoursesList([course, ...coursesList]);
@@ -137,3 +136,5 @@ export const CoursesControl = () => {
 		</Container>
 	);
 };
+
+export default CoursesControl;

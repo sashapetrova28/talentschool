@@ -9,13 +9,13 @@ import useUser from "/lib/useUser.js";
 
 import { Card, Input, InputWrapper, Button, Center, Text } from "@mantine/core";
 import { At, Lock } from "tabler-icons-react";
-
+import CryptoJS from "crypto-js";
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY;
 const Auth = () => {
   const { mutateUser } = useUser({
     redirectTo: "/",
     redirectIfFound: true,
   });
-
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [error, setError] = useState("");
@@ -35,10 +35,14 @@ const Auth = () => {
       return;
     }
     setAuthLoading(true);
+    const password = CryptoJS.SHA256(
+      e.target.password.value,
+      SECRET_KEY
+    ).toString();
     axios
       .post("/auth", {
         email: e.target.email.value,
-        password: e.target.password.value,
+        password: password,
       })
       .then((res) => {
         if (res.status === 200) {
@@ -72,7 +76,13 @@ const Auth = () => {
         </div>
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <form onSubmit={auth}>
-            <InputWrapper label="Почта" required style={{ marginTop: "20px" }} size="md" error={emailError}>
+            <InputWrapper
+              label="Почта"
+              required
+              style={{ marginTop: "20px" }}
+              size="md"
+              error={emailError}
+            >
               <Input
                 type="email"
                 name="email"
@@ -82,8 +92,21 @@ const Auth = () => {
                 placeholder="Ваша электронная почта"
               />
             </InputWrapper>
-            <InputWrapper label="Пароль" required style={{ marginTop: "20px" }} size="md" error={passwordError}>
-              <Input type="password" name="password" radius="lg" size="lg" icon={<Lock />} placeholder="Ваш пароль" />
+            <InputWrapper
+              label="Пароль"
+              required
+              style={{ marginTop: "20px" }}
+              size="md"
+              error={passwordError}
+            >
+              <Input
+                type="password"
+                name="password"
+                radius="lg"
+                size="lg"
+                icon={<Lock />}
+                placeholder="Ваш пароль"
+              />
             </InputWrapper>
             <Center style={{ marginTop: "20px" }}>
               <Button

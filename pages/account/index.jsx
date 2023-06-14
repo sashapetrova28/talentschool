@@ -2,7 +2,14 @@ import Head from "next/head";
 import styles from "./account.module.scss";
 
 import useUser from "/lib/useUser.js";
-import { CoursesControl } from "/components/CoursesControl/Courses";
+import dynamic from "next/dynamic";
+
+const CoursesControl = dynamic(
+  () => import("../../components/CoursesControl/Courses/index.jsx"),
+  {
+    ssr: false,
+  }
+);
 
 import Container from "react-bootstrap/Container";
 

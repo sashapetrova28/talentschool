@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "/utils/rest";
 
-import { Space, Loader, Title, Button, Center, Table, Stack } from "@mantine/core";
+import { Space, Loader, Button, Center, Table } from "@mantine/core";
 import { Plus, TrashX, Edit, UserPlus } from "tabler-icons-react";
 import Container from "react-bootstrap/Container";
 
@@ -9,7 +9,7 @@ import { AddUser } from "./addUser";
 import { DeleteUser } from "./deleteUser";
 import { EditUser } from "./editUser";
 
-export const UsersControl = () => {
+const UsersControl = () => {
   const [addUserModalOpened, setAddUserModalOpened] = useState(false);
   const [deleteUserModalOpened, setDeleteUserModalOpened] = useState(false);
   const [editUserModalOpened, setEditUserModalOpened] = useState(false);
@@ -34,7 +34,9 @@ export const UsersControl = () => {
   };
 
   const updateUser = (updatedUser) => {
-    const update_index = usersList.findIndex((user) => user.id === updatedUser.id);
+    const update_index = usersList.findIndex(
+      (user) => user.id === updatedUser.id
+    );
     if (update_index !== -1) {
       usersList[update_index] = updatedUser;
       setUsersList(usersList);
@@ -58,11 +60,13 @@ export const UsersControl = () => {
   return (
     <Container>
       <Space h="xl" />
-      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600", display: "inline-block" }}>Пользователи</div>
+      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>
+        Пользователи
+      </div>
       {!addUserModalOpened && (
         <>
           {" "}
-
+          
           <div style={{display: "inline-block"}}>
             <UserPlus
               style={{ cursor: "pointer", marginLeft: "45px" }}
@@ -71,9 +75,13 @@ export const UsersControl = () => {
               onClick={() => setAddUserModalOpened(true)}
             />
           </div>
-
           <Space h="xl" />
-          <Table verticalSpacing="sm" striped highlightOnHover style={{ color: "#036459", fontWeight: "600" }}>
+          <Table
+            verticalSpacing="sm"
+            striped
+            highlightOnHover
+            style={{ color: "#036459", fontWeight: "600" }}
+          >
             <thead>
               <tr>
                 <th>Роль</th>
@@ -89,7 +97,11 @@ export const UsersControl = () => {
                   return (
                     <tr key={user.id}>
                       <td>
-                        {user.status === "user" ? "Ученик" : user.status === "curator" ? "Куратор" : "Администратор"}
+                        {user.status === "user"
+                          ? "Ученик"
+                          : user.status === "curator"
+                            ? "Куратор"
+                            : "Администратор"}
                       </td>
                       <td>
                         {user.surname} {user.name}
@@ -123,14 +135,18 @@ export const UsersControl = () => {
           </Table>
           {usersLoading && (
             <Center>
-              <Loader color="cyan" variant="dots" />
+              <Loader color="orange" variant="bars" />
             </Center>
           )}
-          {!usersLoading && usersList.length === 0 && <Center>Список пользователей пуст</Center>}
+          {!usersLoading && usersList.length === 0 && (
+            <Center>Список пользователей пуст</Center>
+          )}
           <Center>{usersListError}</Center>
         </>
       )}
-      {addUserModalOpened && <AddUser setOpened={setAddUserModalOpened} pushUser={pushUser} />}
+      {addUserModalOpened && (
+        <AddUser setOpened={setAddUserModalOpened} pushUser={pushUser} />
+      )}
       <DeleteUser
         opened={deleteUserModalOpened}
         setOpened={setDeleteUserModalOpened}
@@ -146,3 +162,5 @@ export const UsersControl = () => {
     </Container>
   );
 };
+
+export default UsersControl;

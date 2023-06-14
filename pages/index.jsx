@@ -13,17 +13,10 @@ import {
   Space,
   Image,
   Card,
-  Group,
   RingProgress,
-  Button,
-  useMantineTheme,
-  Loader,
-  Progress,
 } from "@mantine/core";
 
 export default function Home({ courses }) {
-  const theme = useMantineTheme();
-
   return (
     <div className={styles.container}>
       <Head>
@@ -33,7 +26,9 @@ export default function Home({ courses }) {
       </Head>
       <Container>
         <Space h="xl" />
-        <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>Мои курсы</div>
+        <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>
+          Мои курсы
+        </div>
         <Space h="lg" />
         <SimpleGrid cols={3}>
           {courses.map(({ course, tasks, tasks_ready }) => {
@@ -51,9 +46,23 @@ export default function Home({ courses }) {
                     boxShadow: "0px 2px 20px #BBBBBB",
                   }}
                 >
-                  <div style={{ fontSize: "15px", fontWeight: "600", color: "#036459" }}>{course.name}</div>
+                  <div
+                    style={{
+                      fontSize: "15px",
+                      fontWeight: "600",
+                      color: "#036459",
+                    }}
+                  >
+                    {course.name}
+                  </div>
                   <div className="d-flex align-items-center p-2">
-                    <Image radius={100} src={"/" + course.image} height={130} width={130} alt="Школа талантов" />
+                    <Image
+                      radius={100}
+                      src={"/" + course.image}
+                      height={130}
+                      width={130}
+                      alt="Школа талантов"
+                    />
                     <div style={{ paddingLeft: "20px" }}>
                       <RingProgress
                         size={70}
@@ -63,13 +72,34 @@ export default function Home({ courses }) {
                             {Math.round((tasks_ready / tasks) * 100)}%
                           </Text>
                         }
-                        sections={[{ value: (tasks_ready / tasks) * 100, color: "#1FBEAC" }]}
+                        sections={[
+                          {
+                            value: (tasks_ready / tasks) * 100,
+                            color: "#1FBEAC",
+                          },
+                        ]}
                       />
-                      <div style={{ fontSize: "14px", color: "#036459", paddingLeft: "10px" }}>
-                        <span style={{ color: "#1FBEAC" }}>{tasks_ready}</span> выполнено
+                      <div
+                        style={{
+                          fontSize: "14px",
+                          color: "#036459",
+                          paddingLeft: "10px",
+                        }}
+                      >
+                        <span style={{ color: "#1FBEAC" }}>{tasks_ready}</span>{" "}
+                        выполнено
                       </div>
-                      <div style={{ fontSize: "14px", color: "#036459", paddingLeft: "10px" }}>
-                        <span style={{ color: "#1FBEAC" }}>{tasks - tasks_ready}</span> осталось
+                      <div
+                        style={{
+                          fontSize: "14px",
+                          color: "#036459",
+                          paddingLeft: "10px",
+                        }}
+                      >
+                        <span style={{ color: "#1FBEAC" }}>
+                          {tasks - tasks_ready}
+                        </span>{" "}
+                        осталось
                       </div>
                     </div>
                   </div>
@@ -83,28 +113,31 @@ export default function Home({ courses }) {
   );
 }
 
-export const getServerSideProps = withIronSessionSsr(async function getServerSideProps({ req }) {
-  if (!req.cookies["user-cookies"]) {
+export const getServerSideProps = withIronSessionSsr(
+  async function getServerSideProps({ req }) {
+    if (!req.cookies["user-cookies"]) {
+      return {
+        redirect: {
+          destination: "/auth",
+          permanent: false,
+        },
+      };
+    }
+    const response = await axios.get(`/public/courses`, {
+      headers: {
+        Cookie: `user-cookies=${req.cookies["user-cookies"]};`,
+      },
+    });
+    let courses = [];
+    if (response.status === 200) {
+      courses = response.data;
+    }
     return {
-      redirect: {
-        destination: "/auth",
-        permanent: false,
+      props: {
+        courses: courses,
+        user: req.session.user,
       },
     };
-  }
-  const response = await axios.get(`/public/courses`, {
-    headers: {
-      Cookie: `user-cookies=${req.cookies["user-cookies"]};`,
-    },
-  });
-  let courses = [];
-  if (response.status === 200) {
-    courses = response.data;
-  }
-  return {
-    props: {
-      courses: courses,
-      user: req.session.user,
-    },
-  };
-}, sessionOptions);
+  },
+  sessionOptions
+);
