@@ -1,16 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "/utils/rest";
 import useUser from "/lib/useUser";
-import {
-  Space,
-  Loader,
-  NativeSelect,
-  Title,
-  Button,
-  Center,
-  Table,
-} from "@mantine/core";
-import { MessageCircle } from "tabler-icons-react";
+import { Space, Loader, NativeSelect, Center, Table } from "@mantine/core";
 import { Answer } from "./answer";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -25,45 +16,36 @@ export const TasksCheck = () => {
   const [tasksList, setTasksList] = useState([]);
   const [tasksListError, setTasksListError] = useState("");
   const [filter, setFilter] = useState([]);
-  const [coursesNames, setCoursesNames] = useState({});
+
   useEffect(() => {
     axios
       .get("/to_check")
       .then((res) => {
         setTasksList(res.data);
-        let arr = Array.from(
-          new Set(res.data.map((e) => e.day).map((e) => e.course_id))
-        );
-        const obj = {};
-        arr.map((course_id) => {
-          axios.get(`/courses/${course_id}`).then((res) => {
-            obj[`${course_id}`] = res.data.name;
-            setCoursesNames(obj);
-          });
-        });
+        setFilter(res.data);
       })
-      .catch((error) => {
+      .catch(() => {
         setTasksListError("Ошибка получения списка курсов");
       })
       .finally(() => {
         setTasksLoading(false);
       });
   }, [answerModalOpened, user]);
-  function handleFilter(key, value) {
-    setFilter((prev) => {
-      const some = prev.filter((prevf) => !prevf[key]?.name?.match(value));
-      return prev;
-    });
-  }
-  const filterByDay = (value) => {
-    if (value == "Не выбрано") {
-      return setFilter(tasksList);
-    }
-    const filtered = tasksList.filter((item) => {
-      return item.day.name.match(value);
-    });
-    setFilter(filtered);
-  };
+
+  const handleFilter = useCallback(
+    (key, value) => {
+      if (value == "Не выбрано") {
+        setFilter(tasksList);
+        return;
+      }
+      const newArr = filter.filter((task) => {
+        return value.match(task[key].name);
+      });
+      setFilter(newArr);
+    },
+    [tasksList, filter]
+  );
+
   return (
     <Container>
       <Space h="xl" />
@@ -75,11 +57,7 @@ export const TasksCheck = () => {
         <Col md={4}>
           <NativeSelect
             data={["Не выбрано"].concat(
-              Array.from(
-                new Set(
-                  tasksList?.map((e) => coursesNames[e.day.course_id] || "")
-                )
-              )
+              Array.from(new Set(tasksList?.map((e) => e.course.name)))
             )}
             onChange={(event) =>
               handleFilter("course", event.currentTarget.value)
@@ -110,7 +88,7 @@ export const TasksCheck = () => {
               Array.from(new Set(tasksList?.map((e) => e.day.name)))
             )}
             onChange={(event) => {
-              filterByDay(event.currentTarget.value);
+              handleFilter("day", event.currentTarget.value);
             }}
             description="Выберите день"
             variant="filled"
@@ -122,13 +100,15 @@ export const TasksCheck = () => {
           <tr>
             <th>День</th>
             <th>Задание</th>
+            {/* <th>Талант</th>
+            <th>Email таланта</th> */}
             <th>Фамилия, Имя</th>
             <th>Действия</th>
           </tr>
         </thead>
         <tbody>
           {!tasksLoading &&
-            tasksList?.map((task, i) => {
+            filter?.map((task) => {
               return (
                 <tr
                   key={
@@ -147,17 +127,6 @@ export const TasksCheck = () => {
                   <td>{`${task.user.name} ${task.user.surname}`}</td>
                   {/* <td>{task.user.email}</td> */}
                   <td>
-                    {/* <Button
-                          variant="outline"
-                          color="orange"
-                          leftIcon={<MessageCircle />}
-                          onClick={() => {
-                            setTask(task);
-                            setAnswerModalOpened(true);
-                          }}
-                        >
-                          Просмотреть
-                        </Button> */}
                     <button
                       style={{
                         fontSize: "16px",

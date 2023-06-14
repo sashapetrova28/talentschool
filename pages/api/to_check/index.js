@@ -19,9 +19,17 @@ const tasksCheckHandler = async (req, res) => {
 				const user = users.find((user) => user.id == to_check_el.user_id);
 				const task = tasks.find((task) => task.id == to_check_el.task_id);
 				const day = days.find((day) => day.id == task.day_id);
+				const course = await await database
+					.select("*")
+					.from("courses")
+					.where({ id: day.course_id })
+					.limit(1);
+
 				to_check_ready.push({
 					day,
 					user,
+					course: course[0],
+
 					task: {
 						...task,
 						status: "check",
