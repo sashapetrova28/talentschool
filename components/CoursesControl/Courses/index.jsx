@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "/utils/rest";
 import { Space } from "@mantine/core";
 import Container from "react-bootstrap/Container";
@@ -8,6 +8,7 @@ import { DeleteCourse } from "./deleteCourse";
 import { EditCourse } from "./editCourse";
 import { Main } from "./main";
 import { NextLink } from "@mantine/next";
+import { useRouter } from "next/router";
 
 const CoursesControl = () => {
 	const [addCourseModalOpened, setAddCourseModalOpened] = useState(false);
@@ -50,6 +51,7 @@ const CoursesControl = () => {
 		}
 	};
 
+	const router = useRouter();
 	const updateCourse = (updatedCourse) => {
 		const update_index = coursesList.findIndex(
 			(course) => course.id === updatedCourse.id
@@ -61,7 +63,19 @@ const CoursesControl = () => {
 		]);
 		setEditCourseModalOpened(false);
 	};
+	useEffect(() => {
+		const isAccount = router.pathname === "/account";
+		const isEditMode = router.query?.edit === "true";
+		if (isAccount && isEditMode) {
+			setAddCourseModalOpened(true);
+		} else {
+			setAddCourseModalOpened(false);
+		}
+	}, [router]);
 
+	const toEditCourse = useCallback(() => {
+		router.push("?edit=true");
+	}, [router]);
 	return (
 		<Container>
 			<Space h="xl" />
@@ -87,7 +101,7 @@ const CoursesControl = () => {
 								style={{ cursor: "pointer", marginLeft: "45px" }}
 								size={32}
 								color="#1FBEAC"
-								onClick={() => setAddCourseModalOpened(true)}
+								onClick={toEditCourse}
 							/>
 						)}
 				</div>

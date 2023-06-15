@@ -16,6 +16,13 @@ import {
   RingProgress,
 } from "@mantine/core";
 
+const calcStateOfCourse = (tasks_ready, tasks) => {
+  const readyTasks = parseInt(tasks_ready);
+  const allTasks = parseInt(tasks);
+  if (isNaN(allTasks) || isNaN(readyTasks)) return 0;
+  return Math.round((tasks_ready / tasks) * 100);
+};
+
 export default function Home({ courses }) {
   return (
     <div className={styles.container}>
@@ -69,7 +76,7 @@ export default function Home({ courses }) {
                         thickness={6}
                         label={
                           <Text size="xs" align="center">
-                            {Math.round((tasks_ready / tasks) * 100)}%
+                            {calcStateOfCourse(tasks_ready, tasks)}%
                           </Text>
                         }
                         sections={[
