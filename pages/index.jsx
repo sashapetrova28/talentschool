@@ -17,10 +17,11 @@ import {
 } from "@mantine/core";
 
 const calcStateOfCourse = (tasks_ready, tasks) => {
+  if (!tasks_ready || !tasks) return 0;
   const readyTasks = parseInt(tasks_ready);
   const allTasks = parseInt(tasks);
   if (isNaN(allTasks) || isNaN(readyTasks)) return 0;
-  return Math.round((tasks_ready / tasks) * 100);
+  return Math.round((readyTasks / allTasks) * 100);
 };
 
 export default function Home({ courses }) {
@@ -81,7 +82,7 @@ export default function Home({ courses }) {
                         }
                         sections={[
                           {
-                            value: (tasks_ready / tasks) * 100,
+                            value: calcStateOfCourse(tasks_ready, tasks),
                             color: "#1FBEAC",
                           },
                         ]}

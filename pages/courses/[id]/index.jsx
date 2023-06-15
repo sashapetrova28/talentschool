@@ -26,7 +26,23 @@ export default function Days({ course, days, tasks, tasks_ready }) {
 	const [activeTab, setActiveTab] = useState("first");
 	const secondaryColor =
 		theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
+	const reduceTasks = (first, second) => {
+		if (!first || !second) return 0;
+		const intFirst = parseInt(first);
+		const intSecond = parseInt(second);
+		const invalidFirst = isNaN(intFirst);
+		const invalidSecond = isNaN(intSecond);
+		if (invalidFirst || invalidSecond) return 0;
+		return intFirst - intSecond;
+	};
+	const calcStateOfCourse = (tasks_ready, tasks) => {
+		if (!tasks_ready || !tasks) return 0;
+		const readyTasks = parseInt(tasks_ready);
+		const allTasks = parseInt(tasks);
 
+		if (isNaN(allTasks) || isNaN(readyTasks)) return 0;
+		return Math.round((readyTasks / allTasks) * 100);
+	};
 	return (
 		<>
 			<Head>
@@ -117,11 +133,14 @@ export default function Days({ course, days, tasks, tasks_ready }) {
 								<RingProgress
 									label={
 										<Text align="center">
-											{Math.round((tasks_ready / tasks) * 100)}%
+											{`${calcStateOfCourse(tasks_ready, tasks)}%`}
 										</Text>
 									}
 									sections={[
-										{ value: (tasks_ready / tasks) * 100, color: "#1FBEAC" },
+										{
+											value: calcStateOfCourse(tasks_ready, tasks),
+											color: "#1FBEAC",
+										},
 									]}
 								/>
 								<div style={{ paddingLeft: "20px", fontWeight: "600" }}>
@@ -143,7 +162,7 @@ export default function Days({ course, days, tasks, tasks_ready }) {
 										}}
 									>
 										<span style={{ color: "#1FBEAC" }}>
-											{tasks - tasks_ready}
+											{reduceTasks(tasks, tasks_ready)}
 										</span>{" "}
 										осталось
 									</div>

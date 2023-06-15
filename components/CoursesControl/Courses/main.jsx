@@ -9,10 +9,9 @@ import {
   Button,
   Center,
   Image,
-  Table,
-  Stack,
 } from "@mantine/core";
-import { Plus, TrashX, Edit, ListNumbers, List, Car } from "tabler-icons-react";
+import { TrashX } from "tabler-icons-react";
+import { useRouter } from "next/router";
 
 export const Main = ({
   setAddCourseModalOpened,
@@ -33,8 +32,8 @@ export const Main = ({
         .get(`/courses/${course.id}/days`)
         .then((res) => setDaysCount((prev) => [...prev, res.data.length]));
     });
-  }, [ ]);
-
+  }, []);
+  const router = useRouter();
   return (
     <div>
       <Space h="xl" />
@@ -45,6 +44,7 @@ export const Main = ({
               <Card
                 onClick={() => {
                   setEditCourseId(course.id);
+                  router.push("?edit=true");
                   setEditCourseModalOpened(true);
                 }}
                 key={course.id}
@@ -154,7 +154,7 @@ export const Main = ({
       </SimpleGrid>
       {coursesLoading && (
         <Center>
-          <Loader color="cyan" variant="dots" />
+          <Loader color="orange" variant="bars" />
         </Center>
       )}
       {!coursesLoading && coursesList.length === 0 && (

@@ -41,10 +41,10 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-      : theme.colorScheme === "dark"
-      ? theme.colors.dark[0]
-      : theme.colors.gray[7];
+        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+        : theme.colorScheme === "dark"
+          ? theme.colors.dark[0]
+          : theme.colors.gray[7];
   };
 
   const ImageUploadIcon = ({ status, ...props }) => {
@@ -99,7 +99,7 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
     const youtubeRegExp =
       /(?:https?:\/\/)?(?:www\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/shorts\/|\/)(\w+)/;
     const video_id = youtubeRegExp.exec(e.target.video.value);
-    body.append("video", "https://www.youtube.com/embed/" + video_id[1]);
+    body.append("video", "https://www.youtube.com/embed/" + video_id?.at(1));
     if (image && image.length) {
       body.append("image", image, `day_${nanoid()}`);
     }

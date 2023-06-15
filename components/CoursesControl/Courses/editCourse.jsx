@@ -9,19 +9,20 @@ import {
 	Tabs,
 	Text,
 	useMantineTheme,
-} from "@mantine/core"
-import RichTextEditor from '/components/RichText'
-import styles from './coursesControl.module.scss'
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone"
-import { showNotification } from "@mantine/notifications"
-import { nanoid } from "nanoid"
-import Image from "next/image"
-import { useEffect, useState } from "react"
-import Col from "react-bootstrap/Col"
-import Row from "react-bootstrap/Row"
-import { Check, Error404, Photo, Upload, X } from "tabler-icons-react"
-import { Days } from "../Days"
-import axios from "/utils/rest"
+} from "@mantine/core";
+import RichTextEditor from "/components/RichText";
+import styles from "./coursesControl.module.scss";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { showNotification } from "@mantine/notifications";
+import { nanoid } from "nanoid";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import { Check, Error404, Photo, Upload, X } from "tabler-icons-react";
+import { Days } from "../Days";
+import axios from "/utils/rest";
+import { useRouter } from "next/router";
 
 export const EditCourse = ({
 	opened,
@@ -29,130 +30,135 @@ export const EditCourse = ({
 	updateCoursesList,
 	editCourseId,
 }) => {
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 
-	const [editError, setEditError] = useState("")
-	const [nameError, setNameError] = useState("")
+	const [editError, setEditError] = useState("");
+	const [nameError, setNameError] = useState("");
 
-	const [nameDefaultValue, setNameDefaultValue] = useState("")
+	const [nameDefaultValue, setNameDefaultValue] = useState("");
 
-	const [description, setDescription] = useState("")
-	const [image, setImage] = useState("")
-	const [createObjectURL, setCreateObjectURL] = useState(null)
+	const [description, setDescription] = useState("");
+	const [image, setImage] = useState("");
+	const [createObjectURL, setCreateObjectURL] = useState(null);
 
-	const [users, setUsers] = useState([])
-	const [selectedUsers, setSelectedUsers] = useState([])
+	const [users, setUsers] = useState([]);
+	const [selectedUsers, setSelectedUsers] = useState([]);
 
-	const theme = useMantineTheme()
-
+	const theme = useMantineTheme();
+	const router = useRouter();
 	useEffect(() => {
 		if (opened) {
 			axios
 				.get("/users")
 				.then((res) => {
-					setUsers(res.data)
+					setUsers(res.data);
 				})
 				.catch((error) => {
-					console.log(error)
+					console.log(error);
 				})
-				.finally(() => {})
+				.finally(() => { });
 		}
-	}, [opened])
+	}, [opened]);
 
 	useEffect(() => {
 		if (editCourseId !== -1) {
-			setDescription("")
-			setSelectedUsers([])
-			setLoading(true)
+			setDescription("");
+			setSelectedUsers([]);
+			setLoading(true);
 			axios
 				.get(`/courses/${editCourseId}`)
 				.then((res) => {
 					if (res.status === 200) {
-						setNameDefaultValue(res.data.name)
-						setDescription(res.data.description)
-						setImage(res.data.image)
+						setNameDefaultValue(res.data.name);
+						setDescription(res.data.description);
+						setImage(res.data.image);
 						axios
 							.get(`/courses/${editCourseId}/users`)
 							.then((res) => {
 								if (res.status === 200) {
-									setSelectedUsers(res.data)
+									setSelectedUsers(res.data);
 								} else {
-									setEditError("Ошибка редактирования курса, попробуйте позже")
+									setEditError("Ошибка редактирования курса, попробуйте позже");
 								}
 							})
 							.catch((error) => {
-								console.log(error)
+								console.log(error);
 								if (error.response.status === 410) {
-									setEditError("Курс не найден, попробуйте позже")
+									setEditError("Курс не найден, попробуйте позже");
 								}
 							})
 							.finally(() => {
-								setLoading(false)
-							})
+								setLoading(false);
+							});
 					} else {
-						setEditError("Ошибка редактирования курса, попробуйте позже")
+						setEditError("Ошибка редактирования курса, попробуйте позже");
 					}
 				})
 				.catch((error) => {
-					console.log(error)
+					console.log(error);
 					if (error.response.status === "404") {
 						showNotification({
 							title: "Курс не найден",
 							autoClose: 3500,
 							color: "red",
 							icon: <Error404 size={18} />,
-						})
+						});
 					} else {
 						showNotification({
 							title: "Ошибка получения курса",
 							autoClose: 3500,
 							color: "red",
 							icon: <Error404 size={18} />,
-						})
+						});
 					}
-					setOpened(false)
+					setOpened(false);
 				})
 				.finally(() => {
-					setLoading(false)
-				})
+					setLoading(false);
+				});
 		}
-	}, [editCourseId, setOpened, setSelectedUsers])
-
+	}, [editCourseId, setOpened, setSelectedUsers]);
+	const onCancel = () => {
+		router.push("/account");
+		setOpened(false);
+	};
 	const onSelect = async (selected) => {
-		const user = users.find((user) => user.id === selected[selected.length - 1])
+		const user = users.find(
+			(user) => user.id === selected[selected.length - 1]
+		);
 		await axios
 			.post(`/courses/${editCourseId}/users`, user)
 			.then((result) => {
-				setSelectedUsers([...result.data])
+				setSelectedUsers([...result.data]);
 			})
-			.catch(console.log)
-	}
+			.catch(console.log);
+	};
 	const getIconColor = (status, theme) => {
 		return status.accepted
 			? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
 			: status.rejected
-			? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-			: theme.colorScheme === "dark"
-			? theme.colors.dark[0]
-			: theme.colors.gray[7]
-	}
+				? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+				: theme.colorScheme === "dark"
+					? theme.colors.dark[0]
+					: theme.colors.gray[7];
+	};
 
 	const ImageUploadIcon = ({ status, ...props }) => {
 		if (status.accepted) {
-			return <Upload {...props} />
+			return <Upload {...props} />;
 		}
 
 		if (status.rejected) {
-			return <X {...props} />
+			return <X {...props} />;
 		}
 
-		return <Photo {...props} />
-	}
+		return <Photo {...props} />;
+	};
 
 	const dropzoneChildren = (status, theme) => (
 		<Group
-			position='center'
-			spacing='xl'
+			position="center"
+			spacing="xl"
 			style={{ minHeight: 220, pointerEvents: "none" }}
 		>
 			{image ? (
@@ -160,7 +166,7 @@ export const EditCourse = ({
 					src={createObjectURL ? createObjectURL : "/" + image}
 					width={125}
 					height={125}
-					alt='Изображение курса'
+					alt="Изображение курса"
 				/>
 			) : (
 				<ImageUploadIcon
@@ -170,63 +176,66 @@ export const EditCourse = ({
 				/>
 			)}
 		</Group>
-	)
+	);
 
 	const saveCourse = (e) => {
-		e.preventDefault()
-		setNameError("")
-		setEditError("")
+		e.preventDefault();
+		setNameError("");
+		setEditError("");
 		if (e.target.name.value === "") {
-			setNameError("Введите название курса")
-			return
+			setNameError("Введите название курса");
+			return;
 		}
 
 		if (image === "") {
-			setEditError("Выберите изображение")
-			return
+			setEditError("Выберите изображение");
+			return;
 		}
 
-		setLoading(true)
+		setLoading(true);
 
-		const body = new FormData()
-		body.append("name", e.target.name.value)
-		body.append("description", description)
+		const body = new FormData();
+		body.append("name", e.target.name.value);
+		body.append("description", description);
 		if (image && image.path) {
-			body.append("image", image, `course_${nanoid()}`)
+			body.append("image", image, `course_${nanoid()}`);
 		}
 		axios
 			.put(`/courses/${editCourseId}`, body)
 			.then((res) => {
 				if (res.status === 200) {
-					updateCoursesList(res.data.course)
+					updateCoursesList(res.data.course);
 					showNotification({
 						title: "Курс изменен",
 						autoClose: 3500,
 						color: "green",
 						icon: <Check size={18} />,
-					})
+					});
+					onCancel()
 				} else {
-					setEditError("Ошибка изменения курса, попробуйте позже")
+					setEditError("Ошибка изменения курса, попробуйте позже");
 				}
 			})
 			.catch((error) => {
-				console.log(error)
+				console.log(error);
 				if (error.status === 409) {
-					setEditError("Такое название курса уже занято")
+					setEditError("Такое название курса уже занято");
 				} else {
-					setEditError("Ошибка изменения курса, попробуйте позже")
+					setEditError("Ошибка изменения курса, попробуйте позже");
 				}
 			})
 			.finally(() => {
-				setLoading(false)
-			})
-	}
+				setLoading(false);
+			});
+	};
 
 	const onRemove = async (id) => {
-		await axios.	
-			delete(`/courses/${editCourseId}/users`, { params: { user_id:id } })
-			.then((res) => setSelectedUsers(res.data))
-	}
+		await axios
+			.delete(`/courses/${editCourseId}/users`, { params: { user_id: id } })
+			.then((res) => setSelectedUsers(res.data));
+	};
+
+
 	return (
 		<div>
 			{description.length > 0 && (
@@ -243,7 +252,7 @@ export const EditCourse = ({
 								borderRadius: "20px",
 								padding: "10px 14px",
 							}}
-							type='submit'
+							type="submit"
 						>
 							Сохранить
 						</button>
@@ -257,26 +266,26 @@ export const EditCourse = ({
 								borderRadius: "20px",
 								padding: "10px 14px",
 							}}
-							onClick={() => setOpened(false)}
+							onClick={onCancel}
 						>
 							Отменить
 						</button>
 					</div>
 					<Row>
 						<Col md={4}>
-							<Card shadow='sm' padding='lg' radius='md' withBorder>
-								<InputWrapper required label='Название курса' error={nameError}>
+							<Card shadow="sm" padding="lg" radius="md" withBorder>
+								<InputWrapper required label="Название курса" error={nameError}>
 									<Input
-										type='text'
-										name='name'
+										type="text"
+										name="name"
 										value={nameDefaultValue}
 										onChange={(e) => setNameDefaultValue(e.currentTarget.value)}
 									/>
 								</InputWrapper>
 								<Dropzone
 									onDrop={(files) => {
-										setImage(files[0])
-										setCreateObjectURL(URL.createObjectURL(files[0]))
+										setImage(files[0]);
+										setCreateObjectURL(URL.createObjectURL(files[0]));
 									}}
 									onReject={() => {
 										showNotification({
@@ -284,19 +293,19 @@ export const EditCourse = ({
 											autoClose: 3500,
 											color: "red",
 											icon: <X size={18} />,
-										})
+										});
 									}}
 									maxSize={3 * 1024 ** 2}
 									accept={IMAGE_MIME_TYPE}
-									padding='xs'
+									padding="xs"
 								>
 									{(status) => dropzoneChildren(status, theme)}
 								</Dropzone>
 							</Card>
 						</Col>
 						<Col md={8}>
-							<Tabs unstyled color='#036459'>
-								<Tabs.Tab label='Участники'>
+							<Tabs unstyled color="#036459">
+								<Tabs.Tab label="Участники">
 									<MultiSelect
 										style={{
 											border: "2px solid #33CFBD",
@@ -305,7 +314,7 @@ export const EditCourse = ({
 											boxShadow: "0px 2px 20px #BBBBBB",
 										}}
 										value={selectedUsers.map((user) => {
-											return user.id
+											return user.id;
 										})}
 										onChange={onSelect}
 										data={users.map((user) => ({
@@ -321,20 +330,20 @@ export const EditCourse = ({
 													<span>{label}</span>
 													<X size={18} onClick={() => onRemove(value)} />
 												</div>
-											)
+											);
 										}}
-										label='Добавьте пользователя'
-										placeholder='Пользователи не выбраны'
+										label="Добавьте пользователя"
+										placeholder="Пользователи не выбраны"
 										searchable
-										nothingFound='Пользователей не найдено'
+										nothingFound="Пользователи не найдены"
 									/>
 								</Tabs.Tab>
-								<Tabs.Tab label='О курсе'>
+								<Tabs.Tab label="О курсе">
 									<RichTextEditor
-										name='description'
+										name="description"
 										value={description}
 										onChange={(value) => {
-											setDescription(value)
+											setDescription(value);
 										}}
 										controls={[
 											["bold", "italic", "underline", "link"],
@@ -351,11 +360,11 @@ export const EditCourse = ({
 					</Row>
 					<LoadingOverlay visible={loading} />
 					<Center>
-						<Text color='red'>{editError}</Text>
+						<Text color="red">{editError}</Text>
 					</Center>
 				</form>
 			)}
 			<Days opened={editCourseId} courseId={editCourseId} />
 		</div>
-	)
-}
+	);
+};

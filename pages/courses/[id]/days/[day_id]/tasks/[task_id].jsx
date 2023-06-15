@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Image from "next/image";
-import { nanoid } from "nanoid";
 import styles from "./messages.module.scss";
 import { sessionOptions } from "/lib/session";
 import { withIronSessionSsr } from "iron-session/next";
@@ -19,56 +17,39 @@ import {
   Group,
   Button,
   useMantineTheme,
-  SimpleGrid,
   Center,
-  Title,
 } from "@mantine/core";
-import { Send, File, Upload, X, Check } from "tabler-icons-react";
+import { Upload, X, Check } from "tabler-icons-react";
 
-export default function Task({ task, day, course, task_status, messages }) {
+export default function Task({ task, task_status, messages }) {
   const router = useRouter();
-  const { id, day_id, task_id } = router.query;
+  const { task_id } = router.query;
   const [chat, setChat] = useState(messages);
-  const [acceptLoading, setAcceptLoading] = useState(false);
+  const [, setAcceptLoading] = useState(false);
 
   const [files, setFiles] = useState([]);
 
   const theme = useMantineTheme();
 
-  const secondaryColor =
-    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
-
-  const setAccepted = (status) => {
+  const setAccepted = () => {
     setAcceptLoading(true);
     axios
       .post(`/public/tasks/${task_id}/accept`)
-      .then((res) => {
+      .then(() => {
         router.replace(router.asPath);
       })
-      .catch((error) => {})
-      .finally(() => {});
+      .catch(() => { })
+      .finally(() => { });
   };
 
   const getIconColor = (status, theme) => {
     return status.accepted
       ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
       : status.rejected
-      ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
-      : theme.colorScheme === "dark"
-      ? theme.colors.dark[0]
-      : theme.colors.gray[7];
-  };
-
-  const FileUploadIcon = ({ status, ...props }) => {
-    if (status.accepted) {
-      return <Upload {...props} />;
-    }
-
-    if (status.rejected) {
-      return <X {...props} />;
-    }
-
-    return <File {...props} />;
+        ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+        : theme.colorScheme === "dark"
+          ? theme.colors.dark[0]
+          : theme.colors.gray[7];
   };
 
   const dropzoneChildren = (status, theme) => (
@@ -114,8 +95,8 @@ export default function Task({ task, day, course, task_status, messages }) {
         setFiles([]);
         setChat([...chat, res.data]);
       })
-      .catch((error) => {})
-      .finally(() => {});
+      .catch(() => { })
+      .finally(() => { });
   };
   return (
     <>
@@ -130,36 +111,11 @@ export default function Task({ task, day, course, task_status, messages }) {
           <div
             style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}
           >
-            {task.name}
+            {task?.name}
           </div>
-          {/* <Card.Section>
-            <Text color="orange" size="xl" weight={600} style={{}}>
-              Статус задания
-            </Text>
-          </Card.Section> */}
-          {/* <Space h="sm" /> */}
-          {/* {task_status === "waiting" ? (
-            <Text size="lg" weight={700} color="orange">
-              Ожидаем вашего ответа
-            </Text>
-          ) : task_status === "ready" ? (
-            <Text size="lg" weight={700} color="green">
-              Задание выполнено, поздравляем!
-            </Text>
-          ) : (
-            <Text size="lg" weight={700} color="blue">
-              Начните выполнение!
-            </Text>
-          )} */}
-          {/* <Text
-            size="sm"
-            weight={500}
-            style={{ color: secondaryColor, lineHeight: 1.5 }}
-            dangerouslySetInnerHTML={{ __html: task.description }}
-          ></Text> */}
-          <Space h="lg" />
           {task_status !== "empty" ? (
             <>
+              <Space h="lg" />
               <div
                 style={{
                   color: "#036459",
@@ -174,58 +130,61 @@ export default function Task({ task, day, course, task_status, messages }) {
                 component="a"
                 href={`/${task?.files?.at(0)}`}
               >
-                Скачать файл {task.name}
+                Скачать файл {task?.name}
               </Text>
 
-              <div className={styles.messages}>
-                {chat
-                  .sort((prev, next) => Number(prev.id) - Number(next.id))
-                  .map((message) => {
-                    return (
-                      <div
-                        className={`${styles.message} ${
-                          message.answer_id ? styles.interlocutor : styles.you
-                        }`}
-                        key={message.id}
-                      >
-                        {message?.files[0] ? (
-                          <>
-                            {message.message}{" "}
-                            <Text
-                              key={message.id}
-                              variant="link"
-                              component="a"
-                              size="sm"
-                              download
-                              href={`/${message?.files[0]}`}
-                            >
-                              Скачать файл
+              {chat.length > 0 && (
+                <div className={styles.messages}>
+                  {chat
+                    .sort((prev, next) => Number(prev.id) - Number(next.id))
+                    .map((message) => {
+                      return (
+                        <div
+                          className={`${styles.message} ${message?.answer_id
+                              ? styles.interlocutor
+                              : styles.you
+                            }`}
+                          key={message?.id}
+                        >
+                          {message?.files?.at(0) ? (
+                            <>
+                              {message?.message}
+                              <Text
+                                key={message?.id}
+                                variant="link"
+                                component="a"
+                                size="sm"
+                                download
+                                href={`/${message?.files?.at(0)}`}
+                              >
+                                Скачать файл
+                              </Text>
+                              <Space h="sm" />
+                            </>
+                          ) : (
+                            <Text size="md" weight={500}>
+                              {message?.message}
                             </Text>
-                            <Space h="sm" />
-                          </>
-                        ) : (
-                          <Text size="md" weight={500}>
-                            {message.message}
-                          </Text>
-                        )}
-                      </div>
-                    );
-                  })}
-              </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
               {task_status !== "ready" && (
                 <div>
                   <form onSubmit={sendMessage}>
                     <Space h="sm" />
-                    {files.length > 0 && (
+                    {files?.length > 0 && (
                       <Text size="sm">
                         Прикрепленные файлы:{" "}
-                        {files.map((el) => {
-                          return ` ${el.name},`;
+                        {files?.map((el) => {
+                          return ` ${el?.name},`;
                         })}
                       </Text>
                     )}
 
-                    <Input placeholder="message" name="user-message" />
+                    <Input placeholder="Введите сообщение" name="user-message" />
                     <Dropzone
                       onDrop={(files) => {
                         setFiles(files);
