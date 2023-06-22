@@ -1,10 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Home.module.scss";
-
 import { sessionOptions } from "/lib/session";
 import { withIronSessionSsr } from "iron-session/next";
-
 import axios from "/utils/rest";
 import Container from "react-bootstrap/Container";
 import {

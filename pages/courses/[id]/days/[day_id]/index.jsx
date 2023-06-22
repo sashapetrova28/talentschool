@@ -15,13 +15,9 @@ import {
   Space,
   Card,
   RingProgress,
-  Group,
   Center,
   Tabs,
-  Button,
   useMantineTheme,
-  Progress,
-  Title,
 } from "@mantine/core";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
@@ -33,6 +29,14 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
   } = useRouter();
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
+  const calcStateOfCourse = (tasks_ready, tasks) => {
+    if (!tasks_ready || !tasks) return 0;
+    const readyTasks = parseInt(tasks_ready);
+    const allTasks = parseInt(tasks);
+
+    if (isNaN(allTasks) || isNaN(readyTasks)) return 0;
+    return Math.round((readyTasks / allTasks) * 100);
+  };
 
   return (
     <>
@@ -100,12 +104,13 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
                 <RingProgress
                   label={
                     <Text align="center">
-                      {Math.round((tasks_ready / tasks.length) * 100)}%
+                      {calcStateOfCourse(tasks_ready / tasks.length)}%
                     </Text>
                   }
                   sections={[
                     {
-                      value: (tasks_ready / tasks.length) * 100,
+                      value: calcStateOfCourse(tasks_ready / tasks.length),
+
                       color: "#1FBEAC",
                     },
                   ]}
@@ -193,14 +198,6 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
             </Tabs>
           </Col>
         </Row>
-        {/* <Card p="lg">
-          <Text
-            size="sm"
-            weight={500}
-            style={{ color: secondaryColor, lineHeight: 1.5 }}
-            dangerouslySetInnerHTML={{ __html: day.description }}
-          ></Text>
-        </Card> */}
       </Container>
     </>
   );

@@ -141,8 +141,8 @@ export default function Task({ task, task_status, messages }) {
                       return (
                         <div
                           className={`${styles.message} ${message?.answer_id
-                              ? styles.interlocutor
-                              : styles.you
+                            ? styles.interlocutor
+                            : styles.you
                             }`}
                           key={message?.id}
                         >

@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
-import axios from "/utils/rest";
-import useUser from "/lib/useUser";
-import { Space, Loader, NativeSelect, Center, Table } from "@mantine/core";
-import { Answer } from "./answer";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Center, Loader, NativeSelect, Space, Table } from "@mantine/core"
+import { useCallback, useEffect, useState } from "react"
+import Col from "react-bootstrap/Col"
+import Container from "react-bootstrap/Container"
+import Row from "react-bootstrap/Row"
+import { Answer } from "./answer"
+import useUser from "/lib/useUser"
+import axios from "/utils/rest"
 
 export const TasksCheck = () => {
   const [answerModalOpened, setAnswerModalOpened] = useState(false);
@@ -16,6 +16,20 @@ export const TasksCheck = () => {
   const [tasksList, setTasksList] = useState([]);
   const [tasksListError, setTasksListError] = useState("");
   const [filter, setFilter] = useState([]);
+
+  const handleFilter = useCallback(
+    (key, value) => {
+      if (value == "Не выбрано") {
+        setFilter(tasksList);
+        return;
+      }
+      const newArr = filter.filter((task) => {
+        return value.match(task[key].name);
+      });
+      setFilter(newArr);
+    },
+    [tasksList, filter]
+  );
 
   useEffect(() => {
     axios
@@ -32,20 +46,6 @@ export const TasksCheck = () => {
       });
   }, [answerModalOpened, user]);
 
-  const handleFilter = useCallback(
-    (key, value) => {
-      if (value == "Не выбрано") {
-        setFilter(tasksList);
-        return;
-      }
-      const newArr = filter.filter((task) => {
-        return value.match(task[key].name);
-      });
-      setFilter(newArr);
-    },
-    [tasksList, filter]
-  );
-
   return (
     <Container>
       <Space h="xl" />
@@ -57,10 +57,10 @@ export const TasksCheck = () => {
         <Col md={4}>
           <NativeSelect
             data={["Не выбрано"].concat(
-              Array.from(new Set(tasksList?.map((e) => e.course.name)))
+              Array.from(new Set(tasksList?.map((e) => e?.course?.name || "")))
             )}
             onChange={(event) =>
-              handleFilter("course", event.currentTarget.value)
+              handleFilter("course", event?.currentTarget?.value || "")
             }
             description="Выберите курс"
             variant="filled"
@@ -71,12 +71,12 @@ export const TasksCheck = () => {
             data={["Не выбрано"].concat(
               Array.from(
                 new Set(
-                  tasksList?.map((e) => `${e.user.name} ${e.user.surname}`)
+                  tasksList?.map((e) => `${e?.user?.name} ${e?.user?.surname}`)
                 )
               )
             )}
             onChange={(event) =>
-              handleFilter("user", event.currentTarget.value)
+              handleFilter("user", event?.currentTarget?.value)
             }
             description="Выберите ученика"
             variant="filled"
@@ -84,11 +84,12 @@ export const TasksCheck = () => {
         </Col>
         <Col md={4}>
           <NativeSelect
+            value={{}}
             data={["Не выбрано"].concat(
-              Array.from(new Set(tasksList?.map((e) => e.day.name)))
+              Array.from(new Set(tasksList?.map((e) => e?.day?.name)))
             )}
             onChange={(event) => {
-              handleFilter("day", event.currentTarget.value);
+              handleFilter("day", event?.currentTarget?.value);
             }}
             description="Выберите день"
             variant="filled"
@@ -122,11 +123,22 @@ export const TasksCheck = () => {
                     background: "white",
                   }}
                 >
-                  <td>{task.day.name}</td>
-                  <td>{task.task.name}</td>
-                  <td>{`${task.user.name} ${task.user.surname}`}</td>
+                  <td>{task?.day?.name}</td>
+                  <td>{task?.task?.name}</td>
+                  <td>{`${task?.user?.name} ${task?.user?.surname}`}</td>
                   {/* <td>{task.user.email}</td> */}
                   <td>
+                    {/* <Button
+                          variant="outline"
+                          color="orange"
+                          leftIcon={<MessageCircle />}
+                          onClick={() => {
+                            setTask(task);
+                            setAnswerModalOpened(true);
+                          }}
+                        >
+                          Просмотреть
+                        </Button> */}
                     <button
                       style={{
                         fontSize: "16px",

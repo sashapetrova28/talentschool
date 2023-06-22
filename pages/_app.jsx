@@ -16,7 +16,6 @@ const MyApp = ({ Component, pageProps }) => {
 	});
 
 	const [scroll, scrollTo] = useWindowScroll();
-
 	return <MantineProvider
 		withGlobalStyles
 		withNormalizeCSS
