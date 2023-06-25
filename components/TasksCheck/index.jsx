@@ -1,11 +1,13 @@
 import { Center, Loader, NativeSelect, Space, Table } from "@mantine/core"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import { Answer } from "./answer"
 import useUser from "/lib/useUser"
 import axios from "/utils/rest"
+
+const notSelected = "Не выбрано"
 
 export const TasksCheck = () => {
   const [answerModalOpened, setAnswerModalOpened] = useState(false);
@@ -17,19 +19,6 @@ export const TasksCheck = () => {
   const [tasksListError, setTasksListError] = useState("");
   const [filter, setFilter] = useState([]);
 
-  const handleFilter = useCallback(
-    (key, value) => {
-      if (value == "Не выбрано") {
-        setFilter(tasksList);
-        return;
-      }
-      const newArr = filter.filter((task) => {
-        return value.match(task[key].name);
-      });
-      setFilter(newArr);
-    },
-    [tasksList, filter]
-  );
 
   useEffect(() => {
     axios
@@ -46,6 +35,62 @@ export const TasksCheck = () => {
       });
   }, [answerModalOpened, user]);
 
+  const [userNameFilter, setUserNameFilter] = useState(notSelected);
+  const [dayNameFilter, setDayNameFilter] = useState(notSelected);
+  const [courseNameFilter, setCourseNameFilter] = useState(notSelected);
+
+  const handleUserNameFilterChange = (e) => {
+    const value = e?.currentTarget?.value;
+    setUserNameFilter(value);
+    filterData(value, dayNameFilter, courseNameFilter);
+  };
+
+  const handleDayNameFilterChange = (e) => {
+    const value = e?.currentTarget?.value;
+    setDayNameFilter(value);
+    filterData(userNameFilter, value, courseNameFilter);
+  };
+
+  const handleCourseNameFilterChange = (e) => {
+    const value = e.currentTarget?.value;
+    setCourseNameFilter(value);
+    filterData(userNameFilter, dayNameFilter, value);
+  };
+
+  const users = useMemo(() => [notSelected].concat(
+    Array.from(
+      new Set(
+        tasksList?.map((e) => `${e?.user?.name} ${e?.user?.surname}`)
+      )
+    )
+  ), [tasksList])
+
+  const days = useMemo(() => [notSelected].concat(
+    Array.from(new Set(tasksList?.map((e) => e?.day?.name)))
+  ), [tasksList])
+  const courses = useMemo(() => [notSelected].concat(
+    Array.from(new Set(tasksList?.map((e) => e?.course?.name || "")))
+  ), [tasksList])
+  const filterData = (userName, dayName, courseName) => {
+    const filteredArray = tasksList.filter((item) => {
+      const matchUserName = userName == notSelected || userName.match(item?.user?.name);
+      const matchDayName = dayName == notSelected || dayName.match(item?.day?.name);
+      const matchCourseName =
+        courseName == notSelected || courseName.match(item?.course?.name);
+
+      return matchUserName && matchDayName && matchCourseName;
+    });
+
+    setFilter(filteredArray);
+  };
+
+
+  useEffect(() => {
+    let taksTimeoot = setTimeout(() => {
+      setFilter(tasksList)
+    }, 200)
+    return () => clearTimeout(taksTimeoot)
+  }, [tasksList])
   return (
     <Container>
       <Space h="xl" />
@@ -56,41 +101,27 @@ export const TasksCheck = () => {
       <Row>
         <Col md={4}>
           <NativeSelect
-            data={["Не выбрано"].concat(
-              Array.from(new Set(tasksList?.map((e) => e?.course?.name || "")))
-            )}
-            onChange={(event) =>
-              handleFilter("course", event?.currentTarget?.value || "")
-            }
+            value={courseNameFilter}
+            data={courses}
+            onChange={handleCourseNameFilterChange}
             description="Выберите курс"
             variant="filled"
           />
         </Col>
         <Col md={4}>
           <NativeSelect
-            data={["Не выбрано"].concat(
-              Array.from(
-                new Set(
-                  tasksList?.map((e) => `${e?.user?.name} ${e?.user?.surname}`)
-                )
-              )
-            )}
-            onChange={(event) =>
-              handleFilter("user", event?.currentTarget?.value)
-            }
+            value={userNameFilter}
+            data={users}
+            onChange={handleUserNameFilterChange}
             description="Выберите ученика"
             variant="filled"
           />
         </Col>
         <Col md={4}>
           <NativeSelect
-            value={{}}
-            data={["Не выбрано"].concat(
-              Array.from(new Set(tasksList?.map((e) => e?.day?.name)))
-            )}
-            onChange={(event) => {
-              handleFilter("day", event?.currentTarget?.value);
-            }}
+            value={dayNameFilter}
+            data={days}
+            onChange={handleDayNameFilterChange}
             description="Выберите день"
             variant="filled"
           />
@@ -101,8 +132,6 @@ export const TasksCheck = () => {
           <tr>
             <th>День</th>
             <th>Задание</th>
-            {/* <th>Талант</th>
-            <th>Email таланта</th> */}
             <th>Фамилия, Имя</th>
             <th>Действия</th>
           </tr>
@@ -126,19 +155,7 @@ export const TasksCheck = () => {
                   <td>{task?.day?.name}</td>
                   <td>{task?.task?.name}</td>
                   <td>{`${task?.user?.name} ${task?.user?.surname}`}</td>
-                  {/* <td>{task.user.email}</td> */}
                   <td>
-                    {/* <Button
-                          variant="outline"
-                          color="orange"
-                          leftIcon={<MessageCircle />}
-                          onClick={() => {
-                            setTask(task);
-                            setAnswerModalOpened(true);
-                          }}
-                        >
-                          Просмотреть
-                        </Button> */}
                     <button
                       style={{
                         fontSize: "16px",

@@ -33,7 +33,7 @@ const mainAnswerHandler = async (req, res) => {
           .from("users")
           .where({ email: req.session.user.email })
           .limit(1);
-        if (user[0].status === "user") {
+        if (user[0].status === "user" || user[0].status === "curator") {
           const new_id = await database("task_messages")
             .returning("id")
             .insert({
