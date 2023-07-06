@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import axios from "/utils/rest";
+import { useEffect, useState } from 'react';
+import axios from '/utils/rest';
 
-import { Space, Loader, Button, Center, Table } from "@mantine/core";
-import { Plus, TrashX, Edit, UserPlus } from "tabler-icons-react";
-import Container from "react-bootstrap/Container";
+import { Space, Loader, Button, Center, Table } from '@mantine/core';
+import { Plus, TrashX, Edit, UserPlus } from 'tabler-icons-react';
+import Container from 'react-bootstrap/Container';
 
-import { AddUser } from "./addUser";
-import { DeleteUser } from "./deleteUser";
-import { EditUser } from "./editUser";
+import { AddUser } from './addUser';
+import { DeleteUser } from './deleteUser';
+import { EditUser } from './editUser';
+import styles from './Users.module.scss';
 
 const UsersControl = () => {
   const [addUserModalOpened, setAddUserModalOpened] = useState(false);
@@ -16,26 +17,26 @@ const UsersControl = () => {
 
   const [usersLoading, setUsersLoading] = useState(true);
   const [usersList, setUsersList] = useState([]);
-  const [usersListError, setUsersListError] = useState("");
+  const [usersListError, setUsersListError] = useState('');
 
   const [deleteUserId, setDeleteUserId] = useState(-1);
   const [editUserId, setEditUserId] = useState(-1);
 
-  const pushUser = (user) => {
+  const pushUser = user => {
     setUsersList([user, ...usersList]);
   };
 
-  const removeUser = (id) => {
-    const delete_index = usersList.findIndex((user) => user.id === id);
+  const removeUser = id => {
+    const delete_index = usersList.findIndex(user => user.id === id);
     if (delete_index !== -1) {
       usersList.splice(delete_index, 1);
       setUsersList(usersList);
     }
   };
 
-  const updateUser = (updatedUser) => {
+  const updateUser = updatedUser => {
     const update_index = usersList.findIndex(
-      (user) => user.id === updatedUser.id
+      user => user.id === updatedUser.id
     );
     if (update_index !== -1) {
       usersList[update_index] = updatedUser;
@@ -45,12 +46,12 @@ const UsersControl = () => {
 
   useEffect(() => {
     axios
-      .get("/users")
-      .then((res) => {
+      .get('/users')
+      .then(res => {
         setUsersList(res.data);
       })
-      .catch((error) => {
-        setUsersListError("Ошибка получения пользователей");
+      .catch(error => {
+        setUsersListError('Ошибка получения пользователей');
       })
       .finally(() => {
         setUsersLoading(false);
@@ -59,28 +60,31 @@ const UsersControl = () => {
 
   return (
     <Container>
-      <Space h="xl" />
-      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>
+      <Space h='xl' />
+      <div
+        className={styles.title}
+        style={{ color: '#036459', fontSize: '24px', fontWeight: '600' }}
+      >
         Пользователи
       </div>
       {!addUserModalOpened && (
         <>
-          {" "}
-          
-          <div style={{display: "inline-block"}}>
+          {' '}
+          <div className={styles.add__user} style={{ display: 'inline-block' }}>
             <UserPlus
-              style={{ cursor: "pointer", marginLeft: "45px" }}
+              style={{ cursor: 'pointer', marginLeft: '45px' }}
               size={32}
               color='#1FBEAC'
               onClick={() => setAddUserModalOpened(true)}
             />
           </div>
-          <Space h="xl" />
+          <Space h='xl' />
           <Table
-            verticalSpacing="sm"
+            className={styles.table}
+            verticalSpacing='sm'
             striped
             highlightOnHover
-            style={{ color: "#036459", fontWeight: "600" }}
+            style={{ color: '#036459', fontWeight: '600' }}
           >
             <thead>
               <tr>
@@ -91,37 +95,37 @@ const UsersControl = () => {
                 <th></th>
               </tr>
             </thead>
-            <tbody style={{ color: "#036459", fontWeight: "500" }}>
+            <tbody style={{ color: '#036459', fontWeight: '500' }}>
               {!usersLoading &&
-                usersList.map((user) => {
+                usersList.map(user => {
                   return (
                     <tr key={user.id}>
                       <td>
-                        {user.status === "user"
-                          ? "Ученик"
-                          : user.status === "curator"
-                            ? "Куратор"
-                            : "Администратор"}
+                        {user.status === 'user'
+                          ? 'Ученик'
+                          : user.status === 'curator'
+                          ? 'Куратор'
+                          : 'Администратор'}
                       </td>
                       <td>
                         {user.surname} {user.name}
                       </td>
                       <td>{user.email}</td>
                       <td>{user.password}</td>
-                      <td>
+                      <td colspan='4'>
                         <Button
-                          variant="subtle"
-                          color="dark"
-                          leftIcon={<Edit style={{ color: "#33CFBD" }} />}
+                          variant='subtle'
+                          color='dark'
+                          leftIcon={<Edit style={{ color: '#33CFBD' }} />}
                           onClick={() => {
                             setEditUserId(user.id);
                             setEditUserModalOpened(true);
                           }}
                         ></Button>
                         <Button
-                          variant="subtle"
-                          color="dark"
-                          leftIcon={<TrashX style={{ color: "#E74750" }} />}
+                          variant='subtle'
+                          color='dark'
+                          leftIcon={<TrashX style={{ color: '#E74750' }} />}
                           onClick={() => {
                             setDeleteUserId(user.id);
                             setDeleteUserModalOpened(true);
@@ -135,7 +139,7 @@ const UsersControl = () => {
           </Table>
           {usersLoading && (
             <Center>
-              <Loader color="orange" variant="bars" />
+              <Loader color='orange' variant='bars' />
             </Center>
           )}
           {!usersLoading && usersList.length === 0 && (

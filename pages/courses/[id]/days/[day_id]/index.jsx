@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import axios from "/utils/rest";
 import Container from "react-bootstrap/Container";
 import { ArrowBigRightLine } from "tabler-icons-react";
+import styles from './Day.module.scss'
 
 import {
   Text,
@@ -47,7 +48,7 @@ export default function Tasks({ course, day, tasks, tasks_ready }) {
       </Head>
       <Container>
         <Space h="xl" />
-        <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>
+        <div className={styles.title} style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>
           <NextLink
             style={{ color: "#036459", textDecoration: "none" }}
             href={`/`}

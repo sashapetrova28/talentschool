@@ -23,6 +23,7 @@ import { Check, Error404, Photo, Upload, X } from "tabler-icons-react";
 import { Days } from "../Days";
 import axios from "/utils/rest";
 import { useRouter } from "next/router";
+import styless from './Course.module.scss';
 
 export const EditCourse = ({
 	opened,
@@ -239,8 +240,8 @@ export const EditCourse = ({
 	return (
 		<div>
 			{description.length > 0 && (
-				<form onSubmit={saveCourse}>
-					<div style={{ textAlign: "end" }}>
+				<form className={styless.form} onSubmit={saveCourse}>
+					<div className={styless.buttons} style={{ textAlign: "end" }}>
 						<button
 							style={{
 								fontSize: "12px",

@@ -7,6 +7,14 @@
   justify-content: space-between;
   align-items: center;
 
+  .logo {
+    display: flex;
+    width: 152px;
+    height: 40px;
+    background: url('../../public/logo.png') center no-repeat;
+    background-size: 152px;
+  }
+
   .menu {
     display: flex;
     align-items: center;
@@ -32,8 +40,54 @@
   border-radius: 8px;
   color: rgb(51, 207, 189);
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     color: rgb(255, 255, 255);
     background-color: rgb(51, 207, 189);
+  }
+}
+
+@media (max-width: 460px) {
+  .container {
+    padding: 0px;
+  }
+
+  .card {
+    display: flex;
+    height: 56px !important;
+    padding: 13px 20px 13px 20px;
+    border: none !important;
+  }
+
+  .header {
+    flex-wrap: nowrap;
+    height: 30px !important;
+
+    .logo {
+      display: flex;
+      width: 47px;
+      height: 29px;
+      background: url('../../public/mobileLogo.png') center no-repeat;
+      background-size: 47px;
+    }
+
+    .menu {
+      width: 300px;
+
+      justify-content: flex-end;
+
+      div {
+        padding: 5px !important;
+
+        svg {
+          width: 30px;
+          height: 30px;
+
+          g {
+            width: 15px !important;
+          }
+        }
+      }
+    }
   }
 }

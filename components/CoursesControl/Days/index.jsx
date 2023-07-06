@@ -16,6 +16,7 @@ import { Tasks } from "../Tasks";
 import { AddDay } from "./addDay";
 import { DeleteDay } from "./deleteDay";
 import { EditDay } from "./editDay";
+import styles from './Days.module.scss'
 
 export const Days = ({ opened, setOpened, courseId }) => {
   const [addDayModalOpened, setAddDayModalOpened] = useState(false);
@@ -75,78 +76,83 @@ export const Days = ({ opened, setOpened, courseId }) => {
 
   return (
     <div>
-      <Space h="sm" />
+      <Space h='sm' />
       {!addDayModalOpened && (
-        <div style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>
+        <div
+          className={styles.title}
+          style={{ color: '#036459', fontSize: '20px', fontWeight: '600' }}
+        >
           Материалы
         </div>
       )}
-      <Space h="sm" />
+      <Space h='sm' />
       {!addDayModalOpened && ( //\ !addDayModalOpened && !tasksModalOpened
         <>
-          <SimpleGrid cols={5}>
+          <SimpleGrid className={styles.collumns} cols={5}>
             <Card
-              style={{ cursor: "pointer", boxShadow: "0px 2px 20px #BBBBBB" }}
-              shadow="sm"
-              padding="lg"
-              radius="md"
+              className={styles.collumns__card}
+              style={{ cursor: 'pointer', boxShadow: '0px 2px 20px #BBBBBB' }}
+              shadow='sm'
+              padding='lg'
+              radius='md'
               withBorder
               onClick={() => setAddDayModalOpened(true)}
             >
               <div
-                className="d-flex flex-column align-items-center"
+                className='d-flex flex-column align-items-center'
                 style={{
-                  color: "#DFDFDF",
-                  fontWeight: "600",
-                  fontSize: "16px",
-                  height: "165px",
+                  color: '#DFDFDF',
+                  fontWeight: '600',
+                  fontSize: '16px',
+                  height: '165px'
                 }}
               >
-                <div style={{ fontSize: "20px", marginTop: "42px" }}>+</div>
+                <div style={{ fontSize: '20px', marginTop: '42px' }}>+</div>
                 <div>Добавить день</div>
               </div>
             </Card>
             {!daysLoading &&
-              daysList.map((day) => {
+              daysList.map(day => {
                 return (
                   <Card
+                    className={styles.collumns__card}
                     style={{
                       width: 200,
-                      cursor: "pointer",
-                      border: "2px solid #F9B312",
-                      boxShadow: "0px 2px 20px #BBBBBB",
+                      cursor: 'pointer',
+                      border: '2px solid #F9B312',
+                      boxShadow: '0px 2px 20px #BBBBBB'
                     }}
-                    shadow="md"
-                    padding="lg"
-                    radius="md"
+                    shadow='md'
+                    padding='lg'
+                    radius='md'
                     withBorder
                     key={day.id}
-                    onClick={(e) => {
+                    onClick={e => {
                       setTasksId(day.id);
                       setTasksModalOpened(true);
                     }}
                   >
                     <div
-                      className="d-flex flex-column justify-content-between"
-                      style={{ height: "165px" }}
+                      className='d-flex flex-column justify-content-between'
+                      style={{ height: '165px' }}
                     >
                       <div
                         style={{
-                          color: "#036459",
-                          fontWeight: "600",
-                          padding: "15px 0 0 15px",
+                          color: '#036459',
+                          fontWeight: '600',
+                          padding: '15px 0 0 15px'
                         }}
                       >
                         {day.name}
                       </div>
                       <Box>
                         <Button
-                          className="align-self-end"
-                          size="xs"
-                          variant="outline"
-                          color="cyan"
+                          className='align-self-end'
+                          size='xs'
+                          variant='outline'
+                          color='cyan'
                           leftIcon={<Edit />}
-                          onClick={(e) => {
+                          onClick={e => {
                             e.stopPropagation();
                             setEditDayId(day.id);
                             setEditDayModalOpened(true);
@@ -155,12 +161,12 @@ export const Days = ({ opened, setOpened, courseId }) => {
                           Редактировать
                         </Button>
                         <Button
-                          className="align-self-end"
-                          size="xs"
-                          variant="outline"
-                          color="red"
+                          className='align-self-end'
+                          size='xs'
+                          variant='outline'
+                          color='red'
                           leftIcon={<TrashX />}
-                          onClick={(e) => {
+                          onClick={e => {
                             e.stopPropagation();
                             setDeleteDayId(day.id);
                             setDeleteDayModalOpened(true);
@@ -181,7 +187,8 @@ export const Days = ({ opened, setOpened, courseId }) => {
       )}
       {/*  */}
       {daysLoading && (
-        <Center><Loader color="cyan" variant="dots" />
+        <Center>
+          <Loader color='cyan' variant='dots' />
         </Center>
       )}
       <Center>{daysListError}</Center>
@@ -196,7 +203,7 @@ export const Days = ({ opened, setOpened, courseId }) => {
       <EditDay
         pushDay={pushDay}
         opened={editDayModalOpened}
-        day={daysList.find((day) => day.id == editDayId)}
+        day={daysList.find(day => day.id == editDayId)}
         setOpened={setEditDayModalOpened}
         courseId={courseId}
         deleteDayId={editDayId}

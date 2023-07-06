@@ -1,0 +1,63 @@
+@media (max-width: 480px) {
+  .title {
+    text-align: start;
+    font-size: 14px !important;
+    display: inline-flex;
+  }
+
+  .add__user {
+    svg {
+        width: 20px;
+        margin-left: 10px !important;
+    }
+  }
+
+  .table {
+    th,
+    td,
+    button {
+      font-size: 8px !important;
+    }
+
+    td {
+      padding: 7px !important;
+      word-wrap: break-word;
+      max-width: 50px;
+
+      button {
+        width: 20px;
+          height: 20px;
+        padding: 0px;
+
+        span {
+            margin: 0;
+          width: 15px;
+          height: 15px;
+        }
+      }
+    }
+  }
+
+  .form {
+    
+    div, input {
+        font-size: 14px !important;
+    }
+    
+    .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0px 10px 0px ;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .title__row {
+        margin-bottom: 10px !important;
+    }
+  }
+}

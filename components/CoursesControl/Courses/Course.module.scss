@@ -1,0 +1,68 @@
+@media (max-width: 480px) {
+  .collumns {
+    grid-template-columns: 1fr;
+  }
+
+  .con {
+    display: flex;
+    align-items: center;
+    svg {
+      width: 20px;
+      margin-left: 10px !important;
+    }
+  }
+
+  .title {
+    text-align: start;
+    font-size: 14px !important;
+  }
+
+  .content__card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .course__card {
+    .title__card {
+      font-size: 12px !important;
+    }
+
+    .image__card {
+      img {
+        width: 81px !important;
+        height: 81px !important;
+      }
+    }
+
+    .table__card {
+      td {
+        font-size: 12px !important;
+      }
+    }
+
+    .button__card {
+      border: none;
+      padding: 0px;
+
+      div {
+        display: block;
+        text-indent: -9999em;
+        text-transform: uppercase;
+
+        span {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .form {
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0px 10px 0px;
+    }
+  }
+}

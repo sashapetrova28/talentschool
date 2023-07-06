@@ -1,0 +1,23 @@
+@media (max-width: 480px) {
+  .collumns {
+    grid-template-columns: 1fr;
+
+    .collumns__card {
+        width: 100% !important;
+    }
+  }
+
+  .title {
+    text-align: start;
+    font-size: 14px !important;
+  }
+
+  .form {
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0px 10px 0px;
+    }
+  }
+}

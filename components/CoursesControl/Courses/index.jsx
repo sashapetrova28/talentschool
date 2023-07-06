@@ -9,6 +9,7 @@ import { EditCourse } from "./editCourse";
 import { Main } from "./main";
 import { NextLink } from "@mantine/next";
 import { useRouter } from "next/router";
+import styles from './Course.module.scss';
 
 export default function CoursesControl() {
   const [addCourseModalOpened, setAddCourseModalOpened] = useState(false);
@@ -92,35 +93,36 @@ export default function CoursesControl() {
 
   return (
     <Container>
-      <Space h="xl" />
+      <Space h='xl' />
       {!daysModalOpened && (
-        <div className="d-flex align-items-center">
+        <div className={styles.con}>
           <div
-            style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}
+            className={styles.title}
+            style={{ color: '#036459', fontSize: '24px', fontWeight: '600' }}
           >
             <NextLink
-              style={{ color: "#036459", textDecoration: "none" }}
-              href="/"
+              style={{ color: '#036459', textDecoration: 'none' }}
+              href='/'
             >
               Курсы
-            </NextLink>{" "}
-            {addCourseModalOpened && " > Добавление курса"}
-            {editCourseModalOpened && " > Редактирование курса"}
-          </div>{" "}
+            </NextLink>{' '}
+            {addCourseModalOpened && ' > Добавление курса'}
+            {editCourseModalOpened && ' > Редактирование курса'}
+          </div>{' '}
           {!addCourseModalOpened &&
             !deleteCourseModalOpened &&
             !editCourseModalOpened &&
             !daysModalOpened && (
               <FolderPlus
-                style={{ cursor: "pointer", marginLeft: "45px" }}
+                style={{ cursor: 'pointer', marginLeft: '45px' }}
                 size={32}
-                color="#1FBEAC"
+                color='#1FBEAC'
                 onClick={toAddCourse}
               />
             )}
         </div>
       )}
-      <Space h="xl" />
+      <Space h='l' />
       {!addCourseModalOpened &&
         !deleteCourseModalOpened &&
         !editCourseModalOpened &&
@@ -155,6 +157,7 @@ export default function CoursesControl() {
       )}
       {editCourseModalOpened && (
         <EditCourse
+          className={styles.title}
           opened={editCourseModalOpened}
           setOpened={setEditCourseModalOpened}
           updateCoursesList={updateCourse}

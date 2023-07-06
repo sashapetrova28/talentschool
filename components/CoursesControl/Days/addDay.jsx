@@ -22,6 +22,7 @@ import { Upload, X, Photo, Check } from "tabler-icons-react";
 import axios from "/utils/rest";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import styles from './Days.module.scss'
 
 export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
   const [loading, setLoading] = useState(false);
@@ -136,12 +137,12 @@ export const AddDay = ({ opened, setOpened, pushDay, courseId }) => {
 
   return (
     <div className="mb-5">
-      <div style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>
+      <div className={styles.title} style={{ color: "#036459", fontSize: "20px", fontWeight: "600" }}>
         Материалы &gt; Добавление дня
       </div>{" "}
       <Space h="sm" />
-      <form onSubmit={saveDay}>
-        <div style={{ textAlign: "end" }}>
+      <form className={styles.form} onSubmit={saveDay}>
+        <div className={styles.buttons} style={{ textAlign: "end" }}>
           <button
             style={{
               marginRight: "9px",

@@ -5,6 +5,7 @@ import { showNotification } from "@mantine/notifications";
 import { Check } from "tabler-icons-react";
 import axios from "/utils/rest";
 import { Row, Col } from "react-bootstrap";
+import styles from './Users.module.scss'
 
 export const AddUser = ({ opened, setOpened, pushUser }) => {
   const [loading, setLoading] = useState(false);
@@ -97,21 +98,27 @@ export const AddUser = ({ opened, setOpened, pushUser }) => {
     <div
       opened={opened}
       onClose={() => setOpened(false)}
-      title="Добавить пользователя"
-      size="lg"
-      transition="fade"
+      title='Добавить пользователя'
+      size='lg'
+      transition='fade'
       transitionDuration={300}
-      transitionTimingFunction="ease"
+      transitionTimingFunction='ease'
     >
-      <form onSubmit={saveUser}>
+      <form className={styles.form} onSubmit={saveUser}>
         <LoadingOverlay visible={loading} />
-        <div className="d-flex justify-content-end mb-5">
-          <button className="greenButton" color="green" type="submit" style={{ marginRight: "20px" }}>
+        <div className={styles.buttons}>
+          <button
+            className='greenButton'
+            color='green'
+            type='submit'
+            style={{ marginRight: '20px' }}
+          >
             Добавить
           </button>
-          <button className="redButton"
-            variant="light"
-            color="dark"
+          <button
+            className='redButton'
+            variant='light'
+            color='dark'
             onClick={() => {
               setOpened(false);
             }}
@@ -119,47 +126,108 @@ export const AddUser = ({ opened, setOpened, pushUser }) => {
             Отменить
           </button>
         </div>
-        <Row>
+        <Row className={styles.row}>
           <Col>
-            <div style={{ fontWeight: "600", fontSize: "16px", color: "#036459", marginBottom: "28px" }}>Роль</div>
+            <div
+              className={styles.title__row}
+              style={{
+                fontWeight: '600',
+                fontSize: '16px',
+                color: '#036459',
+                marginBottom: '28px'
+              }}
+            >
+              Роль
+            </div>
             <NativeSelect
               style={inputStyles}
-              data={["Ученик", "Администратор", "Куратор"]}
-              placeholder="Выберите вариант"
-              name="status"
+              data={['Ученик', 'Администратор', 'Куратор']}
+              placeholder='Выберите вариант'
+              name='status'
             />
           </Col>
           <Col>
-            <div style={{ fontWeight: "600", fontSize: "16px", color: "#036459", marginBottom: "28px" }}>
+            <div
+              className={styles.title__row}
+              style={{
+                fontWeight: '600',
+                fontSize: '16px',
+                color: '#036459',
+                marginBottom: '28px'
+              }}
+            >
               Фамилия, имя
             </div>
-            <InputWrapper className="mb-2" required error={surnameError}>
-              <Input style={inputStyles} placeholder="Введите фамилию" type="text" name="surname" />
+            <InputWrapper className='mb-2' required error={surnameError}>
+              <Input
+                style={inputStyles}
+                placeholder='Введите фамилию'
+                type='text'
+                name='surname'
+              />
             </InputWrapper>
             <InputWrapper required error={nameError}>
-              <Input style={inputStyles} placeholder="Введите имя" type="text" name="name" />
+              <Input
+                style={inputStyles}
+                placeholder='Введите имя'
+                type='text'
+                name='name'
+              />
             </InputWrapper>
           </Col>
           <Col>
-            <div style={{ fontWeight: "600", fontSize: "16px", color: "#036459", marginBottom: "28px" }}>
+            <div
+              className={styles.title__row}
+              style={{
+                fontWeight: '600',
+                fontSize: '16px',
+                color: '#036459',
+                marginBottom: '28px'
+              }}
+            >
               Электронная почта
             </div>
             <InputWrapper required error={emailError}>
-              <Input style={inputStyles} type="email" placeholder="Введите адрес эл. почты" name="email" />
+              <Input
+                style={inputStyles}
+                type='email'
+                placeholder='Введите адрес эл. почты'
+                name='email'
+              />
             </InputWrapper>
           </Col>
           <Col>
-            <div style={{ fontWeight: "600", fontSize: "16px", color: "#036459", marginBottom: "28px" }}>Пароль</div>
-            <InputWrapper className="mb-2" required error={passwordError}>
-              <Input style={inputStyles} placeholder="Пароль" type="text" name="password" />
+            <div
+              className={styles.title__row}
+              style={{
+                fontWeight: '600',
+                fontSize: '16px',
+                color: '#036459',
+                marginBottom: '28px'
+              }}
+            >
+              Пароль
+            </div>
+            <InputWrapper className='mb-2' required error={passwordError}>
+              <Input
+                style={inputStyles}
+                placeholder='Пароль'
+                type='text'
+                name='password'
+              />
             </InputWrapper>
             <InputWrapper required error={password_rError}>
-              <Input style={inputStyles} placeholder="Повторите пароль" type="text" name="password_r" />
+              <Input
+                style={inputStyles}
+                placeholder='Повторите пароль'
+                type='text'
+                name='password_r'
+              />
             </InputWrapper>
           </Col>
         </Row>
         <Center>
-          <Text color="red">{addError}</Text>
+          <Text color='red'>{addError}</Text>
         </Center>
       </form>
     </div>

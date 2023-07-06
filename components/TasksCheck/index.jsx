@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row"
 import { Answer } from "./answer"
 import useUser from "/lib/useUser"
 import axios from "/utils/rest"
+import styles from './Check.module.scss'
 
 const notSelected = "Не выбрано"
 
@@ -92,20 +93,24 @@ export const TasksCheck = () => {
     return () => clearTimeout(taksTimeoot)
   }, [tasksList])
   return (
-    <Container>
-      <Space h="xl" />
-      <div style={{ color: "#036459", fontSize: "24px", fontWeight: "600" }}>
+    <Container className={styles.container}>
+      <Space h='xl' />
+      <div
+        className={styles.title}
+        style={{ color: '#036459', fontSize: '24px', fontWeight: '600' }}
+      >
         Задания
       </div>
-      <Space h="xl" />
-      <Row>
+      <Space h='xl' />
+      <Row className={styles.row}>
         <Col md={4}>
           <NativeSelect
+          className={styles.select}
             value={courseNameFilter}
             data={courses}
             onChange={handleCourseNameFilterChange}
-            description="Выберите курс"
-            variant="filled"
+            description='Выберите курс'
+            variant='filled'
           />
         </Col>
         <Col md={4}>
@@ -113,8 +118,8 @@ export const TasksCheck = () => {
             value={userNameFilter}
             data={users}
             onChange={handleUserNameFilterChange}
-            description="Выберите ученика"
-            variant="filled"
+            description='Выберите ученика'
+            variant='filled'
           />
         </Col>
         <Col md={4}>
@@ -122,12 +127,12 @@ export const TasksCheck = () => {
             value={dayNameFilter}
             data={days}
             onChange={handleDayNameFilterChange}
-            description="Выберите день"
-            variant="filled"
+            description='Выберите день'
+            variant='filled'
           />
         </Col>
       </Row>
-      <Table verticalSpacing="sm" striped highlightOnHover>
+      <Table className={styles.table} verticalSpacing='sm' striped highlightOnHover>
         <thead>
           <tr>
             <th>День</th>
@@ -138,7 +143,7 @@ export const TasksCheck = () => {
         </thead>
         <tbody>
           {!tasksLoading &&
-            filter?.map((task) => {
+            filter?.map(task => {
               return (
                 <tr
                   key={
@@ -147,9 +152,9 @@ export const TasksCheck = () => {
                     Math.random()
                   }
                   style={{
-                    border: "2px solid #33CFBD",
-                    borderRadius: "8px",
-                    background: "white",
+                    border: '2px solid #33CFBD',
+                    borderRadius: '8px',
+                    background: 'white'
                   }}
                 >
                   <td>{task?.day?.name}</td>
@@ -158,18 +163,18 @@ export const TasksCheck = () => {
                   <td>
                     <button
                       style={{
-                        fontSize: "16px",
-                        color: "#1FBEAC",
-                        fontWeight: "600",
-                        marginRight: "35px",
-                        border: "none",
-                        backgroundColor: "white",
+                        fontSize: '16px',
+                        color: '#1FBEAC',
+                        fontWeight: '600',
+                        marginRight: '35px',
+                        border: 'none',
+                        backgroundColor: 'white'
                       }}
                       onClick={() => {
                         setTask(task);
                         setAnswerModalOpened(true);
                       }}
-                      type="submit"
+                      type='submit'
                     >
                       Проверить
                     </button>
@@ -181,7 +186,7 @@ export const TasksCheck = () => {
       </Table>
       {tasksLoading && (
         <Center>
-          <Loader color="orange" variant="bars" />
+          <Loader color='orange' variant='bars' />
         </Center>
       )}
       {!tasksLoading && tasksList.length === 0 && (
