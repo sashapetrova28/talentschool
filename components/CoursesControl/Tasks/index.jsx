@@ -15,6 +15,7 @@ import axios from "/utils/rest";
 import { AddTask } from "./addTask";
 import { DeleteTask } from "./deleteTask";
 import EditTask from "./EditTask";
+import styles from './tasks.module.scss'
 
 export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
   const [addTaskModalOpened, setAddTaskModalOpened] = useState(false);
@@ -90,6 +91,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
       transitionTimingFunction="ease"
     >
       <Button
+      className={styles.add__task}
         leftIcon={<Plus />}
         variant="light"
         color="green"
@@ -98,7 +100,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
         Добавить задание
       </Button>
       <Space h="sm" />
-      <Table verticalSpacing="sm" striped highlightOnHover>
+      <Table className={styles.table} verticalSpacing="sm" striped highlightOnHover>
         <thead>
           <tr>
             <th>Название</th>
@@ -116,7 +118,7 @@ export const Tasks = ({ opened, setOpened, courseId, dayId }) => {
                   <td>{task.image ? "Есть" : "Нет"}</td>
                   <td>{task.files.length}</td>
                   <td>
-                    <Stack>
+                    <Stack className={styles.buttons}>
                       <Button
                         variant="outline"
                         color="blue"

@@ -1,4 +1,4 @@
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .collumns {
     grid-template-columns: 1fr;
   }
@@ -20,7 +20,6 @@
   .content__card {
     display: flex;
     align-items: center;
-    justify-content: space-between;
   }
 
   .course__card {
@@ -36,6 +35,7 @@
     }
 
     .table__card {
+      max-width: 120px !important;
       td {
         font-size: 12px !important;
       }

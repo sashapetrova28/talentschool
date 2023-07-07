@@ -1,31 +1,78 @@
 .editButton {
-    background-color: #33CFBD;
-	border-radius: 15px;
-	color: #ffffff;
-	font-weight: 500;
-	border: none;
-	height: 30px;
-    padding: 5px;
-    width: 170px;
+  background-color: #33cfbd;
+  border-radius: 15px;
+  color: #ffffff;
+  font-weight: 500;
+  border: none;
+  height: 30px;
+  padding: 5px;
+  width: 170px;
 
-    &:hover, &:active {
-      background-color: #3cebd6;
-    }
+  &:hover,
+  &:active {
+    background-color: #3cebd6;
+  }
 }
 
 .deleteButton {
-    background-color: #ffffff;
-	border-radius: 15px;
-	color: #33CFBD;
-	font-weight: 500;
-	border: 2px #33CFBD solid;
-	height: 30px;
-    padding: 5px;
-    width: 170px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  color: #33cfbd;
+  font-weight: 500;
+  border: 2px #33cfbd solid;
+  height: 30px;
+  padding: 5px;
+  width: 170px;
 
-    &:hover, &:active {
-        font-weight: 500;
-        color: #ffffff;
-        background-color: #33CFBD;
+  &:hover,
+  &:active {
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #33cfbd;
+  }
+}
+
+@media (max-width: 768px) {
+.add__task {
+    padding: 0px 7px 0px 7px;
+
+    span {
+        font-size: 12px !important;
     }
+}
+
+
+  .table {
+    th,
+    td {
+      max-width: 60px;
+      font-size: 10px !important;
+      padding: 5px !important;
+    }
+
+    .buttons {
+        gap: 5px;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        height: 25px;
+        padding: 0;
+
+        span {
+          margin: 0;
+
+          svg {
+            width: 20px;
+          }
+        }
+
+        span:last-child {
+          display: none;
+        }
+      }
+    }
+  }
 }
